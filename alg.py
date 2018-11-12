@@ -1,4 +1,8 @@
-########### BISOGNA DEFINIRE LE FUNZIONI DI BROADCAST E DI RICEZIONE (COME SI INVIANO I MESSAGGI? SOCKET O LE FUNZIONI CI VENGONO FORNITE?)
+########### FUNZIONI DA DEFINIRE:
+########### 	BROADCAST
+###########		REC_MSG
+###########
+
 
 #msg:
 #	num_seq
@@ -16,15 +20,15 @@ import time
 def get_positions(msg_positions):
 	i=0
     while True:
-		if read_message() == msg and (msg[xr], msg[yr]) not in msg_positions:
+		if rec_msg() == msg and (msg[xr], msg[yr]) not in msg_positions:
 			msg_positions[i]=(msg[xr], msg[yr])								# qui acquisiamo le posizioni
 			i++																# da cui arrivano i messaggi
 
 
 
-def evaluate_positions(msg_positions):
+def evaluate_positions(msg_positions,me):
 	quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
-	my_pos = get_my_pos			# abbiamo scelto quadranti divisi da una X dalla nostra posizione
+	my_pos = me.pos			# abbiamo scelto quadranti divisi da una X dalla nostra posizione
 	for i in range(0,msg_positions.len):
 		if quads[0]!=1
 			if i[0]>my_pos[0] and i[1] is in range(my_pos[1]-(abs((my_pos[0]-i[0])/2)), my_pos[1]-(abs((my_pos[0]-i[0])/2))):		# X > myX	dx
@@ -48,7 +52,7 @@ def evaluate_positions(msg_positions):
 
 
 
-def foo(msg, node, tmax):
+def foo(msg, me, tmax):			# me is sphere object representing the current vehicle
 
 	# Scadenza del messaggio
 	if msg.ttl==0:
@@ -60,6 +64,7 @@ def foo(msg, node, tmax):
 
 
 	# inizializzare R
+	R=20  #da testare
 	t = tmax * (1-(dAS / R))
 
 
@@ -75,7 +80,7 @@ def foo(msg, node, tmax):
 
 	# conosciamo le posizioni in msg_positions
 
- 	do_broadcast = evaluate_positions(msg_positions)
+ 	do_broadcast = evaluate_positions(msg_positions,me)
 
  	if do_broadcast:
 		broadcast_msg(msg)

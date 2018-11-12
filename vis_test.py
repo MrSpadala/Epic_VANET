@@ -5,6 +5,8 @@ import math
 import time
 import thread
 
+
+
 #Calcolo la distanza, se e minore di R disegno freccia e rimando broadcast
 #p e la posizione attuale
 def broad_msg(balls, r, p):
@@ -23,12 +25,13 @@ def dist(v1, v2):
 	return sqrt(distx*distx + disty*disty)
 
 scene.title= "Visual Test VANET"
-scene.x=0 
+scene.x=0
 scene.y=0
-scene.width= 900 
+scene.width= 900
 scene.height=1000
 scene.center=(5,0,0)
 scene.background=(0.8, 0.8, 0.8)
+
 
 #Creo gli edifici (cubi)
 for i in range(-40,50,20):
@@ -39,25 +42,19 @@ for i in range(-40,50,20):
 
 #Creo i veicoli (sfere)
 balls = []
-for i in range(-50,40,5):
-	for j in range(-50,40,5):
-		for r in range(i+16, i+20, 2):
-			for c in range(j+16, j+20, 2):
-				if r not in range(i, i+16) and c not in range(j,j+16):
-					if random.randrange(1, 10) < 2:
-						balls.append(sphere(pos=vector(r,c,0), radius=0.6))
-
-# non commento
 for i in range(-40,50,20):
 	for j in range(-40,50,20):
-		for r in range(i, i+16):
-			for c in range(j, j+16):
-				for b in balls:
-					if b.pos==vector(r,c,0):
-						b.visible=False
-						balls.remove(b)
-						del b
-						break
+		for r in range(i-4, i, 2):
+			for c in range(-40,50, 2):
+				if r>-30:
+					if random.randrange(1, 50) < 2:
+						balls.append(sphere(pos=vector(r,c,0), radius=0.6))
+		for r in range(-40,50, 2):
+			for c in range(i-4, i, 2):
+				if c>-30:
+					if random.randrange(1, 50) < 2:
+							balls.append(sphere(pos=vector(r,c,0), radius=0.6))
+
 #al click evidenzio il veicolo infettato
 flag = 0
 while True:
@@ -74,12 +71,10 @@ while True:
                                 break
 		if flag:
 			break
-                                
+
 
 #Parte l'algoritmo di infezione
 #TODO
 message = "Infected"
 print(str(loc)+" says: " + message)
-broad_msg(balls, 10, loc)
-
-
+broad_msg(balls, 20, loc)
