@@ -1,5 +1,26 @@
 from visual import *
+#import alg
 import random
+import math
+import time
+import thread
+
+#Calcolo la distanza, se e minore di R disegno freccia e rimando broadcast
+#p e la posizione attuale
+def broad_msg(balls, r, p):
+	for b in balls:
+		if b.color!=color.red:
+			if dist(p, b.pos) < r:
+				b.color= color.red
+				arrow(pos=p, axis=(b.x - p.x, b.y - p.y, 0), shaftwidth=0.1, color=color.green)
+				time.sleep(0.5)
+				thread.start_new_thread(broad_msg, (balls, r, b.pos))
+
+
+def dist(v1, v2):
+	distx = abs(v1.x - v2.x)
+	disty = abs(v1.y - v2.y)
+	return sqrt(distx*distx + disty*disty)
 
 scene.title= "Visual Test VANET"
 scene.x=0 
@@ -34,6 +55,7 @@ for i in range(-40,50,20):
 				for b in balls:
 					if b.pos==vector(r,c,0):
 						b.visible=False
+						balls.remove(b)
 						del b
 						break
 #al click evidenzio il veicolo infettato
@@ -56,3 +78,8 @@ while True:
 
 #Parte l'algoritmo di infezione
 #TODO
+message = "Infected"
+print(str(loc)+" says: " + message)
+broad_msg(balls, 10, loc)
+
+
