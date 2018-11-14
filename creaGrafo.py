@@ -9,6 +9,6 @@ for i in p:
 a = open("grafi/Luxembourg/adj/adj_time27100Tper50.txt", "r")
 adi = []
 for l in a:
-	adi.append(l.split(' '))
+	adi.append([int(n) for n in l.split(' ')])   #get the value as an int
 	
 print(adi[0][1])
