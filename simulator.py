@@ -2,15 +2,15 @@
 from car import State as carState
 
 
-
 class Simulator:
 
-	MAX_T = 100000
+	MAX_T = 100000  #high as needed
 	TIME_RESOLUTION = 0.1  #0.1 seconds per iteration
 
 	def init(self):
 		self.cars = []
-		# TODO: populate cars
+
+		# TODO: populate cars and add vpython code
 
 		# Create a dictionary plate-->car-object
 		self.car_dict = {c.plate: c for c in self.cars}

@@ -26,7 +26,7 @@ class Car:
 		msg.hop += 1
 	
 	def broadMsg():
-		msg = self.messages[0]
+		msg = self.messages[0]  #prendo il primo messaggio della lista, quello che ha generato l'infezione
 		modifyMsg(msg)
 		#Se il messaggio è arrivato al limite di hop mi fermo
 		if msg.hop == msg.ttl:
@@ -48,14 +48,14 @@ class Car:
 	def infect(msg):
 		#se e' il primo messaggio faccio partire il timer di attesa
 		#altrimenti aggiungo solo il messaggio alla lista
-		if self.state == State.RECOVERED:
+		if self.state == State.RECOVERED:   #Se è RECOVERED nessuna infezione ha effetto
 			return
 
-		if self.state == State.VULNERABLE:
+		if self.state == State.VULNERABLE:  #Se la macchina ancora non è infettata allora viene infettata e settato il timer
 			self.state = State.INFECTED
+			self.timer_infected = 3 / Simulator.TIME_RESOLUTION   #setta il timer infected per 3 secondi
 
 		self.messages.append(msg)
-		self.timer_infected = 3 / Simulator.TIME_RESOLUTION   #setta il timer infected per 3 secondi
 
 	def evaluate_positions(messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
