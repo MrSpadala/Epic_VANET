@@ -5,3 +5,10 @@ for i in p:
 	print(i)
 	d= i.split(' ')
 	sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
+
+a = open("grafi/Luxembourg/adj/adj_time27100Tper50.txt", "r")
+adi = []
+for l in a:
+	adi.append(l.split(' '))
+	
+print(adi[0][1])

@@ -1,12 +1,23 @@
 import thread
 from msg import Msg
+from enum import Enum
+from simulator import Simulator
+
+
+class State(Enum):
+	VULNERABLE = 0
+	INFECTED = 1
+	RECOVERED = 2
+	
 
 class Car:
 	#Costruttore
-	def __init__(self, pos):
+	def __init__(self, plate, pos, adj):
+		self.plate = plate
 		self.pos = pos
 		self.messages = []
-		self.infected = False
+		self.state = State.VULNERABLE
+		self.adj = adj
 	
 	def modifyMsg(msg):
 		#Modifico il messaggio con i miei dati
@@ -18,6 +29,13 @@ class Car:
 		#Se il messaggio è arrivato al limite di hop mi fermo
 		if msg.hop == msg.ttl:
 			return
+		
+		for c, i in zip(adj[plate], range(len(adj[plate])):
+			if c == 1:
+				#Ho preso la macchina corrispondente
+				obj = Simulator.getCar(i)
+				obj.infect(msg)
+				
 		
 
 	def infect(msg):
@@ -33,6 +51,3 @@ class Car:
 		self.infected = True
 		broadMsg(msg)
 		return
-	
-	def isInfected():
-		return self.infected
