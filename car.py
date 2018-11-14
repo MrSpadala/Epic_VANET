@@ -17,6 +17,7 @@ class Car:
 		self.pos = pos
 		self.messages = []
 		self.state = State.VULNERABLE
+		self.timer_infected = None
 		self.adj = adj
 	
 	def modifyMsg(msg):
@@ -24,7 +25,8 @@ class Car:
 		msg.emit = self.pos
 		msg.hop += 1
 	
-	def broadMsg(msg):
+	def broadMsg():
+		msg = self.messages[0]
 		modifyMsg(msg)
 		#Se il messaggio è arrivato al limite di hop mi fermo
 		if msg.hop == msg.ttl:
@@ -39,17 +41,22 @@ class Car:
 				#Ho preso la macchina corrispondente
 				obj = Simulator.getCar(i)
 				obj.infect(msg)
-				
+
+		self.messages.clear()				
 		
 
 	def infect(msg):
 		#se e' il primo messaggio faccio partire il timer di attesa
 		#altrimenti aggiungo solo il messaggio alla lista
-		if self.messages == []:
-			messages.append(msg)
-			thread.start_new_thread(timer, msg)
-		else messages.append(msg)
-	
+		if self.state == State.RECOVERED:
+			return
+
+		if self.state == State.VULNERABLE:
+			self.state = State.INFECTED
+
+		self.messages.append(msg)
+		self.timer_infected = 3 / Simulator.TIME_RESOLUTION   #setta il timer infected per 3 secondi
+
 	def evaluate_positions(messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
@@ -76,10 +83,3 @@ class Car:
 			return False
 		else:
 			return True
-
-	
-	def timer(msg):
-		time.sleep(2) #aspetto 3 secondi che mi arrivino altri messaggi e si riempia il buffer messages
-		self.infected = True
-		broadMsg(msg)
-		return

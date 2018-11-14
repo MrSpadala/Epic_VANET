@@ -23,6 +23,7 @@ class Simulator:
 					car.timer_infected -= 1
 					
 					if car.timer_infected == 0:
+						car.timer_infected = None
 						car.state == carState.RECOVERED
 						car.broadMsg()
 
