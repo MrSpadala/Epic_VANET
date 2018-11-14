@@ -15,8 +15,8 @@ class Car:
 	
 	def broadMsg(msg):
 		modifyMsg(msg)
+		#Se il messaggio è arrivato al limite di hop mi fermo
 		if msg.hop == msg.ttl:
-			#il messaggio è arrivato al limite di hop
 			return
 		
 
@@ -25,13 +25,13 @@ class Car:
 		#altrimenti aggiungo solo il messaggio alla lista
 		if self.messages == []:
 			messages.append(msg)
-			thread.start_new_thread(timer)
+			thread.start_new_thread(timer, msg)
 		else messages.append(msg)
 	
-	def timer():
+	def timer(msg):
 		time.sleep(2) #aspetto 3 secondi che mi arrivino altri messaggi e si riempia il buffer messages
 		self.infected = True
-		broadMsg()
+		broadMsg(msg)
 		return
 	
 	def isInfected():
