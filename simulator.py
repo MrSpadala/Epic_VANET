@@ -11,8 +11,8 @@ class Simulator:
 	TIME_RESOLUTION = 0.1  #0.1 seconds per iteration
 
 	# Environment parameters
-	TMAX = 3		#tempo di attesa massima prima di mandare un messaggio in broadcast
-	TMIN = 0.3		#tempo di attesa minima prima di mandare un messaggio in broadcast
+	TMAX = 3		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
+	TMIN = 0.3		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
 	R = 80			#raggio massimo di comunicazione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.

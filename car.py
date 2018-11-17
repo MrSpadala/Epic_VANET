@@ -61,11 +61,11 @@ class Car:
 
 	def getWaitingTime(emit_pos):
 		dAS = dist(self.pos, emit_pos).m   #distanza tra me e l'emittente che me lo ha mandato, espressa in metri
-		t_dist = Simulator.TMAX*(1 - dAS/Simulator.R)   #tempo di attesa dipendente dalla distanza
-		t_non_determ = t_dist * random.random()   #tempo di attesa non deterministico in (0, t_dist)
+		t_dist = Simulator.TMAX*(1 - dAS/Simulator.R)   #tempo di attesa dipendente dalla distanza, espresso in secondi
+		t_non_determ = t_dist * random.random()   #tempo di attesa non deterministico in (0, t_dist) secondi
 		
 		#tempo finale calcolato con il parametro ALPHA che decide il bilanciamento della componente deterministica e non deterministica.
-		#t_final è compreso tra (ALPHA)*t_dist e t_dist
+		#t_final è compreso tra ( (ALPHA)*t_dist , t_dist ) secondi
 		t_final = Simulator.ALPHA*t_dist + (1-Simulator.ALPHA)*t_non_determ
 
 		if t_final <= Simulator.TMIN:
