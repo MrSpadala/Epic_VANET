@@ -1,6 +1,7 @@
-import thread
+import random
 from msg import Msg
 from enum import Enum
+from geopy.distance import geodesic as dist
 from simulator import Simulator
 
 
@@ -53,9 +54,25 @@ class Car:
 
 		if self.state == State.VULNERABLE:  #Se la macchina ancora non è infettata allora viene infettata e settato il timer
 			self.state = State.INFECTED
-			self.timer_infected = 3 / Simulator.TIME_RESOLUTION   #setta il timer infected per 3 secondi
+			self.timer_infected = self.getWaitingTime(msg.emit)   #setta il timer di attesa in funzione della distanza dell'emitter
 
 		self.messages.append(msg)
+
+
+	def getWaitingTime(emit_pos):
+		dAS = dist(self.pos, emit_pos).m   #distanza tra me e l'emittente che me lo ha mandato, espressa in metri
+		t_dist = Simulator.TMAX*(1 - dAS/Simulator.R)   #tempo di attesa dipendente dalla distanza
+		t_non_determ = t_dist * random.random()   #tempo di attesa non deterministico in (0, t_dist)
+		
+		#tempo finale calcolato con il parametro ALPHA che decide il bilanciamento della componente deterministica e non deterministica.
+		#t_final è compreso tra (ALPHA)*t_dist e t_dist
+		t_final = Simulator.ALPHA*t_dist + (1-Simulator.ALPHA)*t_non_determ
+
+		if t_final <= Simulator.TMIN:
+			t_final = Simulator.TMIN
+
+		return t_final / Simulator.TIME_RESOLUTION    #ritorna il tempo di attesa espresso nel numero di step da fare al simulatore.
+
 
 	def evaluate_positions(messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
