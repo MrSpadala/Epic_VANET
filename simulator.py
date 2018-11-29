@@ -1,13 +1,14 @@
 
 import random
-from car import State as carState
+from car import Car, State as carState
+from pdb import set_trace as breakpoint
 
 
 random.seed(42)
 
 class Simulator:
 
-	MAX_STEP = 100000  #high as needed
+	SECONDS_SIM = 120  #high as needed
 	TIME_RESOLUTION = 0.1  #0.1 seconds per iteration
 
 	# Environment parameters
@@ -18,17 +19,15 @@ class Simulator:
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
 
-	def init(self):
-		self.cars = []
-
-		# TODO: populate cars and add vpython code
+	def __init__(self, cars):
+		self.cars = list(cars)
 
 		# Create a dictionary plate-->car-object
 		self.car_dict = {c.plate: c for c in self.cars}
 
 
-	def runSimulation():
-		for t in range(MAX_STEP):
+	def runSimulation(self):
+		for t in range(int(Simulator.SECONDS_SIM/Simulator.TIME_RESOLUTION)):
 			for car in cars:
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
@@ -41,4 +40,28 @@ class Simulator:
 	@staticmethod
 	def getCar(plate):
 		return car_dict[plate]
+
+
+
+def orcocan():
+	positions = []
+	p = open("grafi/Luxembourg/pos/pos_time27100Tper50.txt", "r")
+	for i in p:
+		d = i.split(' ')
+		#sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
+		positions.append((float(d[2]), float(d[3])))
+
+	a = open("grafi/Luxembourg/adj/adj_time27100Tper50.txt", "r")
+	adi = []
+	for l in a:
+		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
+	#breakpoint()
+	cars = [Car(i,p,a) for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
+	return cars
+
+
+if __name__ == "__main__":
+	cars = orcocan()
+	s = Simulator(cars)
+	s.runSimulation()
 

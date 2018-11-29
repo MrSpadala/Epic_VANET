@@ -2,13 +2,13 @@ import random
 from msg import Msg
 from enum import Enum
 from geopy.distance import geodesic as dist
-from simulator import Simulator
 
 
 class State(Enum):
 	VULNERABLE = 0
 	INFECTED = 1
 	RECOVERED = 2
+
 	
 
 class Car:
@@ -33,7 +33,7 @@ class Car:
 		if msg.hop == msg.ttl:
 			return
 		
-		if (! evaluate_positions(self.messages, self.pos)):
+		if (not evaluate_positions(self.messages, self.pos)):
 			return
 		#manca il controllo delle direzioni
 		
@@ -100,3 +100,6 @@ class Car:
 			return False
 		else:
 			return True
+
+
+from simulator import Simulator  #se lo metto sopra si sfascia (cyclic imports), todo soluzione migliore
