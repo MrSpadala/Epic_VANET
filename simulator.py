@@ -15,7 +15,7 @@ class Simulator:
 	# Environment parameters
 	TMAX = 3		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
 	TMIN = 0.4		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
-	R = 80			#raggio massimo di comunicazione
+	R = 300			#raggio massimo di comunicazione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
@@ -70,6 +70,8 @@ if __name__ == "__main__":
 	#for c,i in zip(cars,range(len(cars))):
 	#	print(i, c.state)
 	tmp = str([c.state for c in cars])
+	print()
+	print("Simulation ended")
 	print("Vulnerable: ", tmp.count("State.VULNERABLE"))
 	print("Infected: ", tmp.count("State.INFECTED"))
 	print("Recovered: ", tmp.count("State.RECOVERED"))

@@ -59,6 +59,8 @@ class Car:
 		if self.state == State.VULNERABLE:  #Se la macchina ancora non è infettata allora viene infettata e settato il timer
 			self.state = State.INFECTED
 			self.timer_infected = self.getWaitingTime(msg.emit)   #setta il timer di attesa in funzione della distanza dell'emitter
+			#decomment to see all timers
+			print("timer_infected set to:", self.timer_infected * Simulator.TIME_RESOLUTION, "seconds")
 
 		self.messages.append(msg)
 
