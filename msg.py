@@ -8,3 +8,7 @@ class Msg:
 		self.emit = emit
 		self.hop = hop
 		self.ttl = ttl
+
+	@staticmethod
+	def dummy():
+		return Msg(1, 'ciao', (0,0), (0,0), 0, 100)

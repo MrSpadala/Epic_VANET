@@ -1,6 +1,7 @@
 
 import random
 from car import Car, State as carState
+from msg import Msg
 from pdb import set_trace as breakpoint
 
 
@@ -13,14 +14,16 @@ class Simulator:
 
 	# Environment parameters
 	TMAX = 3		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
-	TMIN = 0.3		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
+	TMIN = 0.4		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
 	R = 80			#raggio massimo di comunicazione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
 
 	def __init__(self, cars):
-		self.cars = list(cars)
+		self.cars = cars
+		for car in self.cars:
+			car.sim = self
 
 		# Create a dictionary plate-->car-object
 		self.car_dict = {c.plate: c for c in self.cars}
@@ -34,12 +37,11 @@ class Simulator:
 					
 					if car.timer_infected <= 0:
 						car.timer_infected = None
-						car.state == carState.RECOVERED
+						car.state = carState.RECOVERED
 						car.broadMsg()
 
-	@staticmethod
-	def getCar(plate):
-		return car_dict[plate]
+	def getCar(self, plate):
+		return self.car_dict[plate]
 
 
 
@@ -62,6 +64,15 @@ def orcocan():
 
 if __name__ == "__main__":
 	cars = orcocan()
+	random.sample(cars, 1)[0].infect(Msg.dummy())
 	s = Simulator(cars)
 	s.runSimulation()
+	#for c,i in zip(cars,range(len(cars))):
+	#	print(i, c.state)
+	tmp = str([c.state for c in cars])
+	print("Vulnerable: ", tmp.count("State.VULNERABLE"))
+	print("Infected: ", tmp.count("State.INFECTED"))
+	print("Recovered: ", tmp.count("State.RECOVERED"))
+
+
 
