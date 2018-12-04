@@ -3,7 +3,7 @@ import random
 from car import Car, State as carState
 from msg import Msg
 from pdb import set_trace as breakpoint
-
+from visualGraph import *
 
 random.seed(42)
 
@@ -45,7 +45,7 @@ class Simulator:
 
 
 
-def orcocan():
+def init():
 	positions = []
 	p = open("grafi/Luxembourg/pos/pos_time27100Tper50.txt", "r")
 	for i in p:
@@ -63,7 +63,8 @@ def orcocan():
 
 
 if __name__ == "__main__":
-	cars = orcocan()
+	cars = init()
+	bubbles = displayCars(cars)
 	random.sample(cars, 1)[0].infect(Msg.dummy())
 	s = Simulator(cars)
 	s.runSimulation()
