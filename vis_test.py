@@ -57,18 +57,18 @@ for i in range(-40,50,20):
 #al click evidenzio il veicolo infettato
 flag = 0
 while True:
-    rate(30)
-    m=scene.waitfor('click')
-    loc = m.pos
-    loc.z = 0
-    print(loc)
-    for b in balls:
-        if b.pos.x<loc.x+1 and b.pos.y<loc.y+1 and b.pos.x>loc.x-1 and b.pos.y>loc.y-1:
-            b.color = color.red
-            flag = 1
-            break
-    if flag:
-        break
+	rate(30)
+	m=scene.waitfor('click')
+	loc = m.pos
+	loc.z = 0
+	print(loc)
+	for b in balls:
+		if b.pos.x<loc.x+1 and b.pos.y<loc.y+1 and b.pos.x>loc.x-1 and b.pos.y>loc.y-1:
+			b.color = color.red
+			flag = 1
+			break
+	if flag:
+		break
 
 
 #Parte l'algoritmo di infezione

@@ -31,7 +31,7 @@ class Simulator:
 
 	def runSimulation(self):
 		for t in range(int(Simulator.SECONDS_SIM/Simulator.TIME_RESOLUTION)):
-			for car in cars:
+			for car in cars:	# k è la chiave dell'elemento
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
 					
@@ -64,9 +64,11 @@ def init():
 
 if __name__ == "__main__":
 	cars = init()
-	bubbles = displayCars(cars)
-	random.sample(cars, 1)[0].infect(Msg.dummy())
 	s = Simulator(cars)
+	bubbles = displayCars(s.car_dict)
+	#random.sample(cars, 1)[0].infect(Msg.dummy())
+	firstinfected = s.getCar(firstInfection(bubbles))
+	firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
 	s.runSimulation()
 	#for c,i in zip(cars,range(len(cars))):
 	#	print(i, c.state)
@@ -76,6 +78,3 @@ if __name__ == "__main__":
 	print("Vulnerable: ", tmp.count("State.VULNERABLE"))
 	print("Infected: ", tmp.count("State.INFECTED"))
 	print("Recovered: ", tmp.count("State.RECOVERED"))
-
-
-
