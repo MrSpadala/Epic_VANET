@@ -2,6 +2,8 @@ import random
 from math import sqrt
 from msg import Msg
 from enum import Enum
+from visualGraph import *
+
 
 
 class State(Enum):
@@ -12,7 +14,7 @@ class State(Enum):
 
 def dist(p,q):
 	return sqrt((p[0]-q[0])**2+(p[1]-q[1])**2)
-	
+
 
 class Car:
 	#Costruttore
@@ -24,31 +26,32 @@ class Car:
 		self.timer_infected = None
 		self.adj = adj
 		self.sim = None  #simulator object
-	
+
 	def modifyMsg(self, msg):
 		#Modifico il messaggio con i miei dati
 		msg.emit = self.pos
 		msg.hop += 1
-	
+
 	def broadMsg(self):
 		msg = self.messages[0]  #prendo il primo messaggio della lista, quello che ha generato l'infezione
 		self.modifyMsg(msg)
 		#Se il messaggio è arrivato al limite di hop mi fermo
 		if msg.hop == msg.ttl:
 			return
-		
+
 		if (not self.evaluate_positions(self.messages, self.pos)):
 			return
 		#manca il controllo delle direzioni
-		
+
 		for c, i in zip(self.adj, range(len(self.adj))):
 			if c == 1:
 				#Ho preso la macchina corrispondente
 				obj = self.sim.getCar(i)
+				visualInfect(self, obj)
 				obj.infect(msg)
 
-		self.messages.clear()				
-		
+		self.messages.clear()
+
 
 	def infect(self, msg):
 		#se e' il primo messaggio faccio partire il timer di attesa
@@ -70,7 +73,7 @@ class Car:
 		dAS = dist(self.pos, emit_pos)   #distanza tra me e l'emittente che me lo ha mandato, espressa in metri
 		t_dist = Simulator.TMAX*(1 - dAS/Simulator.R)   #tempo di attesa dipendente dalla distanza, espresso in secondi
 		t_non_determ = t_dist * random.random()   #tempo di attesa non deterministico in (0, t_dist) secondi
-		
+
 		#tempo finale calcolato con il parametro ALPHA che decide il bilanciamento della componente deterministica e non deterministica.
 		#t_final è compreso tra ( (ALPHA)*t_dist , t_dist ) secondi
 		t_final = Simulator.ALPHA*t_dist + (1-Simulator.ALPHA)*t_non_determ
@@ -102,13 +105,12 @@ class Car:
 			if quads[3]!=1:
 				if m.emit[1]<my_pos[1] and (my_pos[0]-(abs((my_pos[1]-m.emit[1])/2)) <= m.emit[0] <= my_pos[0]-(abs((my_pos[1]-m.emit[1])/2))):		# Y < myY	giu
 					quads[3]=1
-					
+
 		#print("Decidendo...")
 
 		if quads==[1,1,1,1]:
 			return False
 		else:
 			return True
-
 
 from simulator import Simulator  #se lo metto sopra si sfascia (cyclic imports), todo soluzione migliore

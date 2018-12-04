@@ -34,7 +34,7 @@ class Simulator:
 			for car in cars:	# k è la chiave dell'elemento
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
-					
+
 					if car.timer_infected <= 0:
 						car.timer_infected = None
 						car.state = carState.RECOVERED
@@ -67,7 +67,7 @@ if __name__ == "__main__":
 	s = Simulator(cars)
 	bubbles = displayCars(s.car_dict)
 	#random.sample(cars, 1)[0].infect(Msg.dummy())
-	firstinfected = s.getCar(firstInfection(bubbles))
+	firstinfected = s.getCar(firstInfection())
 	firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
 	s.runSimulation()
 	#for c,i in zip(cars,range(len(cars))):
