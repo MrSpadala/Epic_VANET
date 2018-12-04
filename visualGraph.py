@@ -4,6 +4,12 @@ import vpython as vp
 palle={}
 
 #for vpython useful commands see here: vpython.org/contents/docs/display.html
+vp.scene.title= "Visual Test VANET"
+vp.scene.x=0
+vp.scene.y=0
+vp.scene.width= 1300
+vp.scene.height=900
+vp.scene.center=vp.vector(7000, 4500, 0)
 
 def displayCars(cars):
 	balls = {}
@@ -23,7 +29,7 @@ def firstInfection():
 		global palle
 
 		for k in palle:
-			if palle[k].pos.x<loc.x+100 and palle[k].pos.y<loc.y+100 and palle[k].pos.x>loc.x-100 and palle[k].pos.y>loc.y-100:
+			if palle[k].pos.x<loc.x+10 and palle[k].pos.y<loc.y+10 and palle[k].pos.x>loc.x-10 and palle[k].pos.y>loc.y-10:
 				print(k)
 
 				palle[k].color = vp.color.red

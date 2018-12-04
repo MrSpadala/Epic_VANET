@@ -84,6 +84,7 @@ class Car:
 			t_final = Simulator.TMAX
 
 		return t_final / Simulator.TIME_RESOLUTION    #ritorna il tempo di attesa espresso nel numero di step da fare al simulatore.
+		
 
 
 	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
