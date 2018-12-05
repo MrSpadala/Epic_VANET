@@ -47,6 +47,8 @@ class Car:
 			if c == 1:
 				#Ho preso la macchina corrispondente
 				obj = self.sim.getCar(i)
+				if obj == None:
+					continue
 				visualInfect(self, obj)
 				obj.infect(msg)
 

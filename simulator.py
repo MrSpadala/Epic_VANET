@@ -1,5 +1,6 @@
 
 import random
+from collections import defaultdict
 from car import Car, State as carState
 from msg import Msg
 from pdb import set_trace as breakpoint
@@ -27,15 +28,20 @@ class Simulator:
 	def __init__(self, cars):
 		self.cars = cars
 		for car in self.cars:
+			if car == None:
+				continue
 			car.sim = self
 
 		# Create a dictionary plate-->car-object
-		self.car_dict = {c.plate: c for c in self.cars}
+		_car_dict = {c.plate: c for c in self.cars if c != None}
+		self.car_dict = defaultdict(lambda: None, _car_dict)
 
 
 	def runSimulation(self):
 		for t in range(int(Simulator.SECONDS_SIM/Simulator.TIME_RESOLUTION)):
 			for car in cars:	# k è la chiave dell'elemento
+				if car == None:
+					continue
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
 
@@ -54,15 +60,19 @@ def init():
 	p = open("grafi/Luxembourg/pos/pos_time27100Tper50.txt", "r")
 	for i in p:
 		d = i.split(' ')
-		#sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
-		positions.append((float(d[2]), float(d[3])))
+		if d[2] == '27100':  #riga fallata
+			positions.append(None)
+		else:		
+			positions.append((float(d[2]), float(d[3])))
+			#sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
+
 
 	a = open("grafi/Luxembourg/adj/adj_time27100Tper50.txt", "r")
 	adi = []
 	for l in a:
 		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
 	#breakpoint()
-	cars = [Car(i,p,a) for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
+	cars = [Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
 	return cars
 
 
@@ -76,7 +86,7 @@ if __name__ == "__main__":
 	s.runSimulation()
 	#for c,i in zip(cars,range(len(cars))):
 	#	print(i, c.state)
-	tmp = str([c.state for c in cars])
+	tmp = str([c.state if c else None for c in cars])
 	print()
 	print("Simulation ended")
 	print("Vulnerable: ", tmp.count("State.VULNERABLE"))
