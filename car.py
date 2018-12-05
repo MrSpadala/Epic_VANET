@@ -54,6 +54,7 @@ class Car:
 
 
 	def infect(self, msg):
+		Simulator.rcv_messages += 1
 		#se e' il primo messaggio faccio partire il timer di attesa
 		#altrimenti aggiungo solo il messaggio alla lista
 		if self.state == State.RECOVERED:   #Se è RECOVERED nessuna infezione ha effetto

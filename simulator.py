@@ -9,6 +9,7 @@ random.seed(42)
 
 class Simulator:
 
+	# Simulation parameters
 	SECONDS_SIM = 120  #high as needed
 	TIME_RESOLUTION = 0.1  #0.1 seconds per iteration
 
@@ -19,6 +20,9 @@ class Simulator:
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
+
+	# Metrics variables
+	rcv_messages = 0  #number of received messages
 
 	def __init__(self, cars):
 		self.cars = cars
@@ -78,3 +82,4 @@ if __name__ == "__main__":
 	print("Vulnerable: ", tmp.count("State.VULNERABLE"))
 	print("Infected: ", tmp.count("State.INFECTED"))
 	print("Recovered: ", tmp.count("State.RECOVERED"))
+	print()
