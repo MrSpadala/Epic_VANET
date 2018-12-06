@@ -55,7 +55,8 @@ class Car:
 					message_sent = True
 					self.sim.sent_messages += 1
 
-				visualInfect(self, obj)
+				if not self.sim.no_graphics:
+					visualInfect(self, obj)
 				obj.infect(msg)
 
 		self.messages.clear()
@@ -69,10 +70,11 @@ class Car:
 			return
 
 		if self.state == State.VULNERABLE:  #Se la macchina ancora non è infettata allora viene infettata e settato il timer
+			self.sim.t_last_infected = self.sim.t
 			self.state = State.INFECTED
 			self.timer_infected = self.getWaitingTime(msg.emit)   #setta il timer di attesa in funzione della distanza dell'emitter
 			#decomment to see all timers
-			print("timer_infected set to:", self.timer_infected * Simulator.TIME_RESOLUTION, "seconds")
+			#print("timer_infected set to:", self.timer_infected * Simulator.TIME_RESOLUTION, "seconds")
 
 		self.messages.append(msg)
 
@@ -122,5 +124,6 @@ class Car:
 			return False
 		else:
 			return True
+
 
 from simulator import Simulator  #se lo metto sopra si sfascia (cyclic imports), todo soluzione migliore

@@ -1,4 +1,5 @@
 
+import sys
 import random
 import functools
 from collections import defaultdict
@@ -12,8 +13,8 @@ random.seed(42)
 class Simulator:
 
 	# Simulation parameters
-	SECONDS_SIM = 120  #high as needed
-	TIME_RESOLUTION = 0.1  #0.1 seconds per iteration
+	SECONDS_SIM = 20  #TODO change and iterate while there are infected cars
+	TIME_RESOLUTION = 0.05 #0.05 seconds per iteration
 
 	# Environment parameters
 	TMAX = 3		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
@@ -22,10 +23,6 @@ class Simulator:
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
-
-	# Metrics variables
-	rcv_messages = 0  #number of received messages
-	sent_messages = 0 #number of sent messages
 
 	def __init__(self, cars):
 		self.cars = cars
@@ -36,11 +33,21 @@ class Simulator:
 		#_car_dict = {c.plate: c for c in self.cars}
 		_car_dict = {c.plate: c for c in self.cars if c != None}
 		self.car_dict = defaultdict(lambda: None, _car_dict)
+		self.t = 0   #current simulation iteration
+
+		# Metrics variables
+		self.rcv_messages = 0  #number of received messages
+		self.sent_messages = 0 #number of sent messages
+		self.t_last_infected = 0  #time step of the last car infected
+
+		# Args
+		self.no_graphics = "--no-graphics" in sys.argv
 
 
 
 	def runSimulation(self):
 		for t in range(int(Simulator.SECONDS_SIM/Simulator.TIME_RESOLUTION)):
+			self.t = t
 			for car in cars:	# k è la chiave dell'elemento
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
@@ -80,14 +87,18 @@ def init():
 if __name__ == "__main__":
 	cars = init()
 	s = Simulator(cars)
-	bubbles = displayCars(s.car_dict)
-	#random.sample(cars, 1)[0].infect(Msg.dummy())
-	firstinfected = s.getCar(firstInfection())
-	firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
+	
+	if s.no_graphics:
+		random.sample(cars, 1)[0].infect(Msg.dummy())
+	else:
+		bubbles = displayCars(s.car_dict)
+		firstinfected = s.getCar(firstInfection())
+		firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
+	
 	s.runSimulation()
 	#for c,i in zip(cars,range(len(cars))):
 	#	print(i, c.state)
-	tmp = str([c.state if c else None for c in cars])
+	tmp = str([c.state for c in cars])
 	print()
 	print("Simulation ended")
 	print("Vulnerable: ", tmp.count("State.VULNERABLE"))
@@ -97,3 +108,4 @@ if __name__ == "__main__":
 	print("Metrics")
 	print("#sent messages: ", s.sent_messages)
 	print("#received messages: ", s.rcv_messages)
+	print("time of last car infection: ", s.t_last_infected*Simulator.TIME_RESOLUTION)
