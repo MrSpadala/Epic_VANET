@@ -1,5 +1,6 @@
 
 import random
+import functools
 from collections import defaultdict
 from car import Car, State as carState
 from msg import Msg
@@ -24,24 +25,23 @@ class Simulator:
 
 	# Metrics variables
 	rcv_messages = 0  #number of received messages
+	sent_messages = 0 #number of sent messages
 
 	def __init__(self, cars):
 		self.cars = cars
 		for car in self.cars:
-			if car == None:
-				continue
 			car.sim = self
 
 		# Create a dictionary plate-->car-object
+		#_car_dict = {c.plate: c for c in self.cars}
 		_car_dict = {c.plate: c for c in self.cars if c != None}
 		self.car_dict = defaultdict(lambda: None, _car_dict)
+
 
 
 	def runSimulation(self):
 		for t in range(int(Simulator.SECONDS_SIM/Simulator.TIME_RESOLUTION)):
 			for car in cars:	# k è la chiave dell'elemento
-				if car == None:
-					continue
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
 
@@ -73,6 +73,7 @@ def init():
 		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
 	#breakpoint()
 	cars = [Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
+	cars = list(filter(lambda x: x != None, cars))
 	return cars
 
 
@@ -93,3 +94,6 @@ if __name__ == "__main__":
 	print("Infected: ", tmp.count("State.INFECTED"))
 	print("Recovered: ", tmp.count("State.RECOVERED"))
 	print()
+	print("Metrics")
+	print("#sent messages: ", s.sent_messages)
+	print("#received messages: ", s.rcv_messages)

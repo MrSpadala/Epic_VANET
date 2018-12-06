@@ -13,9 +13,8 @@ vp.scene.center=vp.vector(7000, 4500, 0)
 
 def displayCars(cars):
 	balls = {}
+	print('a')
 	for c in cars:
-		if c == None:
-			continue
 		balls[cars[c].plate] = vp.sphere(pos=vp.vector(cars[c].pos[0], cars[c].pos[1], 0), radius=10)
 	global palle
 	palle = balls

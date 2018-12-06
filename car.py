@@ -43,12 +43,18 @@ class Car:
 			return
 		#manca il controllo delle direzioni
 
+		message_sent = False
 		for c, i in zip(self.adj, range(len(self.adj))):
 			if c == 1:
 				#Ho preso la macchina corrispondente
 				obj = self.sim.getCar(i)
 				if obj == None:
 					continue
+
+				if not message_sent:
+					message_sent = True
+					self.sim.sent_messages += 1
+
 				visualInfect(self, obj)
 				obj.infect(msg)
 
@@ -56,7 +62,7 @@ class Car:
 
 
 	def infect(self, msg):
-		Simulator.rcv_messages += 1
+		self.sim.rcv_messages += 1
 		#se e' il primo messaggio faccio partire il timer di attesa
 		#altrimenti aggiungo solo il messaggio alla lista
 		if self.state == State.RECOVERED:   #Se è RECOVERED nessuna infezione ha effetto
