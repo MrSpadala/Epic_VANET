@@ -1,4 +1,6 @@
 import random
+from time import sleep
+from decimal import Decimal
 from math import sqrt
 from msg import Msg
 from enum import Enum
@@ -33,7 +35,7 @@ class Car:
 		msg.hop += 1
 
 	def broadMsg(self):
-		msg = self.messages[0]  #prendo il primo messaggio della lista, quello che ha generato l'infezione
+		msg = self.messages[0].clone()  #prendo il primo messaggio della lista, quello che ha generato l'infezione
 		self.modifyMsg(msg)
 		#Se il messaggio è arrivato al limite di hop mi fermo
 		if msg.hop == msg.ttl:
@@ -102,8 +104,22 @@ class Car:
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
 		for m in messages:
+			dx = m.emit[0] - my_pos[0]
+			dy = m.emit[1] - my_pos[1]
+			#print("pos", my_pos[0], my_pos[1])
+			#print("emit", m.emit[0], m.emit[1])
+			#print("d", dx,dy)
+			if dx >= 0 and dy >= 0:
+				quads[0] = 1
+			if dx >= 0 and dy  < 0:
+				quads[1] = 1
+			if dx  < 0 and dy >= 0:
+				quads[2] = 1
+			if dx  < 0 and dy  < 0:
+				quads[3] = 1
+			'''
 			if quads[0]!=1:
-				if m.emit[0]>my_pos[0] and  my_pos[1]-(abs((my_pos[0]-m.emit[0])/2)) <= m.emit[1] <= my_pos[1]-(abs((my_pos[0]-m.emit[0])/2)):		# X > myX	dx
+				if m.emit[0]>my_pos[0] and my_pos[1]-(abs((my_pos[0]-m.emit[0])/2)) <= m.emit[1] <= my_pos[1]-(abs((my_pos[0]-m.emit[0])/2)):		# X > myX	dx
 					quads[0]=1
 
 			if quads[1]!=1:
@@ -117,9 +133,11 @@ class Car:
 			if quads[3]!=1:
 				if m.emit[1]<my_pos[1] and (my_pos[0]-(abs((my_pos[1]-m.emit[1])/2)) <= m.emit[0] <= my_pos[0]-(abs((my_pos[1]-m.emit[1])/2))):		# Y < myY	giu
 					quads[3]=1
+			'''
 
 		#print("Decidendo...")
-
+		#print(len(messages))
+		#print(quads)
 		if quads==[1,1,1,1]:
 			return False
 		else:

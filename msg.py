@@ -9,6 +9,9 @@ class Msg:
 		self.hop = hop
 		self.ttl = ttl
 
+	def clone(self):
+		return Msg(self.numSeq, self.text, self.origin, self.emit, self.hop, self.ttl)
+
 	@staticmethod
 	def dummy():
 		return Msg(1, 'ciao', (0,0), (0,0), 0, 100)
