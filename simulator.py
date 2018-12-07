@@ -8,7 +8,7 @@ from msg import Msg
 from pdb import set_trace as breakpoint
 from visualGraph import *
 
-random.seed(42)
+random.seed(40)
 
 class Simulator:
 
@@ -17,9 +17,10 @@ class Simulator:
 	TIME_RESOLUTION = 0.05 #0.05 seconds per iteration
 
 	# Environment parameters
-	TMAX = 3		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
-	TMIN = 0.4		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
-	R = 300			#raggio massimo di comunicazione
+	TMAX = 1		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
+	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
+	RMIN = 100		#raggio minimo di comunicazione, espresso in decine di centimetri
+	RMAX = 2000		#raggio massimo di comunicazione, espresso in decine di centimetri
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)

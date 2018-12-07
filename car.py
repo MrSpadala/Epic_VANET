@@ -16,6 +16,8 @@ class State(Enum):
 
 def dist(p,q):
 	return sqrt((p[0]-q[0])**2+(p[1]-q[1])**2)
+def in_range(p,q,radius):  #ritorna se p e q sono distanti meno di 'radius'
+	return dist(p,q) < radius
 
 
 class Car:
@@ -29,21 +31,25 @@ class Car:
 		self.adj = adj
 		self.sim = None  #simulator object
 
-	def modifyMsg(self, msg):
+	def modifyMsg(self, msg, msg_list):
 		#Modifico il messaggio con i miei dati
-		msg.emit = self.pos
+		msg.last_emit = self.pos
+		msg.emitters.add(self.pos)
+		for m in msg_list:
+			msg.emitters = msg.emitters.union(m.emitters)
 		msg.hop += 1
 
 	def broadMsg(self):
-		msg = self.messages[0].clone()  #prendo il primo messaggio della lista, quello che ha generato l'infezione
-		self.modifyMsg(msg)
-		#Se il messaggio è arrivato al limite di hop mi fermo
-		if msg.hop == msg.ttl:
-			return
-
 		if (not self.evaluate_positions(self.messages, self.pos)):
 			return
 		#manca il controllo delle direzioni
+
+		msg = self.messages[0].clone()  #prendo il primo messaggio della lista, quello che ha generato l'infezione
+		self.modifyMsg(msg, self.messages)
+		
+		#Se il messaggio è arrivato al limite di hop mi fermo
+		if msg.hop == msg.ttl:
+			return
 
 		message_sent = False
 		for c, i in zip(self.adj, range(len(self.adj))):
@@ -74,7 +80,7 @@ class Car:
 		if self.state == State.VULNERABLE:  #Se la macchina ancora non è infettata allora viene infettata e settato il timer
 			self.sim.t_last_infected = self.sim.t
 			self.state = State.INFECTED
-			self.timer_infected = self.getWaitingTime(msg.emit)   #setta il timer di attesa in funzione della distanza dell'emitter
+			self.timer_infected = self.getWaitingTime(msg.last_emit)   #setta il timer di attesa in funzione della distanza dell'emitter
 			#decomment to see all timers
 			#print("timer_infected set to:", self.timer_infected * Simulator.TIME_RESOLUTION, "seconds")
 
@@ -84,7 +90,7 @@ class Car:
 	def getWaitingTime(self, emit_pos):
 		#print(self.pos, emit_pos)
 		dAS = dist(self.pos, emit_pos)   #distanza tra me e l'emittente che me lo ha mandato, espressa in metri
-		t_dist = Simulator.TMAX*(1 - dAS/Simulator.R)   #tempo di attesa dipendente dalla distanza, espresso in secondi
+		t_dist = Simulator.TMAX*(1 - dAS/Simulator.RMAX)   #tempo di attesa dipendente dalla distanza, espresso in secondi
 		t_non_determ = t_dist * random.random()   #tempo di attesa non deterministico in (0, t_dist) secondi
 
 		#tempo finale calcolato con il parametro ALPHA che decide il bilanciamento della componente deterministica e non deterministica.
@@ -101,9 +107,20 @@ class Car:
 
 
 	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
-		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
+		#quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
+		
+		neighbor_positions = []   #positions of neighbors cars
+		for c, i in zip(self.adj, range(len(self.adj))):
+			if c == 1:
+				#Ho preso la macchina corrispondente
+				obj = self.sim.getCar(i)
+				if obj != None:
+					neighbor_positions.append(obj.pos)
+
+
 		for m in messages:
+			'''
 			dx = m.emit[0] - my_pos[0]
 			dy = m.emit[1] - my_pos[1]
 			#print("pos", my_pos[0], my_pos[1])
@@ -117,6 +134,7 @@ class Car:
 				quads[2] = 1
 			if dx  < 0 and dy  < 0:
 				quads[3] = 1
+			'''
 			'''
 			if quads[0]!=1:
 				if m.emit[0]>my_pos[0] and my_pos[1]-(abs((my_pos[0]-m.emit[0])/2)) <= m.emit[1] <= my_pos[1]-(abs((my_pos[0]-m.emit[0])/2)):		# X > myX	dx
@@ -134,14 +152,25 @@ class Car:
 				if m.emit[1]<my_pos[1] and (my_pos[0]-(abs((my_pos[1]-m.emit[1])/2)) <= m.emit[0] <= my_pos[0]-(abs((my_pos[1]-m.emit[1])/2))):		# Y < myY	giu
 					quads[3]=1
 			'''
+			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
+				if not in_range(my_pos, emit, 2*Simulator.RMIN):  #se un emitter è troppo distante da me la scarto
+					continue
+				for neighbor_pos in list(neighbor_positions):  #controllo se un mio vicino ha già ricevuto un messaggio da un emitter precedente
+					if in_range(neighbor_pos, emit, Simulator.RMIN):
+						neighbor_positions.remove(neighbor_pos)
+
+		return len(neighbor_positions) > 0   #ritorno true se ci sono ancora dei vicini non coperti da nessun emitter precedente
+		# TODO merge emitters
 
 		#print("Decidendo...")
 		#print(len(messages))
 		#print(quads)
+		'''
 		if quads==[1,1,1,1]:
 			return False
 		else:
 			return True
+		return False'''
 
 
 from simulator import Simulator  #se lo metto sopra si sfascia (cyclic imports), todo soluzione migliore
