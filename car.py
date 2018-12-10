@@ -51,6 +51,10 @@ class Car:
 		if msg.hop == msg.ttl:
 			return
 
+		#Simulo la perdita di una percentuale di messaggi
+		if random.random() < Simulator.DROP:
+			return
+
 		message_sent = False
 		for c, i in zip(self.adj, range(len(self.adj))):
 			if c == 1:
@@ -79,6 +83,7 @@ class Car:
 
 		if self.state == State.VULNERABLE:  #Se la macchina ancora non è infettata allora viene infettata e settato il timer
 			self.sim.t_last_infected = self.sim.t
+			self.sim.n_hop_last_infected = msg.hop
 			self.state = State.INFECTED
 			self.timer_infected = self.getWaitingTime(msg.last_emit)   #setta il timer di attesa in funzione della distanza dell'emitter
 			#decomment to see all timers

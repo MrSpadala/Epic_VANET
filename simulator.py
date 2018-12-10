@@ -8,7 +8,7 @@ from msg import Msg
 from pdb import set_trace as breakpoint
 from visualGraph import *
 
-random.seed(40)
+random.seed(42)
 
 class Simulator:
 
@@ -21,6 +21,7 @@ class Simulator:
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
 	RMIN = 100		#raggio minimo di comunicazione, espresso in decine di centimetri
 	RMAX = 2000		#raggio massimo di comunicazione, espresso in decine di centimetri
+	DROP = 0.05		#rate di messaggi persi spontaneamente nella trasmissione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
@@ -40,6 +41,7 @@ class Simulator:
 		self.rcv_messages = 0  #number of received messages
 		self.sent_messages = 0 #number of sent messages
 		self.t_last_infected = 0  #time step of the last car infected
+		self.n_hop_last_infected = 0  #number of hops of last infected car
 
 		# Args
 		self.no_graphics = "--no-graphics" in sys.argv
@@ -110,3 +112,4 @@ if __name__ == "__main__":
 	print("#sent messages: ", s.sent_messages)
 	print("#received messages: ", s.rcv_messages)
 	print("time of last car infection: ", s.t_last_infected*Simulator.TIME_RESOLUTION)
+	print("#hops to reach last infected car: ",s.n_hop_last_infected)
