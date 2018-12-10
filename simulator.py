@@ -87,8 +87,10 @@ def init_cars():
 	return cars
 
 
-
+#Performs 'n' different simulations
 def performSimulations(n):
+
+	#Perform a single simulation
 	def performSimulation():
 		cars = init_cars()
 		s = Simulator(cars)
@@ -109,9 +111,11 @@ def performSimulations(n):
 		print("Infected: ", tmp.count("State.INFECTED"))
 		print("Recovered: ", tmp.count("State.RECOVERED"))
 		print()
-		return s
+		#Return Simulator or, if the simulation was too bad, don't return it
+		return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None
 
-	sims = [performSimulation() for i in range(n)]
+	sims = [performSimulation() for i in range(n)]  #list with Simulator objects
+	sims = list(filter(lambda x: x!=None, sims))    #filter out None
 	
 	print()
 	print("Average metrics")
@@ -122,11 +126,14 @@ def performSimulations(n):
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
-	print("Cars infected ratio: {:.2f}%".format(100*infected / (n*len(sims[0].cars))))
+	print("Cars infected ratio: {:.2f}%".format(100*infected / (len(sims)*len(sims[0].cars))))
 
 
 
 
 if __name__ == "__main__":
-	performSimulations(1)
+	if "--no-graphics" in sys.argv:
+		performSimulations(20)
+	else:
+		performSimulations(1)
 
