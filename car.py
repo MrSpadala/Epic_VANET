@@ -109,30 +109,10 @@ class Car:
 
 		return t_final / Simulator.TIME_RESOLUTION    #ritorna il tempo di attesa espresso nel numero di step da fare al simulatore.
 
-	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
-		quads = [1,1,1,1]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
+	def evaluate_positions3(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
+		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
-		'''						# non so se è possibile determinare la posizione degli adiacenti
-		for a in self.adj:
-			if quads == [0,0,0,0]:
-				break
 
-			if quads[0]!=0:
-				if a[0]>my_pos[0] and my_pos[1]-(abs((my_pos[0]-a[0])/2)) <= a[1] <= my_pos[1]-(abs((my_pos[0]-a[0])/2)):		# X > myX	dx
-					quads[0]=0
-
-			if quads[1]!=0:
-				if a[1]>my_pos[1] and (my_pos[0]-(abs((my_pos[1]-a[1])/2)) <= a[0] <= my_pos[0]-(abs((my_pos[1]-a[1])/2))):		# Y > myY	su
-					quads[1]=0
-
-			if quads[2]!=0:
-				if a[0]<my_pos[0] and (my_pos[1]-(abs((my_pos[0]-a[0])/2)) <= a[1] <= my_pos[1]-(abs((my_pos[0]-a[0])/2))):		# X < myX	sx
-					quads[2]=0
-
-			if quads[3]!=0:
-				if a[1]<my_pos[1] and (my_pos[0]-(abs((my_pos[1]-a[1])/2)) <= a[0] <= my_pos[0]-(abs((my_pos[1]-a[1])/2))):		# Y < myY	giu
-					quads[3]=0
-		'''
 		for m in messages:
 
 			if quads[0]!=1:
@@ -157,7 +137,7 @@ class Car:
 			return True
 		return False
 
-	def evaluate_positions2(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
+	def evaluate_positions4(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
 
@@ -179,7 +159,7 @@ class Car:
 		return quads!=[1,1,1,1]
 
 
-	def evaluate_positions1(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
+	def evaluate_positions2(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 
 		neighbor_positions = []   #positions of neighbors cars
 		for c, i in zip(self.adj, range(len(self.adj))):
@@ -201,7 +181,7 @@ class Car:
 		return len(neighbor_positions) > 0   #ritorno true se ci sono ancora dei vicini non coperti da nessun emitter precedente
 
 
-	def evaluate_positions3(self, messages, my_pos):
+	def evaluate_positions(self, messages, my_pos):
 		#ritrasmetti sempre il messaggio
 		return True
 
