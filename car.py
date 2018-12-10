@@ -194,7 +194,11 @@ class Car:
 						neighbor_positions.remove(neighbor_pos)
 
 		return len(neighbor_positions) > 0   #ritorno true se ci sono ancora dei vicini non coperti da nessun emitter precedente
-		# TODO merge emitters
+
+
+	def evaluate_positions3(self, messages, my_pos):
+		#ritrasmetti sempre il messaggio
+		return True
 
 
 
