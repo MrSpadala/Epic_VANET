@@ -21,7 +21,7 @@ class Simulator:
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
 	RMIN = 100		#raggio minimo di comunicazione, espresso in decine di centimetri
 	RMAX = 2000		#raggio massimo di comunicazione, espresso in decine di centimetri
-	DROP = 0.05		#rate di messaggi persi spontaneamente nella trasmissione
+	DROP = 0.00		#rate di messaggi persi spontaneamente nella trasmissione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
@@ -51,7 +51,7 @@ class Simulator:
 	def runSimulation(self):
 		for t in range(int(Simulator.SECONDS_SIM/Simulator.TIME_RESOLUTION)):
 			self.t = t
-			for car in cars:	# k è la chiave dell'elemento
+			for car in self.cars:	# k è la chiave dell'elemento
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
 
@@ -65,7 +65,7 @@ class Simulator:
 
 
 
-def init():
+def init_cars():
 	positions = []
 	p = open("grafi/Luxembourg/pos/pos_time27100Tper50.txt", "r")
 	for i in p:
@@ -87,29 +87,46 @@ def init():
 	return cars
 
 
+
+def performSimulations(n):
+	def performSimulation():
+		cars = init_cars()
+		s = Simulator(cars)
+		
+		if s.no_graphics:
+			random.sample(cars, 1)[0].infect(Msg.dummy())
+		else:
+			bubbles = displayCars(s.car_dict)
+			firstinfected = s.getCar(firstInfection())
+			firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
+		
+		s.runSimulation()
+		#for c,i in zip(cars,range(len(cars))):
+		#	print(i, c.state)
+		tmp = str([c.state for c in cars])
+		print("Simulation ended")
+		print("Vulnerable: ", tmp.count("State.VULNERABLE"))
+		print("Infected: ", tmp.count("State.INFECTED"))
+		print("Recovered: ", tmp.count("State.RECOVERED"))
+		print()
+		return s
+
+	sims = [performSimulation() for i in range(n)]
+	
+	print()
+	print("Average metrics")
+	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
+	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
+	print("time of last car infection: ", sum([s.t_last_infected for s in sims])*Simulator.TIME_RESOLUTION/n)
+	print("#hops to reach last infected car: ",sum([s.n_hop_last_infected for s in sims])/n)
+	infected = 0
+	for s in sims:
+		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
+	print("Cars infected ratio: {:.2f}%".format(100*infected / (n*len(sims[0].cars))))
+
+
+
+
 if __name__ == "__main__":
-	cars = init()
-	s = Simulator(cars)
-	
-	if s.no_graphics:
-		random.sample(cars, 1)[0].infect(Msg.dummy())
-	else:
-		bubbles = displayCars(s.car_dict)
-		firstinfected = s.getCar(firstInfection())
-		firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
-	
-	s.runSimulation()
-	#for c,i in zip(cars,range(len(cars))):
-	#	print(i, c.state)
-	tmp = str([c.state for c in cars])
-	print()
-	print("Simulation ended")
-	print("Vulnerable: ", tmp.count("State.VULNERABLE"))
-	print("Infected: ", tmp.count("State.INFECTED"))
-	print("Recovered: ", tmp.count("State.RECOVERED"))
-	print()
-	print("Metrics")
-	print("#sent messages: ", s.sent_messages)
-	print("#received messages: ", s.rcv_messages)
-	print("time of last car infection: ", s.t_last_infected*Simulator.TIME_RESOLUTION)
-	print("#hops to reach last infected car: ",s.n_hop_last_infected)
+	performSimulations(1)
+
