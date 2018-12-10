@@ -107,7 +107,7 @@ class Car:
 	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 		quads = [1,1,1,1]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
-'''						# non so se è possibile determinare la posizione degli adiacenti
+		'''						# non so se è possibile determinare la posizione degli adiacenti
 		for a in self.adj:
 			if quads == [0,0,0,0]:
 				break
@@ -127,7 +127,7 @@ class Car:
 			if quads[3]!=0:
 				if a[1]<my_pos[1] and (my_pos[0]-(abs((my_pos[1]-a[1])/2)) <= a[0] <= my_pos[0]-(abs((my_pos[1]-a[1])/2))):		# Y < myY	giu
 					quads[3]=0
-'''
+		'''
 		for m in messages:
 
 			if quads[0]!=1:
@@ -156,14 +156,6 @@ class Car:
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
 
-		neighbor_positions = []   #positions of neighbors cars
-		for c, i in zip(self.adj, range(len(self.adj))):
-			if c == 1:
-				#Ho preso la macchina corrispondente
-				obj = self.sim.getCar(i)
-				if obj != None:
-					neighbor_positions.append(obj.pos)
-
 		for m in messages:
 			dx = m.last_emit[0] - my_pos[0]
 			dy = m.last_emit[1] - my_pos[1]
@@ -179,11 +171,7 @@ class Car:
 			if dx  < 0 and dy  < 0:
 				quads[3] = 1
 
-		if quads==[1,1,1,1]:
-			return False
-		else:
-			return True
-		return False
+		return quads!=[1,1,1,1]
 
 
 	def evaluate_positions1(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
