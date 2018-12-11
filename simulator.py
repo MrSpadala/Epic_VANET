@@ -72,7 +72,7 @@ def init_cars():
 		d = i.split(' ')
 		if d[2] == '27100':  #riga fallata
 			positions.append(None)
-		else:		
+		else:
 			positions.append((float(d[2]), float(d[3])))
 			#sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
 
@@ -94,14 +94,14 @@ def performSimulations(n):
 	def performSimulation():
 		cars = init_cars()
 		s = Simulator(cars)
-		
+
 		if s.no_graphics:
 			random.sample(cars, 1)[0].infect(Msg.dummy())
 		else:
 			bubbles = displayCars(s.car_dict)
 			firstinfected = s.getCar(firstInfection())
 			firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
-		
+
 		s.runSimulation()
 		#for c,i in zip(cars,range(len(cars))):
 		#	print(i, c.state)
@@ -116,7 +116,7 @@ def performSimulations(n):
 
 	sims = [performSimulation() for i in range(n)]  #list with Simulator objects
 	sims = list(filter(lambda x: x!=None, sims))    #filter out None
-	
+
 	print()
 	print("Average metrics")
 	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
@@ -136,4 +136,3 @@ if __name__ == "__main__":
 		performSimulations(20)
 	else:
 		performSimulations(1)
-

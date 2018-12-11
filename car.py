@@ -109,7 +109,7 @@ class Car:
 
 		return t_final / Simulator.TIME_RESOLUTION    #ritorna il tempo di attesa espresso nel numero di step da fare al simulatore.
 
-	def evaluate_positions3(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
+	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
 
@@ -181,7 +181,7 @@ class Car:
 		return len(neighbor_positions) > 0   #ritorno true se ci sono ancora dei vicini non coperti da nessun emitter precedente
 
 
-	def evaluate_positions(self, messages, my_pos):
+	def evaluate_positions3(self, messages, my_pos):
 		#ritrasmetti sempre il messaggio
 		return True
 
