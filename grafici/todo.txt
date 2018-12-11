@@ -1,0 +1,8 @@
+% nodi forwarder vs RMIN
+% nodi raggiunti vs RMIN
+boxplot ritardo vs RMIN
+
+nodi forwarder vs constraint sugli emitter --> nulla di interessante
+boxplot nodi raggiunti vs '' '' ''
+
+... qualcosa aggiungendo drop rate

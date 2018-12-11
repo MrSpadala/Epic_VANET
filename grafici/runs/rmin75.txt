@@ -1,0 +1,57 @@
+Simulation ended
+Vulnerable:  18
+Infected:  0
+Recovered:  784
+
+Simulation ended
+Vulnerable:  16
+Infected:  0
+Recovered:  786
+
+Simulation ended
+Vulnerable:  17
+Infected:  0
+Recovered:  785
+
+Simulation ended
+Vulnerable:  21
+Infected:  0
+Recovered:  781
+
+Simulation ended
+Vulnerable:  15
+Infected:  0
+Recovered:  787
+
+Simulation ended
+Vulnerable:  799
+Infected:  0
+Recovered:  3
+
+Simulation ended
+Vulnerable:  19
+Infected:  0
+Recovered:  783
+
+Simulation ended
+Vulnerable:  16
+Infected:  0
+Recovered:  786
+
+Simulation ended
+Vulnerable:  16
+Infected:  0
+Recovered:  786
+
+Simulation ended
+Vulnerable:  15
+Infected:  0
+Recovered:  787
+
+
+Average metrics
+#sent messages:  458.5
+#received messages:  5737.3
+time of last car infection:  9.07
+#hops to reach last infected car:  12.4
+Cars infected ratio: 88.13%
