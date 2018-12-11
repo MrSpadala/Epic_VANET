@@ -45,7 +45,7 @@ class Car:
 		msg.hop += 1
 
 	def broadMsg(self):
-		bcast = self.evaluate_positions1(self.messages, self.pos)
+		bcast = self.evaluate_positions2(self.messages, self.pos)
 		if (not bcast):
 			return
 		#manca il controllo delle direzioni
