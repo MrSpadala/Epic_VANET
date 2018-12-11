@@ -1,6 +1,8 @@
 import random
 from time import sleep
 from decimal import Decimal
+from collections import deque
+from pdb import set_trace
 from math import sqrt
 from msg import Msg
 from enum import Enum
@@ -34,13 +36,17 @@ class Car:
 	def modifyMsg(self, msg, msg_list):
 		#Modifico il messaggio con i miei dati
 		msg.last_emit = self.pos
-		msg.emitters.add(self.pos)
+		all_emitters = set([self.pos])
 		for m in msg_list:
-			msg.emitters = msg.emitters.union(m.emitters)
+			all_emitters = all_emitters.union(set(m.emitters))
+		key = lambda x: dist(x, self.pos)
+		all_emitters_srtd = sorted(list(all_emitters), key=key, reverse=True)
+		msg.emitters = deque(all_emitters_srtd, maxlen=Msg.EMITTERS_LIMIT)
 		msg.hop += 1
 
 	def broadMsg(self):
-		if (not self.evaluate_positions(self.messages, self.pos)):
+		bcast = self.evaluate_positions1(self.messages, self.pos)
+		if (not bcast):
 			return
 		#manca il controllo delle direzioni
 

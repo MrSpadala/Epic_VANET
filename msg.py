@@ -1,4 +1,7 @@
 class Msg:
+
+	EMITTERS_LIMIT = 10
+
 	def __init__(self, numSeq, text, origin, emit, hop, ttl, emitters=None):
 		#origin e' la sorgente iniziale del messaggio,
 		#last_emit e' chi me lo ha mandato direttamente per ultimo

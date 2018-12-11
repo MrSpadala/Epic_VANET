@@ -19,8 +19,8 @@ class Simulator:
 	# Environment parameters
 	TMAX = 1		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
-	RMIN = 100		#raggio minimo di comunicazione, espresso in decine di centimetri
-	RMAX = 2000		#raggio massimo di comunicazione, espresso in decine di centimetri
+	RMIN = 100		#raggio minimo di comunicazione, espresso in metri
+	RMAX = 2000		#raggio massimo di comunicazione, espresso in metri
 	DROP = 0.00		#rate di messaggi persi spontaneamente nella trasmissione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
@@ -112,7 +112,8 @@ def performSimulations(n):
 		print("Recovered: ", tmp.count("State.RECOVERED"))
 		print()
 		#Return Simulator or, if the simulation was too bad, don't return it
-		return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None
+		#return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None
+		return s
 
 	sims = [performSimulation() for i in range(n)]  #list with Simulator objects
 	sims = list(filter(lambda x: x!=None, sims))    #filter out None
@@ -133,6 +134,6 @@ def performSimulations(n):
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		performSimulations(20)
+		performSimulations(10)
 	else:
 		performSimulations(1)
