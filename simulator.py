@@ -2,13 +2,14 @@
 import sys
 import random
 import functools
+from multiprocessing import Pool
 from collections import defaultdict
 from car import Car, State as carState
 from msg import Msg
 from pdb import set_trace as breakpoint
 from visualGraph import *
 
-random.seed(42)
+random.seed(40)
 
 class Simulator:
 
@@ -19,7 +20,7 @@ class Simulator:
 	# Environment parameters
 	TMAX = 1		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
-	RMIN = 100		#raggio minimo di comunicazione, espresso in metri
+	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
 	RMAX = 2000		#raggio massimo di comunicazione, espresso in metri
 	DROP = 0.00		#rate di messaggi persi spontaneamente nella trasmissione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
@@ -30,6 +31,8 @@ class Simulator:
 		self.cars = cars
 		for car in self.cars:
 			car.sim = self
+
+		self.rmin = Simulator.RMIN
 
 		# Create a dictionary plate-->car-object
 		#_car_dict = {c.plate: c for c in self.cars}
@@ -106,10 +109,10 @@ def performSimulations(n):
 		#for c,i in zip(cars,range(len(cars))):
 		#	print(i, c.state)
 		tmp = str([c.state for c in cars])
-		print("Simulation ended")
-		print("Vulnerable: ", tmp.count("State.VULNERABLE"))
-		print("Infected: ", tmp.count("State.INFECTED"))
-		print("Recovered: ", tmp.count("State.RECOVERED"))
+		#print("Simulation ended")
+		#print("Vulnerable: ", tmp.count("State.VULNERABLE"))
+		#print("Infected: ", tmp.count("State.INFECTED"))
+		#print("Recovered: ", tmp.count("State.RECOVERED"))
 		print()
 		#Return Simulator or, if the simulation was too bad, don't return it
 		#return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None
@@ -118,22 +121,33 @@ def performSimulations(n):
 	sims = [performSimulation() for i in range(n)]  #list with Simulator objects
 	sims = list(filter(lambda x: x!=None, sims))    #filter out None
 
-	print()
-	print("Average metrics")
-	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
-	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
-	print("time of last car infection: ", sum([s.t_last_infected for s in sims])*Simulator.TIME_RESOLUTION/n)
-	print("#hops to reach last infected car: ",sum([s.n_hop_last_infected for s in sims])/n)
+	#print()
+	#print("Average metrics")
+	#print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
+	#print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
+	#print("time of last car infection: ", sum([s.t_last_infected for s in sims])*Simulator.TIME_RESOLUTION/n)
+	#print("#hops to reach last infected car: ",sum([s.n_hop_last_infected for s in sims])/n)
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
-	print("Cars infected ratio: {:.2f}%".format(100*infected / (len(sims)*len(sims[0].cars))))
+	print("With",Simulator.RMIN)
+	print("Cars infected ratio: {:.2f}%".format(100*(infected+15) / (len(sims)*len(sims[0].cars))))
+	return (Simulator.RMIN, 802*(infected+15) / (len(sims)*len(sims[0].cars)))
 
 
+
+
+
+def do_tests(r):
+	Simulator.RMIN = r
+	performSimulations(25)
 
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		performSimulations(10)
+		pool = Pool(2)
+		res = pool.map(do_tests, range(50, 250, 10))
+		print(res)
+
 	else:
 		performSimulations(1)
