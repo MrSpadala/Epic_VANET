@@ -70,17 +70,19 @@ class Simulator:
 
 def init_cars():
 	positions = []
-	p = open("grafi/Luxembourg/pos/pos_time27100Tper50.txt", "r")
+	#p = open("grafi/Luxembourg/pos/pos_time27100Tper100.txt", "r")
+	p = open("grafi/Cologne/pos/pos_time23000Tper500.txt", "r")
 	for i in p:
 		d = i.split(' ')
-		if d[2] == '27100':  #riga fallata
+		if d[0] == d[2] and d[2] == d[4]:  #riga fallata
 			positions.append(None)
 		else:
 			positions.append((float(d[2]), float(d[3])))
 			#sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
 
 
-	a = open("grafi/Luxembourg/adj/adj_time27100Tper50.txt", "r")
+	#a = open("grafi/Luxembourg/adj/adj_time27100Tper100.txt", "r")
+	a = open("grafi/Cologne/adj/adj_time23000Tper500.txt", "r")
 	adi = []
 	for l in a:
 		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
@@ -91,7 +93,7 @@ def init_cars():
 
 
 #Performs 'n' different simulations
-def performSimulations(n):
+def performSimulations(n, with_outliers=False):
 
 	#Perform a single simulation
 	def performSimulation():
@@ -106,17 +108,17 @@ def performSimulations(n):
 			firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
 
 		s.runSimulation()
-		#for c,i in zip(cars,range(len(cars))):
-		#	print(i, c.state)
-		tmp = str([c.state for c in cars])
+		#tmp = str([c.state for c in cars])
 		#print("Simulation ended")
 		#print("Vulnerable: ", tmp.count("State.VULNERABLE"))
 		#print("Infected: ", tmp.count("State.INFECTED"))
 		#print("Recovered: ", tmp.count("State.RECOVERED"))
-		print()
-		#Return Simulator or, if the simulation was too bad, don't return it
-		#return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None
-		return s
+		#print()
+		# Return Simulator or, if the simulation was too bad, don't return it
+		if with_outliers:
+			return s
+		return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None  #consider as outlier a simulation where less than 5% of the cars got infected
+		
 
 	sims = [performSimulation() for i in range(n)]  #list with Simulator objects
 	sims = list(filter(lambda x: x!=None, sims))    #filter out None
@@ -127,12 +129,17 @@ def performSimulations(n):
 	#print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
 	#print("time of last car infection: ", sum([s.t_last_infected for s in sims])*Simulator.TIME_RESOLUTION/n)
 	#print("#hops to reach last infected car: ",sum([s.n_hop_last_infected for s in sims])/n)
-	infected = 0
-	for s in sims:
-		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
+	#infected = 0
+	#for s in sims:
+	#	infected += str([c.state for c in s.cars]).count("State.RECOVERED")
+	#print("Cars infected ratio: {:.2f}%".format(100*(infected+15) / (len(sims)*len(sims[0].cars))))
+	
 	print("With",Simulator.RMIN)
-	print("Cars infected ratio: {:.2f}%".format(100*(infected+15) / (len(sims)*len(sims[0].cars))))
-	return (Simulator.RMIN, 802*(infected+15) / (len(sims)*len(sims[0].cars)))
+	return (Simulator.RMIN, 
+		[s.sent_messages for s in sims], 
+		[str([c.state for c in s.cars]).count("State.RECOVERED") for s in sims],
+		[s.t_last_infected for s in sims],
+		[s.n_hop_last_infected for s in sims])
 
 
 
@@ -140,13 +147,13 @@ def performSimulations(n):
 
 def do_tests(r):
 	Simulator.RMIN = r
-	performSimulations(25)
+	return performSimulations(50, with_outliers=True)
 
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		pool = Pool(2)
-		res = pool.map(do_tests, range(50, 250, 10))
+		pool = Pool(4)
+		res = pool.map(do_tests, range(50, 341, 10))
 		print(res)
 
 	else:
