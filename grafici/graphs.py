@@ -11,8 +11,10 @@ frw_n = [100*x[1]/802 for x in forwarder_raw]
 #rmin = [50, 75, 100, 125, 150, 175, 200, 225, 250]
 #frw = [602.5, 458.5, 431.3, 343, 333.5, 284, 256.2, 209.3, 146.9]
 #plt.plot(frw_r, frw_n, 'r--')
-#plt.title("Number of forwarders vs rmin")
-#plt.show()
+#title = "Number of forwarders vs rmin")
+#plt.title(title)
+#plt.savefig(title+'.svg')
+#plt.clf()
 
 
 recv_raw = [(50, 787.2307692307693), (60, 786.35), (70, 785.2894736842105), (80, 783.575), (90, 779.45), (100, 776.675), (110, 774.5384615384615), (120, 771.95), (130, 768.675), (140, 764.7948717948718), (150, 763.0512820512821), (160, 758.4857142857143), (170, 748.8333333333334), (180, 739.3076923076923), (190, 718.5263157894736), (200, 705.5897435897435), (210, 677.9714285714285), (220, 666.3157894736842), (230, 657.8888888888889), (240, 626.8947368421053), (250, 611.6944444444445), (260, 595.6875), (270, 566.2666666666667), (280, 505.27272727272725), (290, 480.0882352941176), (300, 468.64285714285717), (310, 418.09375), (320, 381.3703703703704), (330, 308.8888888888889), (340, 261.81481481481484)]
@@ -20,8 +22,10 @@ recv_r = [x[0] for x in recv_raw]
 recv_n = [100*x[1]/802 for x in recv_raw]
 
 plt.plot(frw_r, frw_n, 'r--', recv_r, recv_n)
-plt.title("LUXEMBURG 50: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS")
-plt.show()
+title = "LUXEMBURG 50: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -33,8 +37,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("LUXEMBURG 50: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS")
-plt.show()
+title = "LUXEMBURG 50: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -50,8 +56,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("LUXEMBURG 100: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS")
-plt.show()
+title = "LUXEMBURG 100: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 # LUXEMBURG 100 WITH OUTLIERS
@@ -62,8 +70,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("LUXEMBURG 100: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS")
-plt.show()
+title = "LUXEMBURG 100: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -81,8 +91,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("LUXEMBURG 150: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS")
-plt.show()
+title = "LUXEMBURG 150: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -95,8 +107,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("LUXEMBURG 150: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS")
-plt.show()
+title = "LUXEMBURG 150: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -119,8 +133,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("COLOGNE 50: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS")
-plt.show()
+title = "COLOGNE 50: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -132,8 +148,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("COLOGNE 50: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS")
-plt.show()
+title = "COLOGNE 50: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -149,8 +167,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("COLOGNE 100: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS")
-plt.show()
+title = "COLOGNE 100: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 # COLOGNE 100 WITH OUTLIERS
@@ -161,8 +181,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("COLOGNE 100: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS")
-plt.show()
+title = "COLOGNE 100: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -178,8 +200,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("COLOGNE 150: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS")
-plt.show()
+title = "COLOGNE 150: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -192,8 +216,10 @@ recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("COLOGNE 150: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS")
-plt.show()
+title = "COLOGNE 150: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -203,13 +229,15 @@ plt.show()
 # COLOGNE 500 NO OUTLIERS
 raw = [(50, 382.975, 0.8661493176344661), (60, 358.15, 0.8661951909476662), (70, 340.35, 0.8649970879440885), (80, 344.875, 0.8651202263083452), (90, 326.925, 0.8648806057076296), (100, 337.0, 0.8636413641364137), (110, 274.55, 0.8633663366336634), (120, 283.725, 0.8601860186018602), (130, 262.525, 0.8564356435643564), (140, 257.1, 0.8524452445244525), (150, 258.75, 0.8504667609618105), (160, 233.65, 0.845602795573675), (170, 216.275, 0.8357018054746651), (180, 207.55, 0.8264997087944088), (190, 206.625, 0.8272135785007072), (200, 181.65, 0.8238223822382238), (210, 169.975, 0.821002100210021), (220, 173.1, 0.7854963874765855), (230, 141.55, 0.7708370837083708), (240, 126.325, 0.6880605707629587), (250, 103.05, 0.6113861386138614), (260, 96.325, 0.6352103960396039), (270, 78.45, 0.4385335830880385), (280, 83.9, 0.5185918591859185), (290, 64.525, 0.44305516265912304), (300, 64.2, 0.48155940594059404), (310, 64.65, 0.4355365266256355), (320, 57.975, 0.4106710671067107), (330, 57.4, 0.42885431400282886), (340, 55.175, 0.4423762376237624)]
 rmin = [x[0] for x in raw]
-frw_n = [100*x[1]/802 for x in raw]
+frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("COLOGNE 500: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS")
-plt.show()
+title = "COLOGNE 500: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
@@ -217,13 +245,15 @@ plt.show()
 # COLOGNE 500 WITH OUTLIERS
 raw = [(50, 373.85, 0.7823762376237624), (60, 329.025, 0.6965346534653465), (70, 341.975, 0.7385148514851485), (80, 337.275, 0.7394059405940594), (90, 366.7, 0.8236633663366336), (100, 302.7, 0.6986138613861386), (110, 310.0, 0.7572277227722772), (120, 318.725, 0.7963861386138614), (130, 289.6, 0.7562871287128713), (140, 272.175, 0.7494554455445545), (150, 250.4, 0.7218811881188119), (160, 249.525, 0.764950495049505), (170, 234.275, 0.7679207920792079), (180, 208.9, 0.7103960396039604), (190, 198.575, 0.7082673267326732), (200, 182.025, 0.6866336633663367), (210, 167.425, 0.6658910891089109), (220, 176.95, 0.7470792079207921), (230, 142.8, 0.6464851485148515), (240, 94.4, 0.4500990099009901), (250, 113.975, 0.5528217821782179), (260, 87.375, 0.47059405940594057), (270, 81.2, 0.4271287128712871), (280, 71.7, 0.39584158415841586), (290, 69.0, 0.4166336633663366), (300, 60.4, 0.351039603960396), (310, 51.075, 0.32232673267326734), (320, 54.45, 0.3505445544554455), (330, 43.65, 0.3006930693069307), (340, 54.7, 0.37113861386138614)]
 rmin = [x[0] for x in raw]
-frw_n = [100*x[1]/802 for x in raw]
+frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
-plt.title("COLOGNE 500: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS")
-plt.show()
+title = "COLOGNE 500: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+plt.title(title)
+plt.savefig(title+'.svg')
+plt.clf()
 
 
 
