@@ -13,7 +13,7 @@ frw_n = [100*x[1]/802 for x in forwarder_raw]
 #plt.plot(frw_r, frw_n, 'r--')
 #title = "Number of forwarders vs rmin")
 #plt.title(title)
-#plt.savefig(title+'.svg')
+#plt.savefig(title+'.png')
 #plt.clf()
 
 
@@ -24,7 +24,7 @@ recv_n = [100*x[1]/802 for x in recv_raw]
 plt.plot(frw_r, frw_n, 'r--', recv_r, recv_n)
 title = "LUXEMBURG 50: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -39,7 +39,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "LUXEMBURG 50: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -58,7 +58,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "LUXEMBURG 100: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -72,7 +72,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "LUXEMBURG 100: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -93,7 +93,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "LUXEMBURG 150: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -109,7 +109,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "LUXEMBURG 150: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -135,7 +135,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "COLOGNE 50: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -150,7 +150,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "COLOGNE 50: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -169,7 +169,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "COLOGNE 100: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -183,7 +183,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "COLOGNE 100: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -202,7 +202,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "COLOGNE 150: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -218,7 +218,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "COLOGNE 150: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -236,7 +236,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "COLOGNE 500: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
@@ -252,7 +252,7 @@ recv_n = [100*x[2] for x in raw]
 plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
 title = "COLOGNE 500: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
 plt.title(title)
-plt.savefig(title+'.svg')
+plt.savefig(title+'.png')
 plt.clf()
 
 
