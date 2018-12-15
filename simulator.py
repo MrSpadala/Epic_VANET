@@ -20,7 +20,7 @@ class Simulator:
 	# Environment parameters
 	TMAX = 1		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
-	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
+	RMIN = 100		#raggio minimo di comunicazione, espresso in metri
 	RMAX = 2000		#raggio massimo di comunicazione, espresso in metri
 	DROP = 0.00		#rate di messaggi persi spontaneamente nella trasmissione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
@@ -73,7 +73,7 @@ def init_cars():
 	p = open("grafi/Luxembourg/pos/pos_time27100Tper100.txt", "r")
 	#p = open("grafi/Cologne/pos/pos_time23000Tper500.txt", "r")
 	for i in p:
-		d = i.split(' ')
+		d = i[:-1].split(' ')  #discard trailing \n
 		if d[0] == d[2] and d[2] == d[4]:  #riga fallata
 			positions.append(None)
 		else:
