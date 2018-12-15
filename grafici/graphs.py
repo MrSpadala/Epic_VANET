@@ -21,9 +21,14 @@ recv_raw = [(50, 787.2307692307693), (60, 786.35), (70, 785.2894736842105), (80,
 recv_r = [x[0] for x in recv_raw]
 recv_n = [100*x[1]/802 for x in recv_raw]
 
-plt.plot(frw_r, frw_n, 'r--', recv_r, recv_n)
+plt.plot(frw_r, frw_n, 'r--', label='forwarders')
+plt.plot(recv_r, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "LUXEMBURG 50: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
 plt.clf()
 
@@ -36,10 +41,16 @@ frw_n = [100*x[1]/802 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "LUXEMBURG 50: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -55,10 +66,16 @@ frw_n = [100*x[1]/802 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "LUXEMBURG 100: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -69,10 +86,16 @@ frw_n = [100*x[1]/802 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "LUXEMBURG 100: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -90,10 +113,16 @@ frw_n = [100*x[1]/802 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "LUXEMBURG 150: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -106,10 +135,16 @@ frw_n = [100*x[1]/802 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "LUXEMBURG 150: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -128,14 +163,20 @@ plt.clf()
 # COLOGNE 50 NO OUTLIERS
 raw = [(50, 120.725, 0.316769801980198), (60, 119.925, 0.2880905233380481), (70, 121.75, 0.3046592894583576), (80, 121.975, 0.34480996486745447), (90, 116.55, 0.3215121512151215), (100, 102.85, 0.3207920792079208), (110, 84.95, 0.3112446958981612), (120, 93.475, 0.3131806930693069), (130, 102.2, 0.36070544554455447), (140, 72.45, 0.3117711771177118), (150, 75.125, 0.33762376237623765), (160, 65.75, 0.27400990099009903), (170, 64.475, 0.27662766276627665), (180, 55.525, 0.28578728840626), (190, 47.325, 0.2907957462412908), (200, 49.325, 0.26489939316512295), (210, 42.475, 0.32252475247524753), (220, 46.75, 0.299009900990099), (230, 28.0, 0.2507963839862247), (240, 31.7, 0.2536237623762376), (250, 28.0, 0.2507650765076508), (260, 33.525, 0.25597359735973596), (270, 21.825, 0.21283168316831683), (280, 25.2, 0.22515584891822515), (290, 13.95, 0.16727958510136728), (300, 21.425, 0.2129108910891089), (310, 17.75, 0.21856435643564356), (320, 18.725, 0.18792079207920792), (330, 15.2, 0.2243650452001722), (340, 9.85, 0.16602397081813444)]
 rmin = [x[0] for x in raw]
-frw_n = [100*x[1]/802 for x in raw]
+frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "COLOGNE 50: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -143,14 +184,20 @@ plt.clf()
 # COLOGNE 50 WITH OUTLIERS
 raw = [(50, 117.9, 0.24757425742574257), (60, 138.975, 0.29495049504950493), (70, 116.8, 0.25485148514851486), (80, 121.3, 0.2657920792079208), (90, 100.075, 0.22975247524752476), (100, 94.875, 0.22693069306930694), (110, 83.325, 0.21762376237623762), (120, 93.95, 0.2545049504950495), (130, 90.725, 0.25103960396039604), (140, 91.35, 0.26801980198019804), (150, 73.025, 0.23455445544554454), (160, 65.7, 0.22054455445544555), (170, 52.575, 0.20103960396039605), (180, 48.875, 0.19178217821782179), (190, 41.175, 0.1893069306930693), (200, 52.9, 0.23534653465346533), (210, 38.3, 0.16), (220, 45.25, 0.20212871287128714), (230, 37.3, 0.1945049504950495), (240, 37.675, 0.19564356435643565), (250, 41.65, 0.21663366336633663), (260, 30.225, 0.1741089108910891), (270, 28.1, 0.18262376237623762), (280, 25.175, 0.15866336633663367), (290, 20.075, 0.1313861386138614), (300, 15.175, 0.1100990099009901), (310, 16.925, 0.13237623762376238), (320, 18.725, 0.14747524752475247), (330, 16.75, 0.13341584158415842), (340, 17.75, 0.15212871287128713)]
 rmin = [x[0] for x in raw]
-frw_n = [100*x[1]/802 for x in raw]
+frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "COLOGNE 50: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -162,28 +209,40 @@ plt.clf()
 # COLOGNE 100 NO OUTLIERS
 raw = [(50, 411.375, 0.8675839698650204), (60, 389.7, 0.8676275679257787), (70, 368.05, 0.8676762951701555), (80, 400.375, 0.8676051797324164), (90, 378.775, 0.867651235444476), (100, 389.575, 0.8676275679257787), (110, 389.525, 0.8676275679257787), (120, 389.525, 0.8676275679257787), (130, 323.825, 0.8677932405566601), (140, 356.05, 0.8674618952948973), (150, 356.275, 0.8677028736670884), (160, 388.6, 0.8676275679257787), (170, 377.4, 0.867651235444476), (180, 377.15, 0.867651235444476), (190, 344.675, 0.8674826043737575), (200, 376.4, 0.867651235444476), (210, 396.025, 0.8676051797324164), (220, 374.675, 0.867651235444476), (230, 374.6, 0.8675376313547287), (240, 416.375, 0.8653208951419687), (250, 383.45, 0.8634857521537442), (260, 394.1, 0.8636290365912632), (270, 383.45, 0.8636514247846255), (280, 394.1, 0.8636290365912632), (290, 361.675, 0.8623552800842007), (300, 382.925, 0.8624917163684559), (310, 382.8, 0.8618290258449304), (320, 340.35, 0.862263916500994), (330, 371.45, 0.8589037205339393), (340, 318.425, 0.8591119946984758)]
 rmin = [x[0] for x in raw]
-frw_n = [100*x[1]/802 for x in raw]
+frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "COLOGNE 100: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
 # COLOGNE 100 WITH OUTLIERS
 raw = [(50, 337.925, 0.6772365805168986), (60, 381.2, 0.763817097415507), (70, 359.2, 0.7198807157057654), (80, 391.65, 0.7848409542743539), (90, 370.075, 0.741948310139165), (100, 349.85, 0.7011431411530815), (110, 338.1, 0.677882703777336), (120, 381.3, 0.76441351888668), (130, 379.2, 0.762127236580517), (140, 379.525, 0.7627733598409543), (150, 369.55, 0.7424950298210735), (160, 358.65, 0.7207256461232604), (170, 389.775, 0.7838469184890656), (180, 368.1, 0.7414015904572565), (190, 356.825, 0.7183399602385686), (200, 325.8, 0.6574055666003976), (210, 386.375, 0.7832007952286282), (220, 376.85, 0.763817097415507), (230, 357.05, 0.723558648111332), (240, 375.225, 0.7603876739562624), (250, 395.3, 0.8009443339960238), (260, 364.05, 0.7378230616302187), (270, 395.15, 0.8009443339960238), (280, 372.975, 0.7565109343936381), (290, 353.625, 0.7170477137176938), (300, 372.975, 0.7560636182902585), (310, 383.575, 0.777286282306163), (320, 321.6, 0.6518886679920477), (330, 373.625, 0.7560636182902585), (340, 393.775, 0.7969184890656064)]
 rmin = [x[0] for x in raw]
-frw_n = [100*x[1]/802 for x in raw]
+frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "COLOGNE 100: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -195,14 +254,20 @@ plt.clf()
 # COLOGNE 150 NO OUTLIERS
 raw = [(50, 190.4, 0.44653465346534654), (60, 176.45, 0.44449621432731506), (70, 188.8, 0.44426010168584423), (80, 181.125, 0.434037998394434), (90, 157.05, 0.44474009900990097), (100, 146.125, 0.43254950495049505), (110, 153.575, 0.42684268426842686), (120, 139.45, 0.43192319231923193), (130, 145.975, 0.4470721357850071), (140, 122.65, 0.4344059405940594), (150, 124.35, 0.4589400116482236), (160, 123.675, 0.4327000267594327), (170, 105.65, 0.429120559114735), (180, 96.775, 0.41806930693069305), (190, 93.525, 0.41974197419741976), (200, 84.925, 0.4059988351776354), (210, 81.675, 0.4211997670355271), (220, 72.8, 0.39304101838755306), (230, 73.8, 0.368264721208963), (240, 52.8, 0.32127212721272125), (250, 53.75, 0.3379349363507779), (260, 50.725, 0.3102310231023102), (270, 49.175, 0.29965212737489966), (280, 34.8, 0.2847949080622348), (290, 36.65, 0.2807080708070807), (300, 28.95, 0.23774752475247524), (310, 31.7, 0.27360874018436326), (320, 34.525, 0.2762958648806057), (330, 24.75, 0.2293197061641648), (340, 31.275, 0.2646864686468647)]
 rmin = [x[0] for x in raw]
-frw_n = [100*x[1]/802 for x in raw]
+frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "COLOGNE 150: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -211,14 +276,20 @@ plt.clf()
 # COLOGNE 150 WITH OUTLIERS
 raw = [(50, 167.475, 0.35316831683168315), (60, 195.25, 0.4179207920792079), (70, 175.925, 0.38415841584158417), (80, 170.075, 0.376980198019802), (90, 184.875, 0.42034653465346533), (100, 168.55, 0.39871287128712873), (110, 164.95, 0.4115346534653465), (120, 141.9, 0.36247524752475246), (130, 140.475, 0.3774752475247525), (140, 138.0, 0.39004950495049506), (150, 129.0, 0.3866831683168317), (160, 106.35, 0.34747524752475245), (170, 114.25, 0.3785148514851485), (180, 100.6, 0.3503465346534653), (190, 96.65, 0.36336633663366336), (200, 78.4, 0.333960396039604), (210, 78.3, 0.32564356435643566), (220, 70.7, 0.3205940594059406), (230, 64.075, 0.31084158415841584), (240, 56.925, 0.28668316831683166), (250, 58.525, 0.28975247524752473), (260, 42.225, 0.25663366336633664), (270, 34.65, 0.21217821782178217), (280, 46.175, 0.26752475247524754), (290, 31.65, 0.19212871287128713), (300, 39.575, 0.2592079207920792), (310, 36.175, 0.2256930693069307), (320, 32.725, 0.23430693069306932), (330, 33.9, 0.23886138613861385), (340, 24.3, 0.19084158415841584)]
 rmin = [x[0] for x in raw]
-frw_n = [100*x[1]/802 for x in raw]
+frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "COLOGNE 150: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -233,10 +304,16 @@ frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "COLOGNE 500: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
@@ -249,13 +326,62 @@ frw_n = [100*x[1]/503 for x in raw]
 recv_n = [100*x[2] for x in raw]
  
 
-plt.plot(rmin, frw_n, 'r--', rmin, recv_n)
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
 title = "COLOGNE 500: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
-plt.title(title)
+#plt.title(title)
 plt.savefig(title+'.png')
+#plt.show()
 plt.clf()
 
 
+
+
+
+# COLOGNE 1000 NO OUTLIERS
+raw = [(50, 331.32, 86.60891089108911), (60, 352.24, 86.60373014045591), (70, 360.74, 86.45984598459846), (80, 324.02, 86.4670369475972), (90, 331.16, 86.45636656688924), (100, 329.88, 86.36363636363636), (110, 311.08, 86.33663366336634), (120, 316.74, 86.02238484718038), (130, 275.8, 85.75200377180575), (140, 304.74, 85.24146292180238), (150, 277.82, 84.95049504950495), (160, 215.38, 84.65600406194466), (170, 205.2, 83.66336633663366), (180, 207.2, 83.32390381895333), (190, 201.66, 82.74925166935299), (200, 190.5, 80.85958595859586), (210, 190.34, 82.2083512699096), (220, 145.1, 82.17286593524217), (230, 142.24, 74.02717015887636), (240, 113.28, 64.83941077034532), (250, 103.58, 57.398739873987395), (260, 98.52, 58.55085508550855), (270, 78.08, 46.35044899838821), (280, 56.74, 42.477923468022475), (290, 65.6, 46.71335426225549), (300, 67.38, 45.98204006447156), (310, 67.44, 46.64266426642664), (320, 46.4, 40.72433559145388), (330, 40.66, 37.964796479647966), (340, 48.58, 44.67952058363731)] 
+rmin = [x[0] for x in raw]
+frw_n = [100*x[1]/501 for x in raw]
+recv_n = [x[2] for x in raw]
+ 
+
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
+title = "COLOGNE 1000: %receivers (blue) forwaredrs (red) vs rmin NO OUTLIERS"
+#plt.title(title)
+plt.savefig(title+'.png')
+#plt.show()
+plt.clf()
+
+
+
+
+# COLOGNE 1000 WITH OUTLIERS
+raw = [(50, 389.34, 81.43366336633663), (60, 377.94, 79.9009900990099), (70, 323.02, 69.82178217821782), (80, 341.68, 74.74059405940594), (90, 348.28, 78.17029702970297), (100, 331.16, 76.30495049504951), (110, 326.46, 79.64752475247525), (120, 270.18, 67.81782178217821), (130, 270.24, 70.8079207920792), (140, 264.28, 72.16633663366336), (150, 244.5, 70.1108910891089), (160, 243.5, 74.75643564356436), (170, 191.4, 62.64554455445545), (180, 214.48, 72.13465346534653), (190, 210.62, 74.7128712871287), (200, 199.56, 74.63762376237624), (210, 164.96, 65.16039603960397), (220, 150.76, 63.68316831683168), (230, 149.94, 67.12475247524752), (240, 119.34, 56.035643564356434), (250, 107.54, 53.42970297029703), (260, 85.9, 45.27524752475247), (270, 77.0, 39.27524752475247), (280, 70.34, 38.01980198019802), (290, 57.0, 33.90891089108911), (300, 65.84, 39.504950495049506), (310, 48.74, 30.095049504950495), (320, 50.68, 33.42970297029703), (330, 51.92, 34.744554455445545), (340, 34.96, 24.03960396039604)]
+rmin = [x[0] for x in raw]
+frw_n = [100*x[1]/501 for x in raw]
+recv_n = [x[2] for x in raw]
+ 
+
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
+title = "COLOGNE 1000: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+#plt.title(title)
+plt.savefig(title+'.png')
+#plt.show()
+plt.clf()
 
 
 

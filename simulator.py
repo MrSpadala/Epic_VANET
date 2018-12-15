@@ -135,13 +135,14 @@ def performSimulations(n, with_outliers=False):
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
 	print("Cars infected ratio: {:.2f}%".format(100*(infected+15) / (len(sims)*len(sims[0].cars))))
 	
-	return (Simulator.RMIN, 
+	return (Simulator.RMIN, #for boxplots
 		[s.sent_messages for s in sims], 
 		[str([c.state for c in s.cars]).count("State.RECOVERED") for s in sims],
 		[s.t_last_infected for s in sims],
 		[s.n_hop_last_infected for s in sims])
-
-
+	#return (Simulator.RMIN,  #for graphs
+	#	sum([s.sent_messages for s in sims])/n,
+	#	100*(infected+15) / (len(sims)*len(sims[0].cars)))
 
 
 
