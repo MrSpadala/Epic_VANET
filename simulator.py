@@ -91,6 +91,17 @@ def init_cars():
 	cars = list(filter(lambda x: x != None, cars))
 	return cars
 
+def init_cars_newyork():
+	import scipy.io as sio
+	import numpy as np
+	contents = sio.loadmat('grafi/NewYork/Newyork5003.mat')
+	adia, coord = contents['Adia'], contents['coord']
+	coord = [(x,y) for x,y in zip(coord[0], coord[1])]
+	cars = []
+	for i,c,a in zip(range(len(adia)),coord,adia):
+		cars.append(Car(i,c,a))
+	return cars
+
 
 #Performs 'n' different simulations
 def performSimulations(n, with_outliers=False):
@@ -148,14 +159,14 @@ def performSimulations(n, with_outliers=False):
 
 def do_tests(r):
 	Simulator.RMIN = r
-	return performSimulations(50, with_outliers=True)
+	return performSimulations(7, with_outliers=True)
 
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		pool = Pool(4)
-		res = pool.map(do_tests, range(50, 341, 10))
-		print(res)
+		with Pool(4) as pool:
+			#print( pool.map(do_tests, range(50, 341, 10)) )
+			do_tests(600)
 
 	else:
 		performSimulations(1)
