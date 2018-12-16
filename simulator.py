@@ -70,8 +70,8 @@ class Simulator:
 
 def init_cars():
 	positions = []
-	p = open("grafi/Luxembourg/pos/pos_time27100Tper100.txt", "r")
-	#p = open("grafi/Cologne/pos/pos_time23000Tper500.txt", "r")
+	p = open("grafi/Luxembourg/pos/pos_time27100Tper1000.txt", "r")
+	#p = open("grafi/Cologne/pos/pos_time23000Tper1000.txt", "r")
 	for i in p:
 		d = i[:-1].split(' ')  #discard trailing \n
 		if d[0] == d[2] and d[2] == d[4]:  #riga fallata
@@ -81,8 +81,8 @@ def init_cars():
 			#sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
 
 
-	a = open("grafi/Luxembourg/adj/adj_time27100Tper100.txt", "r")
-	#a = open("grafi/Cologne/adj/adj_time23000Tper500.txt", "r")
+	a = open("grafi/Luxembourg/adj/adj_time27100Tper1000.txt", "r")
+	#a = open("grafi/Cologne/adj/adj_time23000Tper1000.txt", "r")
 	adi = []
 	for l in a:
 		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
@@ -144,7 +144,7 @@ def performSimulations(n, with_outliers=False):
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
-	print("Cars infected ratio: {:.2f}%".format(100*(infected+15) / (len(sims)*len(sims[0].cars))))
+	print("Cars infected ratio: {:.2f}%".format(100*(infected) / (len(sims)*len(sims[0].cars))))
 	
 	return (Simulator.RMIN, #for boxplots
 		[s.sent_messages for s in sims], 

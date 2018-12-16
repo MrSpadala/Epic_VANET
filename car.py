@@ -74,8 +74,12 @@ class Car:
 					self.sim.sent_messages += 1
 
 				if not self.sim.no_graphics:
-					visualInfect(self, obj)
+					if obj.state == State.VULNERABLE:
+						visualInfect(self, obj)
 				obj.infect(msg)
+
+		if not self.sim.no_graphics:
+			sleep(0.1)
 
 		self.messages.clear()
 
