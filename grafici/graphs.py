@@ -385,3 +385,21 @@ plt.clf()
 
 
 
+# N YORK WITH OUTLIERS
+raw = [(400, 301.7, 99.15702479338843), (500, 235.7, 98.9090909090909), (600, 185.6, 98.51239669421487), (700, 118.8, 97.35537190082644), (800, 71.8, 94.57851239669421), (900, 32.8, 72.79338842975207), (1000, 13.2, 37.88429752066116)]
+rmin = [x[0] for x in raw]
+frw_n = [100*x[1]/600 for x in raw]
+recv_n = [x[2] for x in raw]
+ 
+
+plt.plot(rmin, frw_n, 'r--', label='forwarders')
+plt.plot(rmin, recv_n, 'b--', label='receivers')
+plt.ylim(0,100)
+plt.legend(loc='upper right')
+plt.xlabel('Rmin, m')
+plt.ylabel('% total nodes')
+title = "COLOGNE 1000: %receivers (blue) forwaredrs (red) vs rmin WITH OUTLIERS"
+#plt.title(title)
+plt.savefig('newyork.png')
+#plt.show()
+plt.clf()
