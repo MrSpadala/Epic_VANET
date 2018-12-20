@@ -79,7 +79,7 @@ class Car:
 				obj.infect(msg)
 
 		if not self.sim.no_graphics:
-			sleep(0.1)
+			sleep(0.01)
 
 		self.messages.clear()
 

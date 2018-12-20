@@ -2,7 +2,7 @@
 import sys
 if "--no-graphics" in sys.argv:
 	pass
-	
+
 else:
 	import vpython as vp
 	#Inserisce le auto nel grafico e ritorna un dizionario che associa

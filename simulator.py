@@ -20,7 +20,7 @@ class Simulator:
 	# Environment parameters
 	TMAX = 1		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
-	RMIN = 100		#raggio minimo di comunicazione, espresso in metri
+	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
 	RMAX = 2000		#raggio massimo di comunicazione, espresso in metri
 	DROP = 0.00		#rate di messaggi persi spontaneamente nella trasmissione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
@@ -125,12 +125,12 @@ def performSimulations(n, with_outliers=False):
 		print("Infected: ", tmp.count("State.INFECTED"))
 		print("Recovered: ", tmp.count("State.RECOVERED"))
 		print()
-		
+
 		# Return Simulator or, if the simulation was too bad, don't return it
 		if with_outliers:
 			return s
 		return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None  #consider as outlier a simulation where less than 5% of the cars got infected
-		
+
 
 	sims = [performSimulation() for i in range(n)]  #list with Simulator objects
 	sims = list(filter(lambda x: x!=None, sims))    #filter out None
@@ -145,9 +145,9 @@ def performSimulations(n, with_outliers=False):
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
 	print("Cars infected ratio: {:.2f}%".format(100*(infected) / (len(sims)*len(sims[0].cars))))
-	
+
 	return (Simulator.RMIN, #for boxplots
-		[s.sent_messages for s in sims], 
+		[s.sent_messages for s in sims],
 		[str([c.state for c in s.cars]).count("State.RECOVERED") for s in sims],
 		[s.t_last_infected for s in sims],
 		[s.n_hop_last_infected for s in sims])
