@@ -52,19 +52,26 @@ class Simulator:
 		self.no_graphics = "--no-graphics" in sys.argv
 
 
+	def threadRoutine(self, car):
+		if car.state == carState.INFECTED:
+			car.timer_infected -= 1
+
+			if car.timer_infected <= 0:
+				car.timer_infected = None
+				car.state = carState.RECOVERED
+				car.broadMsg()
+
 
 	def runSimulation(self):
 		for t in range(int(Simulator.SECONDS_SIM/Simulator.TIME_RESOLUTION)):
 			self.t = t
+
+			threads= [None]*len(self.cars)
+			i=0
 			for car in self.cars:	# k è la chiave dell'elemento
-				if car.state == carState.INFECTED:
-					car.timer_infected -= 1
-
-					if car.timer_infected <= 0:
-						car.timer_infected = None
-						car.state = carState.RECOVERED
-						car.broadMsg()
-
+				threads[i]=Thread(target=self.threadRoutine, args=(car,))
+				threads[i].start()
+				i+=1
 
 	def getCar(self, plate):
 		return self.car_dict[plate]
@@ -119,10 +126,9 @@ def performSimulations(n, with_outliers=False):
 		else:
 			bubbles = displayCars(s.car_dict)
 			firstinfected = s.getCar(firstInfection())
-			req=Request(1,(0,0), 8, 8, [], 0.1)
+			req=Request(1,(0,0), 8, 8, [], 0.001)
 			req.Vtx=firstinfected
 			req.Vrx=firstinfected
-			req.Vector.append(firstinfected)
 			firstinfected.req = req
 			firstinfected.infect(req)
 			firstinfected.bm()

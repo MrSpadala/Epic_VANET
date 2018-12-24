@@ -48,6 +48,8 @@ class Car:
 
 
 	def broadMsg(self):
+		self.requests.clear()
+		self.req.Vrx = self
 		bcast = self.RN_election()
 		if (not bcast):
 			return
@@ -83,7 +85,7 @@ class Car:
 
 		#if not self.sim.no_graphics:
 			#sleep(0.01)
-
+		self.req.Vector.clear()
 		self.requests.clear()
 
 
@@ -123,7 +125,6 @@ class Car:
 
 
 	def infect(self, req):
-		print("\ninfecting")
 		self.sim.rcv_messages += 1
 		#se e' il primo messaggio faccio partire il timer di attesa
 		#altrimenti aggiungo solo il messaggio alla lista
@@ -172,50 +173,55 @@ class Car:
 	    return val[1]
 
 	def bkRoutine(self, value, ret):
-		sleep(value)
-
-		if len(self.requests)>0:
-			print("FALSEEEE")
-			ret[0]="False"
-		else:
-			print("TRUEEEE")
-			ret[0]="True"
+		x=value/5
+		while(x<value):
+			sleep(x)
+			x+=x
+			if len(self.requests)>0:
+				ret[0]="False"
+				return
 
 
 	def setBkTimer(self, value):
 		# settiamo un timer di valore value
-		ret=[None]
+		ret=["True"]
 		t = Thread(target=self.bkRoutine, args=(value, ret))		# chiamiamo la backup routine dopo un tempo "value"
 		t.start()
 		t.join()
+		print(self.requests)
 		if ret[0]=="True":
 			return True
 		else:
 			return False
 
 	def RN_election(self):
+
 		self.req.Vrx.dis = abs(dist(self.req.Vrx.pos,self.req.Vtx.pos) - Simulator.RMIN)
 		self.req.Vector.append((self.req.Vrx, self.req.Vrx.dis))
 
 		##########preso dal nostro evaluate position##############
 		neighborhood = []   #positions of neighbors cars
-		for c, i in zip(self.req.Vrx.adj, range(len(self.req.Vrx.adj))):
+		i=0
+		print(self.req.Vtx.dis,self.req.Vrx.dis,self.dis)
+		for c in self.req.Vtx.adj:
 			if c == 1:
 				#Ho preso la macchina corrispondente
-				obj = self.req.Vrx.sim.getCar(i)
+				obj = self.req.Vtx.sim.getCar(i)
 				if obj != None:
 					neighborhood.append(obj)
+			i+=1
 		##########################################################
 
-
 		for v in neighborhood:
-			dis = dist(v.pos, self.req.Vtx.pos) - Simulator.RMIN
-			self.req.Vector.append((v, dis))
+			v.dis = abs(dist(v.pos, self.req.Vtx.pos) - Simulator.RMIN)
+			self.req.Vector.append((v, v.dis))
+
 		self.req.Vector.sort(key=self.sortSecond)	# sort in base a dist
-		if self.req.Vector[0]==self.req.Vrx:
+		print(self.req.Vector[0][1],"---",self.dis)
+		if self.req.Vector[0][0]==self:
 			return True		# a questo punto broadcastiamo
 		else:
-			retval=self.setBkTimer(self.req.Td*find(self.req.Vector, self.req.Vrx))	#torna sempre True, mannaggia la pupazza
+			retval=self.setBkTimer(self.req.Td*find(self.req.Vector, self.req.Vrx))	# non funziona una ceppa
 			print(retval)
 			return retval
 
