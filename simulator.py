@@ -22,7 +22,7 @@ class Simulator:
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
 	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
 	RMAX = 2000		#raggio massimo di comunicazione, espresso in metri
-	DROP = 0.00		#rate di messaggi persi spontaneamente nella trasmissione
+	DROP = 0.03		#rate di messaggi persi spontaneamente nella trasmissione
 	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
@@ -159,14 +159,14 @@ def performSimulations(n, with_outliers=False):
 
 def do_tests(r):
 	Simulator.RMIN = r
-	return performSimulations(7, with_outliers=True)
+	return performSimulations(3, with_outliers=True)
 
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
 		with Pool(4) as pool:
 			#print( pool.map(do_tests, range(50, 341, 10)) )
-			do_tests(600)
+			do_tests(250)
 
 	else:
 		performSimulations(1)

@@ -57,10 +57,6 @@ class Car:
 		if msg.hop == msg.ttl:
 			return
 
-		#Simulo la perdita di una percentuale di messaggi
-		if random.random() < Simulator.DROP:
-			return
-
 		message_sent = False
 		for c, i in zip(self.adj, range(len(self.adj))):
 			if c == 1:
@@ -85,6 +81,10 @@ class Car:
 
 
 	def infect(self, msg):
+		#Simulo la perdita di una percentuale di messaggi *in ricezoione*
+		if random.random() < Simulator.DROP:
+			return
+
 		self.sim.rcv_messages += 1
 		#se e' il primo messaggio faccio partire il timer di attesa
 		#altrimenti aggiungo solo il messaggio alla lista
