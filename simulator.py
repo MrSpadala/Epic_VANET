@@ -6,6 +6,7 @@ from multiprocessing import Pool
 from collections import defaultdict
 from car import Car, State as carState
 from msg import Msg
+from grafi.DFS import get_largest_conn_component
 from pdb import set_trace as breakpoint
 from visualGraph import *
 
@@ -14,11 +15,11 @@ random.seed(40)
 class Simulator:
 
 	# Simulation parameters
-	SECONDS_SIM = 20  #TODO change and iterate while there are infected cars
-	TIME_RESOLUTION = 0.05 #0.05 seconds per iteration
+	SECONDS_SIM = 7  #TODO change and iterate while there are infected cars
+	TIME_RESOLUTION = 0.01 #how many seconds per iteration
 
 	# Environment parameters
-	TMAX = 1		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
+	TMAX = 0.5		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
 	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
 	RMAX = 2000		#raggio massimo di comunicazione, espresso in metri
@@ -68,7 +69,7 @@ class Simulator:
 
 
 
-def init_cars():
+def init_cars(): 
 	positions = []
 	p = open("grafi/Luxembourg/pos/pos_time27100Tper1000.txt", "r")
 	#p = open("grafi/Cologne/pos/pos_time23000Tper1000.txt", "r")
@@ -89,6 +90,7 @@ def init_cars():
 	#breakpoint()
 	cars = [Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
 	cars = list(filter(lambda x: x != None, cars))
+	#cars = get_largest_conn_component(cars)
 	return cars
 
 def init_cars_newyork():
@@ -100,6 +102,8 @@ def init_cars_newyork():
 	cars = []
 	for i,c,a in zip(range(len(adia)),coord,adia):
 		cars.append(Car(i,c,a))
+	#print(len(cars))
+	#cars = get_largest_conn_component(cars)
 	return cars
 
 
