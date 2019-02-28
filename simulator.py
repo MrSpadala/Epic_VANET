@@ -1,5 +1,7 @@
 
+import os
 import sys
+import pickle
 import random
 import functools
 from multiprocessing import Pool
@@ -15,7 +17,7 @@ random.seed(40)
 class Simulator:
 
 	# Simulation parameters
-	SECONDS_SIM = 7  #TODO change and iterate while there are infected cars
+	SECONDS_SIM = 10  #TODO change and iterate while there are infected cars
 	TIME_RESOLUTION = 0.01 #how many seconds per iteration
 
 	# Environment parameters
@@ -69,10 +71,17 @@ class Simulator:
 
 
 
-def init_cars(): 
+def init_cars():
+	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"
+	#city_name, scenario = "Cologne", "time23000Tper1000.txt"
+	
+	fpath = os.path.join("cached", city_name+"_"+scenario+'.bin')
+	cached = _load_cached(fpath)
+	if cached:	return cached
+
+	print('Computing car graph...')
 	positions = []
-	p = open("grafi/Luxembourg/pos/pos_time27100Tper1000.txt", "r")
-	#p = open("grafi/Cologne/pos/pos_time23000Tper1000.txt", "r")
+	p = open("grafi/"+city_name+"/pos/pos_"+scenario, "r")
 	for i in p:
 		d = i[:-1].split(' ')  #discard trailing \n
 		if d[0] == d[2] and d[2] == d[4]:  #riga fallata
@@ -82,15 +91,14 @@ def init_cars():
 			#sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
 
 
-	a = open("grafi/Luxembourg/adj/adj_time27100Tper1000.txt", "r")
-	#a = open("grafi/Cologne/adj/adj_time23000Tper1000.txt", "r")
+	a = open("grafi/"+city_name+"/adj/adj_"+scenario, "r")
 	adi = []
 	for l in a:
 		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
-	#breakpoint()
 	cars = [Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
 	cars = list(filter(lambda x: x != None, cars))
-	#cars = get_largest_conn_component(cars)
+	cars = get_largest_conn_component(cars)
+	pickle.dump(cars, open(fpath, 'wb'))
 	return cars
 
 def init_cars_newyork():
@@ -105,6 +113,14 @@ def init_cars_newyork():
 	#print(len(cars))
 	#cars = get_largest_conn_component(cars)
 	return cars
+
+
+def _load_cached(fpath):
+	if not os.path.exists("cached"):
+		os.makedirs("cached")
+	if os.path.exists(fpath):
+		return pickle.load(open(fpath, "rb"))
+	return None
 
 
 #Performs 'n' different simulations
@@ -170,7 +186,7 @@ if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
 		with Pool(4) as pool:
 			#print( pool.map(do_tests, range(50, 341, 10)) )
-			do_tests(250)
+			do_tests(170)
 
 	else:
 		performSimulations(1)
