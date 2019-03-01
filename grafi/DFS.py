@@ -9,9 +9,7 @@ def get_largest_conn_component(cars):
 		if not car in all_visited_cars:
 			visited = set([car.plate])
 			_dfs(car, visited, plates_to_cars)
-			#print(visited)
 			all_visited_cars = all_visited_cars.union(visited)
-			#print(all_visited_cars)
 			components.append(visited)
 
 	max_c = max(components, key=lambda x: len(x))   #get biggest connected component
@@ -22,6 +20,5 @@ def _dfs(curr_car, visited, plates_to_cars):
 	for c, i in zip(curr_car.adj, range(len(curr_car.adj))):
 		if c == 1 and (not i in visited) and (i in plates_to_cars):
 			visited.add(i)
-			#print(visited)
 			new_car = plates_to_cars[i]
 			_dfs(new_car, visited, plates_to_cars)

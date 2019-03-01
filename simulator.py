@@ -179,14 +179,14 @@ def performSimulations(n, with_outliers=False):
 
 def do_tests(r):
 	Simulator.RMIN = r
-	return performSimulations(3, with_outliers=True)
+	return performSimulations(15, with_outliers=True)
 
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		with Pool(4) as pool:
+		#with Pool(4) as pool:
 			#print( pool.map(do_tests, range(50, 341, 10)) )
-			do_tests(170)
+		do_tests(210)
 
 	else:
 		performSimulations(1)
