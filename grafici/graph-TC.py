@@ -12,7 +12,7 @@ std_men = (2, 3, 4, 1, 2)
 means_women = (25, 32, 34, 20, 25)
 std_women = (3, 5, 2, 3, 3)
 
-fig, ax = plt.subplots()
+
 
 index = np.arange(n_groups)
 bar_width = 0.35
@@ -47,19 +47,29 @@ import matplotlib.pyplot as plt
 
 
 N = 3
+means_infected_low = (0.9378-(305.71/787), 0.9542-(143.53/220), 0.9405-(155.61/433))
+means_frw_low = (355.48/790, 143.53/220, 155.61/433)
 means_infected = (0.9517-(355.48/790), 0.9463-(222.75/436), 0.9547-(118.63/600))
-means_frw = (355.48/790, 222.75/436, 118.63/600)
+means_frw = (305.71/787, 222.75/436, 118.63/600)
 ind = np.arange(N)    # the x locations for the groups
-width = 0.5       # the width of the bars: can also be len(x) sequence
+width = 0.28       # the width of the bars: can also be len(x) sequence
 
-p1 = plt.bar(ind, means_frw, width)
+fig, ax = plt.subplots()
+
+gap = 0.07
+
+p1 = plt.bar(ind, means_frw, width, color='b')
 p2 = plt.bar(ind, means_infected, width,
-             bottom=means_frw)
+             bottom=means_frw, color='#ff0000')
+p3 = plt.bar(ind+width+gap, means_frw_low, width, color='b')
+p4 = plt.bar(ind+width+gap, means_infected_low, width,
+             bottom=means_frw_low, color='r')
+
 
 plt.ylabel('Nodes (%)')
-plt.title('Receivers and forwarders')
-plt.xticks(ind, ('Luxemburg', 'Cologne', 'New York'))
-plt.yticks(np.arange(0, 1, 0.1))
+plt.title('')
+plt.xticks(ind+width/2+gap/2, ('Luxemburg', 'Cologne', 'New York'))
+plt.yticks(np.arange(0, 1.1, 0.1))
 plt.legend((p1[0], p2[0]), ('Forwarders', 'Receivers'), loc=0)
 
 plt.show()

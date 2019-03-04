@@ -111,3 +111,51 @@ Average metrics with probabilistic P=96%
 time of last car infection:  1.7397999999999998
 #hops to reach last infected car:  5.99
 Cars infected ratio: 93.98%
+
+
+
+
+  - - Luxemburg 50 - - 
+
+STATS:
+umber of cars 787
+number of edges 4610.0
+density 5.857687420584498
+
+Average metrics with rmin = 150
+#sent messages:  305.71
+#received messages:  3914.04
+time of last car infection:  5.4391
+#hops to reach last infected car:  13.18
+Cars infected ratio: 93.78%
+
+
+ - - Cologne 50 - -
+
+STATS:
+number of cars 220
+number of edges 1225.0
+density 5.568181818181818
+
+Average metrics with rmin = 130
+#sent messages:  143.53
+#received messages:  1634.28
+time of last car infection:  4.9791
+#hops to reach last infected car:  12.29
+Cars infected ratio: 95.42%
+
+
+-- new YORK 3001 - -
+
+STATS:
+umber of cars 433
+number of edges 4744.0
+density 10.956120092378752
+
+Average metrics with rmin = 490
+#sent messages:  155.61
+#received messages:  3578.62
+time of last car infection:  2.1144
+#hops to reach last infected car:  7.02
+Cars infected ratio: 94.05%
+
