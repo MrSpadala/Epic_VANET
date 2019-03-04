@@ -5,10 +5,10 @@ def get_largest_conn_component(cars):
 	
 	components = []
 	all_visited_cars = set()
-	for car in cars:
+	for car in plates_to_cars.keys():
 		if not car in all_visited_cars:
-			visited = set([car.plate])
-			_dfs(car, visited, plates_to_cars)
+			visited = set([car])
+			_dfs(plates_to_cars[car], visited, plates_to_cars)
 			all_visited_cars = all_visited_cars.union(visited)
 			components.append(visited)
 
