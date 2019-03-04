@@ -13,6 +13,12 @@ tutto deve essere nell'ottica di "cosa vogliamo qmostrare", tipo il tradeoff tra
 
  - - LUXEMBURG 1000 - -
 
+STATS:
+number of cars 790
+number of edges 17406.0
+density 22.03291139240506
+
+
 Average metrics with rmin = 210
 #sent messages:  355.48
 #received messages:  17080.62
@@ -35,5 +41,52 @@ Average metrics with probabilistic P=95%
 time of last car infection:  2.8315250000000005
 #hops to reach last infected car:  7.5675
 Cars infected ratio: 93.62%
+
+
+
+
+
+ - - COLOGNE 1000 - -
+
+STATS: 
+number of cars 436
+number of edges 3789.0
+density 8.690366972477063
+
+
+Average metrics with rmin = 180
+#sent messages:  222.75
+#received messages:  4359.445
+time of last car infection:  6.4603
+#hops to reach last infected car:  15.925
+Cars infected ratio: 94.63%
+
+
+Average metrics with probabilistic P=51%   (perc. of cars that rebroadcasted the message in the previous test)
+#sent messages:  72.78
+#received messages:  1290.085
+time of last car infection:  3.1547
+#hops to reach last infected car:  8.115
+Cars infected ratio: 36.60%
+
+
+Average metrics with probabilistic P=97.5%
+#sent messages:  385.545
+#received messages:  6500.565
+time of last car infection:  6.1903999999999995
+#hops to reach last infected car:  15.24
+Cars infected ratio: 94.59%
+
+
+
+
+
+ - -  NEW YORK  - -
+
+STATS: 
+number of cars 600
+number of edges 9712.0
+density 16.186666666666667
+
 
 
