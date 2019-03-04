@@ -89,4 +89,25 @@ number of edges 9712.0
 density 16.186666666666667
 
 
+Average metrics with rmin = 700
+#sent messages:  118.63
+#received messages:  3774.1
+time of last car infection:  1.9412
+#hops to reach last infected car:  6.52
+Cars infected ratio: 95.47%
 
+
+Average metrics with probabilistic P=51%   (perc. of cars that rebroadcasted the message in the previous test)
+#sent messages:  18.86
+#received messages:  623.5
+time of last car infection:  0.5357999999999999
+#hops to reach last infected car:  1.57
+Cars infected ratio: 15.52%
+
+
+Average metrics with probabilistic P=96% 
+#sent messages:  540.68
+#received messages:  16996.28
+time of last car infection:  1.7397999999999998
+#hops to reach last infected car:  5.99
+Cars infected ratio: 93.98%
