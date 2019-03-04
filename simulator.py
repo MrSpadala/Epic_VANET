@@ -46,6 +46,20 @@ class Simulator:
 		#_car_dict = {c.plate: c for c in self.cars}
 		_car_dict = {c.plate: c for c in self.cars if c != None}
 		self.car_dict = defaultdict(lambda: None, _car_dict)
+		
+		def print_density():
+			cars, edges = 0, 0
+			for k,car in self.car_dict.items():
+				cars += 1
+				for a in car.adj:
+					edges += 1 if (a==1 and self.car_dict[a]!=None) else 0
+			print('number of cars', cars)
+			print('number of edges', edges/2)
+			print('density', edges/(2*cars))
+
+		#print_density()
+
+
 		self.t = 0   #current simulation iteration
 
 		# Metrics variables
@@ -107,16 +121,22 @@ def init_cars():
 	return cars
 
 def init_cars_newyork():
+	fname = 'Newyork5003.mat'
+	fpath = os.path.join("cached", fname+'.bin')
+	cached = _load_cached(fpath)
+	if cached:	return cached
+
+	print('Computing car graph...')
 	import scipy.io as sio
 	import numpy as np
-	contents = sio.loadmat('grafi/NewYork/Newyork5003.mat')
+	contents = sio.loadmat(os.path.join('grafi/NewYork/', fname))
 	adia, coord = contents['Adia'], contents['coord']
 	coord = [(x,y) for x,y in zip(coord[0], coord[1])]
 	cars = []
 	for i,c,a in zip(range(len(adia)),coord,adia):
 		cars.append(Car(i,c,a))
-	#print(len(cars))
-	#cars = get_largest_conn_component(cars)
+	cars = get_largest_conn_component(cars)
+	pickle.dump(cars, open(fpath, 'wb'))
 	return cars
 
 
