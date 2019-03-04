@@ -12,7 +12,12 @@ from grafi.DFS import get_largest_conn_component
 from pdb import set_trace as breakpoint
 from visualGraph import *
 
-random.seed(40)
+try:
+	from tqdm import tqdm
+except:
+	tqdm = lambda x: x
+
+random.seed(42)
 
 class Simulator:
 
@@ -26,7 +31,7 @@ class Simulator:
 	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
 	RMAX = 2000		#raggio massimo di comunicazione, espresso in metri
 	DROP = 0.03		#rate di messaggi persi spontaneamente nella trasmissione
-	ALPHA = 0.8		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
+	ALPHA = 1		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
 
@@ -129,6 +134,17 @@ def performSimulations(n, with_outliers=False):
 	#Perform a single simulation
 	def performSimulation():
 		cars = init_cars()
+
+		def print_graph_stats():
+			grade = 0
+			for car in cars:
+				for a in car.adj:
+					grade += a
+			print('number of edges', grade/2)
+			print('density', grade/(2*len(cars)))
+
+		#print_graph_stats()
+
 		s = Simulator(cars)
 
 		if s.no_graphics:
@@ -152,7 +168,7 @@ def performSimulations(n, with_outliers=False):
 		return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None  #consider as outlier a simulation where less than 5% of the cars got infected
 
 
-	sims = [performSimulation() for i in range(n)]  #list with Simulator objects
+	sims = [performSimulation() for i in tqdm(range(n))]  #list with Simulator objects
 	sims = list(filter(lambda x: x!=None, sims))    #filter out None
 
 	print()
@@ -179,7 +195,7 @@ def performSimulations(n, with_outliers=False):
 
 def do_tests(r):
 	Simulator.RMIN = r
-	return performSimulations(15, with_outliers=True)
+	return performSimulations(400, with_outliers=True)
 
 
 if __name__ == "__main__":

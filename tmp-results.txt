@@ -1,0 +1,39 @@
+
+ - - -  MEMO  - - -
+sezione iniziale che spiega il problema in generale, i parametri fondamentali, poi una parte che
+descrive l'algoritmo (pseudo codice, oppure a parole (abbastanza formali))
+
+
+per presentare i risultati:
+prima una tabella che presenta i valori dei parametri scelti, poi presenta le figure commentandole
+tutto deve essere nell'ottica di "cosa vogliamo qmostrare", tipo il tradeoff tra throughput e ritardo
+
+
+
+
+ - - LUXEMBURG 1000 - -
+
+Average metrics with rmin = 210
+#sent messages:  355.48
+#received messages:  17080.62
+time of last car infection:  2.862
+#hops to reach last infected car:  7.78
+Cars infected ratio: 95.17%
+
+
+Average metrics with probabilistic P=45%   (perc. of cars that rebroadcasted the message in the previous test)
+#sent messages:  133.8
+#received messages:  5869.84
+time of last car infection:  1.3920000000000001
+#hops to reach last infected car:  3.7
+Cars infected ratio: 37.45%
+
+
+Average metrics with probabilistic P=95% 
+#sent messages:  702.56
+#received messages:  29891.2625
+time of last car infection:  2.8315250000000005
+#hops to reach last infected car:  7.5675
+Cars infected ratio: 93.62%
+
+
