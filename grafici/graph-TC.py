@@ -47,9 +47,9 @@ import matplotlib.pyplot as plt
 
 
 N = 3
-means_infected_low = (0.9378-(305.71/787), 0.9542-(143.53/220), 0.9405-(155.61/433))
+means_infected_low = (0.9128-(305.71/787), 0.9542-(143.53/220), 0.9405-(155.61/433))
 means_frw_low = (355.48/790, 143.53/220, 155.61/433)
-means_infected = (0.9517-(355.48/790), 0.9463-(222.75/436), 0.9547-(118.63/600))
+means_infected = (0.9917-(355.48/790), 0.9463-(222.75/436), 0.9547-(118.63/600))
 means_frw = (305.71/787, 222.75/436, 118.63/600)
 ind = np.arange(N)    # the x locations for the groups
 width = 0.28       # the width of the bars: can also be len(x) sequence
@@ -60,16 +60,17 @@ gap = 0.07
 
 p1 = plt.bar(ind, means_frw, width, color='b')
 p2 = plt.bar(ind, means_infected, width,
-             bottom=means_frw, color='#ff0000')
-p3 = plt.bar(ind+width+gap, means_frw_low, width, color='b')
+             bottom=means_frw, color='#ffa500')
+p3 = plt.bar(ind+width+gap, means_frw_low, width, color='#0000aa')
 p4 = plt.bar(ind+width+gap, means_infected_low, width,
-             bottom=means_frw_low, color='r')
+             bottom=means_frw_low, color='#cc6e00')
 
 
 plt.ylabel('Nodes (%)')
 plt.title('')
 plt.xticks(ind+width/2+gap/2, ('Luxemburg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
-plt.legend((p1[0], p2[0]), ('Forwarders', 'Receivers'), loc=0)
+plt.legend((p1[0], p2[0]), ('Forwarders', 'Receivers'), loc='upper left')
 
-plt.show()
+#plt.show()
+plt.savefig('img.png', dpi=300)
