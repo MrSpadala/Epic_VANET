@@ -65,6 +65,26 @@ p3 = plt.bar(ind+width+gap, means_frw_low, width, color='b')
 p4 = plt.bar(ind+width+gap, means_infected_low, width,
              bottom=means_frw_low, color='#cc6e00')
 
+'''
+# Shrink current axis's height by 10% on the bottom
+box = ax.get_position()
+ax.set_position([box.x0, box.y0 + box.height * 0.1,
+                 box.width, box.height * 0.9])
+
+# Put a legend below current axis
+#ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
+  #        fancybox=True, shadow=True, ncol=5)
+
+
+
+plt.ylabel('Nodes (%)')
+plt.title('')
+plt.xticks(ind+width+gap, ('Luxemburg', 'Cologne', 'New York'))
+plt.yticks(np.arange(0, 1.1, 0.1))
+plt.legend((p2[0], p4[0], p3[0]), ('Receivers high density', 'Receivers low density', 'Forwarders'), 
+	loc='upper center', bbox_to_anchor=(0.5, -0.08),
+    fancybox=True, shadow=True, ncol=5)
+'''
 
 plt.ylabel('Nodes (%)')
 plt.title('')

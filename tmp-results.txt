@@ -97,7 +97,7 @@ time of last car infection:  1.9412
 Cars infected ratio: 95.47%
 
 
-Average metrics with probabilistic P=51%   (perc. of cars that rebroadcasted the message in the previous test)
+Average metrics with probabilistic P=20.25%   (perc. of cars that rebroadcasted the message in the previous test)
 #sent messages:  18.86
 #received messages:  623.5
 time of last car infection:  0.5357999999999999

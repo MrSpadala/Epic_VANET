@@ -47,31 +47,67 @@ import matplotlib.pyplot as plt
 
 
 N = 3
+#means_infected_low = (0.9128-(305.71/787), 0.9542-(143.53/220), 0.9405-(155.61/433))
+#means_frw_low = (355.48/790, 143.53/220, 155.61/433)
+
+
 means_recv = (0.9917-(355.48/790), 0.9463-(222.75/436), 0.9547-(118.63/600))
 means_frw = (305.71/787, 222.75/436, 118.63/600)
 
+means_frw_low = (133.8/790, 72.78/436, 18.86/600)
+means_low_prob = (0.3745-means_frw_low[0], 0.366- means_frw_low[1], 0.1552- means_frw_low[2])
+
+means_frw_high = (702/790, 385.5/436, 540.6/600)
+means_high_prob = (0.9362-means_frw_high[0], 0.9459- means_frw_high[1], 0.9398- means_frw_high[2])
 
 
 ind = np.arange(N)    # the x locations for the groups
-width = 0.28       # the width of the bars: can also be len(x) sequence
+width = 0.19       # the width of the bars: can also be len(x) sequence
 
-fig, ax = plt.subplots()
+#fig, ax = plt.subplots()
+fig = plt.figure()
+ax = plt.subplot(111)
 
 gap = 0.07
+
+scale = 0.5
+plt.figure(figsize=(15*scale, 10*scale))
 
 p1 = plt.bar(ind, means_frw, width, color='b')
 p2 = plt.bar(ind, means_recv, width,
              bottom=means_frw, color='#ffa500')
-p3 = plt.bar(ind+width+gap, means_frw_low, width, color='b')
-p4 = plt.bar(ind+width+gap, means_infected_low, width,
-             bottom=means_frw_low, color='#cc6e00')
+#p3 = plt.bar(ind+width+gap, means_frw_low, width, color='b')
+#p4 = plt.bar(ind+width+gap, means_infected_low, width,
+#             bottom=means_frw_low, color='#cc6e00')
+
+p3 = plt.bar(ind+width+gap, means_frw_high, width, color='b')
+p4 = plt.bar(ind+width+gap, means_high_prob, width,
+             bottom=means_frw_high, color='r')
+
+p5 = plt.bar(ind+2*width+2*gap, means_frw_low, width, color='b')
+p6 = plt.bar(ind+2*width+2*gap, means_low_prob, width,
+             bottom=means_frw_low, color='#00bb00')
+
+# Shrink current axis's height by 10% on the bottom
+box = ax.get_position()
+ax.set_position([box.x0, box.y0 + box.height * 0.1,
+                 box.width, box.height * 0.9])
+
+# Put a legend below current axis
+#ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.05),
+  #        fancybox=True, shadow=True, ncol=5)
+
 
 
 plt.ylabel('Nodes (%)')
 plt.title('')
-plt.xticks(ind+width/2+gap/2, ('Luxemburg', 'Cologne', 'New York'))
+plt.xticks(ind+width+gap, ('Luxemburg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
-plt.legend((p2[0], p4[0], p3[0]), ('Receivers high density', 'Receivers low density', 'Forwarders'), loc='upper left')
+plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Forwarders', 'Receivers', r'Probabilistic $P=\widehat{P}$', r'Probabilistic $P=0.96$'), 
+	loc='upper center', bbox_to_anchor=(0.5, -0.08),
+    fancybox=True, shadow=True, ncol=5)
 
+
+plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
 #plt.show()
 plt.savefig('img.png', dpi=300)
