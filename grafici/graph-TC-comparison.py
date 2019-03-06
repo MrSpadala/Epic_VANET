@@ -73,20 +73,22 @@ gap = 0.07
 scale = 0.5
 plt.figure(figsize=(15*scale, 10*scale))
 
-p1 = plt.bar(ind, means_frw, width, color='b')
+p1 = plt.bar(ind, means_frw, width, color='b', edgecolor='k')
 p2 = plt.bar(ind, means_recv, width,
-             bottom=means_frw, color='#ffa500')
+             bottom=means_frw, color='#ffa500', edgecolor='k')
 #p3 = plt.bar(ind+width+gap, means_frw_low, width, color='b')
 #p4 = plt.bar(ind+width+gap, means_infected_low, width,
 #             bottom=means_frw_low, color='#cc6e00')
 
-p3 = plt.bar(ind+width+gap, means_frw_high, width, color='b')
+p3 = plt.bar(ind+width+gap, means_frw_high, width, color='b', edgecolor='k')
 p4 = plt.bar(ind+width+gap, means_high_prob, width,
-             bottom=means_frw_high, color='r')
+             bottom=means_frw_high, color='r', edgecolor='k')
 
-p5 = plt.bar(ind+2*width+2*gap, means_frw_low, width, color='b')
+p5 = plt.bar(ind+2*width+2*gap, means_frw_low, width, color='b', edgecolor='k')
 p6 = plt.bar(ind+2*width+2*gap, means_low_prob, width,
-             bottom=means_frw_low, color='#00bb00')
+             bottom=means_frw_low, color='#00bb00', edgecolor='k')
+
+#plt.text(2.4, 0.9,'drop_rate = 0.03',{'size':11})
 
 # Shrink current axis's height by 10% on the bottom
 box = ax.get_position()
@@ -109,5 +111,5 @@ plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Forwarders', 'Receivers', r'Probabili
 
 
 plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
-#plt.show()
-plt.savefig('img.png', dpi=300)
+plt.show()
+#plt.savefig('img.png', dpi=300)

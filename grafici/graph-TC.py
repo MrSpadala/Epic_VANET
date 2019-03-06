@@ -58,12 +58,12 @@ fig, ax = plt.subplots()
 
 gap = 0.07
 
-p1 = plt.bar(ind, means_frw, width, color='b')
+p1 = plt.bar(ind, means_frw, width, color='b', edgecolor='k')
 p2 = plt.bar(ind, means_infected, width,
-             bottom=means_frw, color='#ffa500')
-p3 = plt.bar(ind+width+gap, means_frw_low, width, color='b')
+             bottom=means_frw, color='#ffa500', edgecolor='k')
+p3 = plt.bar(ind+width+gap, means_frw_low, width, color='b', edgecolor='k')
 p4 = plt.bar(ind+width+gap, means_infected_low, width,
-             bottom=means_frw_low, color='#cc6e00')
+             bottom=means_frw_low, color='#cc6e00', edgecolor='k')
 
 '''
 # Shrink current axis's height by 10% on the bottom
@@ -90,7 +90,7 @@ plt.ylabel('Nodes (%)')
 plt.title('')
 plt.xticks(ind+width/2+gap/2, ('Luxemburg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
-plt.legend((p2[0], p4[0], p3[0]), ('Receivers high density', 'Receivers low density', 'Forwarders'), loc='upper left')
+plt.legend((p3[0], p2[0], p4[0]), ('Relayers', 'Receivers high density', 'Receivers low density'), loc='upper left')
 
 #plt.show()
-plt.savefig('img.png', dpi=300)
+plt.savefig('top_car/frw_recv.png', dpi=300)
