@@ -17,7 +17,7 @@ try:
 except:
 	tqdm = lambda x: x
 
-random.seed(42)
+random.seed(320)
 
 class Simulator:
 
@@ -26,12 +26,12 @@ class Simulator:
 	TIME_RESOLUTION = 0.01 #how many seconds per iteration
 
 	# Environment parameters
-	TMAX = 0.5		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
+	TMAX = 0.9		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
 	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
 	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
-	RMAX = 2000		#raggio massimo di comunicazione, espresso in metri
+	RMAX = 500		#raggio massimo di comunicazione, espresso in metri
 	DROP = 0.03		#rate di messaggi persi spontaneamente nella trasmissione
-	ALPHA = 1		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
+	#ALPHA = 1		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
 					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
 					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
 
@@ -99,8 +99,8 @@ class Simulator:
 
 
 def init_cars():
-	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"
-	#city_name, scenario = "Cologne", "time23000Tper1000.txt"
+	city_name, scenario = "Luxembourg", "time27100Tper50.txt"
+	#city_name, scenario = "Cologne", "time23000Tper50.txt"
 	
 	fpath = os.path.join("cached", city_name+"_"+scenario+'.bin')
 	cached = _load_cached(fpath)
