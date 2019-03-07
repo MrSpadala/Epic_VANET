@@ -97,7 +97,7 @@ class Car:
 		if self.state == State.VULNERABLE:  #Se la macchina ancora non è infettata allora viene infettata e settato il timer
 			self.sim.t_last_infected = self.sim.t
 			self.sim.n_hop_last_infected = msg.hop
-			self.state = State.INFECTED
+			self.transition_to_state(State.INFECTED)
 			self.timer_infected = self.getWaitingTime(msg.last_emit)   #setta il timer di attesa in funzione della distanza dell'emitter
 			#decomment to see all timers
 			#print("timer_infected set to:", self.timer_infected * Simulator.TIME_RESOLUTION, "seconds")
@@ -109,11 +109,12 @@ class Car:
 		#print(self.pos, emit_pos)
 		dAS = dist(self.pos, emit_pos)   #distanza tra me e l'emittente che me lo ha mandato, espressa in metri
 		t_dist = Simulator.TMAX*(1 - dAS/Simulator.RMAX)   #tempo di attesa dipendente dalla distanza, espresso in secondi
-		t_non_determ = t_dist * random.random()   #tempo di attesa non deterministico in (0, t_dist) secondi
+		#t_non_determ = t_dist * random.random()   #tempo di attesa non deterministico in (0, t_dist) secondi
 
 		#tempo finale calcolato con il parametro ALPHA che decide il bilanciamento della componente deterministica e non deterministica.
 		#t_final è compreso tra ( (ALPHA)*t_dist , t_dist ) secondi
-		t_final = Simulator.ALPHA*t_dist + (1-Simulator.ALPHA)*t_non_determ
+		#t_final = Simulator.ALPHA*t_dist + (1-Simulator.ALPHA)*t_non_determ
+		t_final = t_dist
 
 		if t_final <= Simulator.TMIN:
 			t_final = Simulator.TMIN
@@ -198,6 +199,18 @@ class Car:
 		#ritrasmetti il messaggio con una certa probabilità P
 		P = 0.95
 		return random.random() > (1-P)
+
+
+	def transition_to_state(self, state_final):
+		if self.state == State.VULNERABLE and state_final == State.INFECTED:
+			self.sim.infected_counter += 1
+			self.state = State.INFECTED
+		elif self.state == State.INFECTED and state_final == State.RECOVERED:
+			self.sim.infected_counter -= 1
+			self.state = State.RECOVERED
+		else:
+			raise ValueError('Inconsistent state transition from', self.state, 'to', state_final)
+
 
 
 

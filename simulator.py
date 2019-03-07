@@ -59,8 +59,9 @@ class Simulator:
 
 		#print_density()
 
-
+		# Simulation variables
 		self.t = 0   #current simulation iteration
+		self.infected_counter = 0	 #keep track of cars currently in INFECTED state
 
 		# Metrics variables
 		self.rcv_messages = 0  #number of received messages
@@ -74,15 +75,22 @@ class Simulator:
 
 
 	def runSimulation(self):
-		for t in range(int(Simulator.SECONDS_SIM/Simulator.TIME_RESOLUTION)):
-			self.t = t
+		# Set counter for infected cats
+		cars_inftd = [c.state == carState.INFECTED for c in self.cars]   #cars infected at the start of the simulation
+		self.infected_counter = sum(cars_inftd)
+		# Set simulation tick  
+		self.t = 0
+
+		#print('started sim with inf counter', self.infected_counter)
+		while self.infected_counter > 0:
+			self.t += 1
 			for car in self.cars:	# k è la chiave dell'elemento
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
 
 					if car.timer_infected <= 0:
 						car.timer_infected = None
-						car.state = carState.RECOVERED
+						car.transition_to_state(carState.RECOVERED)
 						car.broadMsg()
 
 	def getCar(self, plate):
