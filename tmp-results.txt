@@ -159,3 +159,57 @@ time of last car infection:  2.1144
 #hops to reach last infected car:  7.02
 Cars infected ratio: 94.05%
 
+
+
+
+
+
+
+- - - - - - -  EMITTERS LIST LIMIT - - - - - - - - 
+LIMIT = 100
+Average metrics with rmin = 210
+#sent messages:  330.136
+#received messages:  15879.841
+time of last car infection:  2.82215
+#hops to reach last infected car:  7.637
+Cars infected ratio: 93.23%
+
+LIMIT = 10
+Average metrics with rmin = 210
+#sent messages:  345.506
+#received messages:  16592.157
+time of last car infection:  2.80625
+#hops to reach last infected car:  7.612
+Cars infected ratio: 93.40%
+
+LIMIT = 5
+Average metrics with rmin = 210
+#sent messages:  356.647
+#received messages:  17087.237
+time of last car infection:  2.88424
+#hops to reach last infected car:  7.808
+Cars infected ratio: 94.67%
+
+LIMIT = 3
+Average metrics with rmin = 210
+#sent messages:  357.763
+#received messages:  17080.388
+time of last car infection:  2.8415100000000004
+#hops to reach last infected car:  7.705
+Cars infected ratio: 93.65%
+
+LIMIT = 2
+Average metrics with rmin = 210
+#sent messages:  362.719
+#received messages:  17272.159
+time of last car infection:  2.8424
+#hops to reach last infected car:  7.69
+Cars infected ratio: 94.32%
+
+LIMIT = 1
+Average metrics with rmin = 210
+#sent messages:  384.708
+#received messages:  18254.302
+time of last car infection:  2.881
+#hops to reach last infected car:  7.796
+Cars infected ratio: 94.94%

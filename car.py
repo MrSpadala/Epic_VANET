@@ -39,9 +39,12 @@ class Car:
 		all_emitters = set([self.pos])
 		for m in msg_list:
 			all_emitters = all_emitters.union(set(m.emitters))
+		
+		#I update the list of the emitters and if its length exceeds EMITTERS_LIMIT I keep the closest ones
 		key = lambda x: dist(x, self.pos)
 		all_emitters_srtd = sorted(list(all_emitters), key=key, reverse=True)
 		msg.emitters = deque(all_emitters_srtd, maxlen=Msg.EMITTERS_LIMIT)
+		
 		msg.hop += 1
 
 	def broadMsg(self):
