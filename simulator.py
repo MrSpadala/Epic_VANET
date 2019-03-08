@@ -99,8 +99,8 @@ class Simulator:
 
 
 def init_cars():
-	city_name, scenario = "Luxembourg", "time27100Tper50.txt"
-	#city_name, scenario = "Cologne", "time23000Tper50.txt"
+	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"
+	#city_name, scenario = "Cologne", "time23000Tper1000.txt"
 	
 	fpath = os.path.join("cached", city_name+"_"+scenario+'.bin')
 	cached = _load_cached(fpath)
@@ -161,7 +161,7 @@ def performSimulations(n, with_outliers=False):
 
 	#Perform a single simulation
 	def performSimulation():
-		cars = init_cars()
+		cars = init_cars_newyork()
 
 		def print_graph_stats():
 			grade = 0
@@ -223,14 +223,14 @@ def performSimulations(n, with_outliers=False):
 
 def do_tests(r):
 	Simulator.RMIN = r
-	return performSimulations(400, with_outliers=True)
+	return performSimulations(10, with_outliers=True)
 
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
 		#with Pool(4) as pool:
 			#print( pool.map(do_tests, range(50, 341, 10)) )
-		do_tests(210)
+		do_tests(550)
 
 	else:
 		performSimulations(1)
