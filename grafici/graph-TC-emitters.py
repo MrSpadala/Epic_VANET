@@ -46,7 +46,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-N = 6
+N = 4
 
 '''
 means_infected_low = (0.9128-(305.71/787), 0.9542-(143.53/220), 0.9405-(155.61/433))
@@ -54,27 +54,37 @@ means_frw_low = (355.48/790, 143.53/220, 155.61/433)
 means_infected = (0.9917-(355.48/790), 0.9463-(222.75/436), 0.9547-(118.63/600))
 means_frw = (305.71/787, 222.75/436, 118.63/600)
 '''
-cnum = 790  #cars number
 
+'''   FULL RESULTS LUXEMBURG
 x = np.asarray((100,10,5,3,2,1))
 frw = np.asarray((330.136, 345.506, 356.647, 357.763, 362.719, 384.708)) / cnum
 recv = np.asarray((0.9323, 0.934, 0.9467, 0.9365, 0.9432, 0.9494)) - frw
-#x, frw, recv = np.flip(x), np.flip(frw), np.flip(recv)
+'''
+
+cnum_lux = 790  #cars number lux
+x_lux = np.asarray((100,10,5,1))
+frw_lux = np.asarray((330.136, 345.506, 356.647, 384.708)) / cnum_lux
+recv_lux = np.asarray((0.9323, 0.934, 0.9467, 0.9494)) - frw_lux
+
+cnum_ny = 600  #cars number ny
+x_ny = np.asarray((100,10,5,1))
+frw_ny = np.asarray((94.32, 96.06, 103.15, 134.31)) / cnum_ny
+recv_ny = np.asarray((0.9266, 0.9429, 0.9244, 0.974)) - frw_ny
 
 ind = np.arange(N)    # the x locations for the groups
-width = 0.3       # the width of the bars: can also be len(x) sequence
+width = 0.37       # the width of the bars: can also be len(x) sequence
 
 fig, (ax1, ax2) = plt.subplots(nrows=1, ncols=2)
 
 gap = 0.07
 
-p1 = ax1.bar(ind, frw, width, color='b', edgecolor='k')
-p2 = ax1.bar(ind, recv, width,
-             bottom=frw, color='#ffa500', edgecolor='k')
+p1 = ax1.bar(ind, frw_lux, width, color='b', edgecolor='k')
+p2 = ax1.bar(ind, recv_lux, width,
+             bottom=frw_lux, color='#ffa500', edgecolor='k')
 
-p1 = ax2.bar(ind, frw, width, color='b', edgecolor='k')
-p2 = ax2.bar(ind, recv, width,
-             bottom=frw, color='#ffa500', edgecolor='k')
+p3 = ax2.bar(ind, frw_ny, width, color='b', edgecolor='k')
+p4 = ax2.bar(ind, recv_ny, width,
+             bottom=frw_ny, color='#ffa500', edgecolor='k')
 
 
 #p1 = ax.plot(x, frw)
@@ -101,12 +111,19 @@ plt.legend((p2[0], p4[0], p3[0]), ('Receivers high density', 'Receivers low dens
     fancybox=True, shadow=True, ncol=5)
 '''
 
-plt.ylabel('Nodes (%)')
-plt.xlabel('Emitters Length Limit')
-plt.title('')
-plt.xticks(ind, ('1', '2', '3', '5', '10', 'Unlimited'))
+#plt.ylabel('Nodes (%)')
+plt.title('New York')
+plt.xticks(ind, ('1', '5', '10', 'Unlimited'))
 plt.yticks(np.arange(0, 1.1, 0.1))
-plt.legend((p1[0], p2[0]), ('Relayers', 'Reached'), loc='lower center')
+plt.sca(ax1)
+plt.ylabel('Nodes (%)')
+plt.title('Luxembourg')
+plt.xticks(ind, ('1', '5', '10', 'Unlimited'))
+plt.yticks(np.arange(0, 1.1, 0.1))
+fig.text(0.5, 0.015, 'Emitters Length Limit', ha='center', va='center')
+ax1.legend((p1[0], p2[0]), ('Relayers', 'Reached'), loc='lower left', fancybox=True)
 
-plt.show()
-#plt.savefig('top_car/emitters.png', dpi=300)
+plt.tight_layout()
+plt.gcf().subplots_adjust(bottom=0.1)
+#plt.show()
+plt.savefig('grafici/top_car/emitters.png', dpi=300)

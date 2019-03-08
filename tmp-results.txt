@@ -283,3 +283,37 @@ Average metrics with rmin = 210
 time of last car infection:  2.881
 #hops to reach last infected car:  7.796
 Cars infected ratio: 94.94%
+
+
+-- NEW YORK 5003 --
+LIMIT = 1
+Average metrics with rmin = 690
+#sent messages:  134.31
+#received messages:  3873.06
+time of last car infection:  0.6315
+#hops to reach last infected car:  6.82
+Cars infected ratio: 97.40%
+
+LIMIT = 5
+Average metrics with rmin = 690
+#sent messages:  103.15
+#received messages:  3028.26
+time of last car infection:  0.6572
+#hops to reach last infected car:  6.67
+Cars infected ratio: 92.44%
+
+LIMIT = 10
+Average metrics with rmin = 690
+#sent messages:  96.06
+#received messages:  2793.79
+time of last car infection:  0.8210000000000001
+#hops to reach last infected car:  6.61
+Cars infected ratio: 94.29%
+
+LIMIT = 100
+Average metrics with rmin = 690
+#sent messages:  94.32
+#received messages:  2756.33
+time of last car infection:  0.835
+#hops to reach last infected car:  5.96
+Cars infected ratio: 92.66%
