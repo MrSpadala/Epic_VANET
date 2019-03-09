@@ -65,11 +65,13 @@ cnum_lux = 790  #cars number lux
 x_lux = np.asarray((100,10,5,1))
 frw_lux = np.asarray((330.136, 345.506, 356.647, 384.708)) / cnum_lux
 recv_lux = np.asarray((0.9323, 0.934, 0.9467, 0.9494)) - frw_lux
+x_lux, frw_lux, recv_lux = np.flip(x_lux), np.flip(frw_lux), np.flip(recv_lux)
 
 cnum_ny = 600  #cars number ny
 x_ny = np.asarray((100,10,5,1))
 frw_ny = np.asarray((94.32, 96.06, 103.15, 134.31)) / cnum_ny
 recv_ny = np.asarray((0.9266, 0.9429, 0.9244, 0.974)) - frw_ny
+x_ny, frw_ny, recv_ny = np.flip(x_ny), np.flip(frw_ny), np.flip(recv_ny)
 
 ind = np.arange(N)    # the x locations for the groups
 width = 0.37       # the width of the bars: can also be len(x) sequence
