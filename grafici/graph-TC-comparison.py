@@ -54,8 +54,10 @@ N = 3
 means_recv = (0.9917-(355.48/790), 0.9463-(222.75/436), 0.9547-(118.63/600))
 means_frw = (305.71/787, 222.75/436, 118.63/600)
 
-means_frw_low = (133.8/790, 72.78/436, 18.86/600)
-means_low_prob = (0.3745-means_frw_low[0], 0.366- means_frw_low[1], 0.1552- means_frw_low[2])
+#means_frw_low = (133.8/790, 72.78/436, 18.86/600)
+#means_low_prob = (0.3745-means_frw_low[0], 0.366- means_frw_low[1], 0.1552- means_frw_low[2])
+means_frw_low = (428.59/790, 155.623/436, 319.7575/600)
+means_low_prob = (0.7248-means_frw_low[0], 0.4753-means_frw_low[1], 0.7094-means_frw_low[2])
 
 means_frw_high = (702/790, 385.5/436, 540.6/600)
 means_high_prob = (0.9362-means_frw_high[0], 0.9459- means_frw_high[1], 0.9398- means_frw_high[2])
@@ -105,11 +107,11 @@ plt.ylabel('Nodes (%)')
 plt.title('')
 plt.xticks(ind+width+gap, ('Luxemburg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
-plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Relayers', 'Receivers', r'Probabilistic $P=\widehat{P}$', r'Probabilistic $P=0.96$'), 
+plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Relayers', 'Reached', r'Probabilistic $P=\widehat{P}$', r'Probabilistic $P=0.96$'), 
 	loc='upper center', bbox_to_anchor=(0.5, -0.08),
     fancybox=True, shadow=True, ncol=5)
 
 
 plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
-plt.show()
-#plt.savefig('img.png', dpi=300)
+#plt.show()
+plt.savefig('grafici/top_car/prob_comparison.png', dpi=300)
