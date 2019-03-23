@@ -4,6 +4,7 @@ import sys
 import pickle
 import random
 import functools
+from math import sqrt
 from multiprocessing import Pool
 from collections import defaultdict
 from car import Car, State as carState
@@ -21,8 +22,7 @@ random.seed(320)
 
 class Simulator:
 
-	# Simulation parameters
-	SECONDS_SIM = 10  #TODO change and iterate while there are infected cars
+	# Simulator parameters
 	TIME_RESOLUTION = 0.01 #how many seconds per iteration
 
 	# Environment parameters
@@ -157,11 +157,11 @@ def _load_cached(fpath):
 
 
 #Performs 'n' different simulations
-def performSimulations(n, with_outliers=False):
+def performSimulations(n):
 
 	#Perform a single simulation
-	def performSimulation():
-		cars = init_cars_newyork()
+	def performSimulation(verbose=False):
+		cars = init_cars()
 
 		def print_graph_stats():
 			grade = 0
@@ -183,6 +183,8 @@ def performSimulations(n, with_outliers=False):
 			firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
 
 		s.runSimulation()
+
+		if verbose:
 		tmp = str([c.state for c in cars])
 		print("Simulation ended")
 		print("Vulnerable: ", tmp.count("State.VULNERABLE"))
@@ -190,10 +192,7 @@ def performSimulations(n, with_outliers=False):
 		print("Recovered: ", tmp.count("State.RECOVERED"))
 		print()
 
-		# Return Simulator or, if the simulation was too bad, don't return it
-		if with_outliers:
 			return s
-		return s if tmp.count("State.RECOVERED")>0.05*len(cars) else None  #consider as outlier a simulation where less than 5% of the cars got infected
 
 
 	sims = [performSimulation() for i in tqdm(range(n))]  #list with Simulator objects
@@ -209,6 +208,13 @@ def performSimulations(n, with_outliers=False):
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
 	print("Cars infected ratio: {:.2f}%".format(100*(infected) / (len(sims)*len(sims[0].cars))))
+	std_dev = 0
+	for s in sims:
+		std_dev += (str([c.state for c in s.cars]).count("State.RECOVERED")) ** 2
+	std_dev = (std_dev / len(sims))  -  ((infected/len(sims))**2)
+	std_dev = sqrt(std_dev)
+	print("Cars infected std dev: {:.2f}".format(std_dev))
+
 
 	return (Simulator.RMIN, #for boxplots
 		[s.sent_messages for s in sims],
@@ -223,14 +229,13 @@ def performSimulations(n, with_outliers=False):
 
 def do_tests(r):
 	Simulator.RMIN = r
-	return performSimulations(10, with_outliers=True)
+	return performSimulations(400)
 
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		#with Pool(4) as pool:
-			#print( pool.map(do_tests, range(50, 341, 10)) )
-		do_tests(550)
+		#for p in range(5, 101, 5):
+		do_tests(250)
 
 	else:
 		performSimulations(1)

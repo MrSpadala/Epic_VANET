@@ -197,7 +197,7 @@ class Car:
 
 	def evaluate_positions3(self, messages, my_pos):
 		#ritrasmetti il messaggio con una certa probabilità P
-		P = 0.95
+		P = self.sim.rmin
 		return random.random() > (1-P)
 
 
