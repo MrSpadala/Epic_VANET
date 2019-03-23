@@ -185,14 +185,14 @@ def performSimulations(n):
 		s.runSimulation()
 
 		if verbose:
-		tmp = str([c.state for c in cars])
-		print("Simulation ended")
-		print("Vulnerable: ", tmp.count("State.VULNERABLE"))
-		print("Infected: ", tmp.count("State.INFECTED"))
-		print("Recovered: ", tmp.count("State.RECOVERED"))
-		print()
+			tmp = str([c.state for c in cars])
+			print("Simulation ended")
+			print("Vulnerable: ", tmp.count("State.VULNERABLE"))
+			print("Infected: ", tmp.count("State.INFECTED"))
+			print("Recovered: ", tmp.count("State.RECOVERED"))
+			print()
 
-			return s
+		return s
 
 
 	sims = [performSimulation() for i in tqdm(range(n))]  #list with Simulator objects
@@ -229,13 +229,14 @@ def performSimulations(n):
 
 def do_tests(r):
 	Simulator.RMIN = r
-	return performSimulations(400)
+	return performSimulations(100)
 
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
 		#for p in range(5, 101, 5):
-		do_tests(250)
+		#	do_tests(p/100)
+		do_tests(220)
 
 	else:
 		performSimulations(1)
