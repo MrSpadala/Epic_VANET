@@ -186,8 +186,6 @@ class Car:
 
 		for m in messages:
 			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
-				if not in_range(my_pos, emit, 2*self.sim.rmin):  #se un emitter è troppo distante da me la scarto
-					continue
 				for neighbor_pos in list(neighbor_positions):  #controllo se un mio vicino ha già ricevuto un messaggio da un emitter precedente
 					if in_range(neighbor_pos, emit, self.sim.rmin):
 						neighbor_positions.remove(neighbor_pos)
