@@ -17,6 +17,34 @@ def extract(data, tot):
 	hops = [x[4] for x in data]
 	return rmin, forwarders, reached, delay, hops
 
+def extract_mean(data, tot):
+	rmin = [x[0] for x in data]
+	forwarders = [np.asarray(x[1])*100/tot for x in data]
+	reached = [np.asarray(x[2])*100/tot for x in data]
+
+	rmin_to_include = [50, 100, 150, 200, 250, 300]
+	reached = list(map(lambda x: sum(x)/len(x), reached))
+	forwarders = list(map(lambda x: sum(x)/len(x), forwarders))
+
+	rmin_to_include = [50, 100, 150, 200, 250, 300]
+	'''for i in range(len(rmin)):
+		if not rmin[i] in rmin_to_include:
+			continue
+		print(rmin[i], end=' ')
+	print()'''
+	print('np.array([', end='')
+	for i in range(len(rmin)):
+		if not rmin[i] in rmin_to_include:
+			continue
+		print(forwarders[i], end=', ')
+	print('])\nnp.array([', end='')
+	for i in range(len(rmin)):
+		if not rmin[i] in rmin_to_include:
+			continue
+		print(reached[i], end=', ')
+	print('])')
+
+
 def boxplot(title, x, data, ylabel):
 	fig, ax = plt.subplots()
 	ax.set_title(title)
