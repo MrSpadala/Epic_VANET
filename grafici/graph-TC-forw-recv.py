@@ -46,6 +46,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+plt.rcParams.update({'font.size': 18.3})
+plt.rc('legend', fontsize=13)
+plt.rc('xtick', labelsize=17)
+plt.rc('ytick', labelsize=11.5)
+
+
 N = 3
 means_infected_low = (0.9128-(305.71/787), 0.9542-(143.53/220), 0.9405-(155.61/433))
 means_frw_low = (355.48/790, 143.53/220, 155.61/433)
@@ -93,4 +99,4 @@ plt.yticks(np.arange(0, 1.1, 0.1))
 plt.legend((p3[0], p2[0], p4[0]), ('Relayers', 'Receivers high density', 'Receivers low density'), loc='upper left')
 
 #plt.show()
-plt.savefig('top_car/frw_recv.png', dpi=300)
+plt.savefig('grafici/top_car/frw_recv.png', dpi=300)

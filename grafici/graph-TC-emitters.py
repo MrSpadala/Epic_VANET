@@ -46,6 +46,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+plt.rcParams.update({'font.size': 13})
+plt.rc('legend', fontsize=12.5)
+plt.rc('xtick', labelsize=12)
+plt.rc('ytick', labelsize=11.5)
+plt.rc('axes', titlesize=11)
+plt.rc('axes', labelsize=16.8)
+
+
 N = 4
 
 '''
@@ -122,7 +130,7 @@ plt.ylabel('Nodes (%)')
 plt.title('Luxembourg')
 plt.xticks(ind, ('1', '5', '10', 'Unlimited'))
 plt.yticks(np.arange(0, 1.1, 0.1))
-fig.text(0.5, 0.015, 'Emitters Length Limit', ha='center', va='center')
+fig.text(0.5, 0.019, 'Emitters Length Limit', ha='center', va='center')
 ax1.legend((p1[0], p2[0]), ('Relayers', 'Reached'), loc='lower left', fancybox=True)
 
 plt.tight_layout()

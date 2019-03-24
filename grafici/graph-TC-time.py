@@ -45,6 +45,10 @@ plt.show()
 import numpy as np
 import matplotlib.pyplot as plt
 
+plt.rcParams.update({'font.size': 18.5})
+plt.rc('legend', fontsize=13)
+plt.rc('xtick', labelsize=14)
+plt.rc('ytick', labelsize=11.5)
 
 N = 3
 
