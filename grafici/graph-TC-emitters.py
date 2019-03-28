@@ -131,7 +131,7 @@ plt.title('Luxembourg')
 plt.xticks(ind, ('1', '5', '10', 'Unlimited'))
 plt.yticks(np.arange(0, 1.1, 0.1))
 fig.text(0.5, 0.019, 'Emitters Length Limit', ha='center', va='center')
-ax1.legend((p1[0], p2[0]), ('Relayers', 'Reached'), loc='lower left', fancybox=True)
+ax1.legend((p1[0], p2[0]), ('Relay', 'EPIC'), loc='lower left', fancybox=True)
 
 plt.tight_layout()
 plt.gcf().subplots_adjust(bottom=0.1)

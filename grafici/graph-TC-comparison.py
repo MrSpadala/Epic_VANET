@@ -113,11 +113,11 @@ plt.ylabel('Nodes (%)')
 plt.title('')
 plt.xticks(ind+width+gap, ('Luxemburg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
-plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Relayers', 'Reached', r'Probabilistic $P=\widehat{P}$', r'Probabilistic $P=0.96$'), 
+plt.legend((p3[0], p2[0], p4[0], p6[0]), ('Relay', 'EPIC', r'Probabilistic $P=0.96$', r'Probabilistic $P=\widehat{P}$'), 
 	loc='upper center', bbox_to_anchor=(0.5, -0.08),
     fancybox=True, shadow=True, ncol=5)
 
 
-plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
+plt.gcf().subplots_adjust(bottom=0.15, left=0.1)
 #plt.show()
 plt.savefig('grafici/top_car/prob_comparison.png', dpi=300)

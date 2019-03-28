@@ -96,7 +96,7 @@ plt.ylabel('Nodes (%)')
 plt.title('')
 plt.xticks(ind+width/2+gap/2, ('Luxemburg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
-plt.legend((p3[0], p2[0], p4[0]), ('Relayers', 'Receivers high density', 'Receivers low density'), loc='upper left')
+plt.legend((p3[0], p2[0], p4[0]), ('Relay', 'EPIC high density', 'EPIC low density'), loc='upper left')
 
 #plt.show()
 plt.savefig('grafici/top_car/frw_recv.png', dpi=300)

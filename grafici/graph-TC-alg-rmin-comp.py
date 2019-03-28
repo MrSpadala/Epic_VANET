@@ -65,7 +65,7 @@ plt.yticks(np.arange(0, 1.1, 0.1))
 #plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Relayers', 'Reached', r'Probabilistic $P=\widehat{P}$', r'Probabilistic $P=0.96$'), 
 #	loc='upper center', bbox_to_anchor=(0.5, -0.08),
 #    fancybox=True, shadow=True, ncol=5)
-plt.legend((p1[0], p2[0], p4[0]), ('Relayers', 'Reached high density', 'Reached low density'), loc='lower center', fancybox=True)
+plt.legend((p1[0], p2[0], p4[0]), ('Relay', 'EPIC high density', 'EPIC low density'), loc='lower center', fancybox=True)
 
 
 plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
