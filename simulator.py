@@ -18,12 +18,12 @@ try:
 except:
 	tqdm = lambda x: x
 
-random.seed(320)
+random.seed(42)
 
 class Simulator:
 
 	# Simulator parameters
-	TIME_RESOLUTION = 0.01 #how many seconds per iteration
+	TIME_RESOLUTION = 0.01 #how many seconds per step
 
 	# Environment parameters
 	TMAX = 0.9		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
@@ -31,9 +31,6 @@ class Simulator:
 	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
 	RMAX = 500		#raggio massimo di comunicazione, espresso in metri
 	DROP = 0.03		#rate di messaggi persi spontaneamente nella trasmissione
-	#ALPHA = 1		#quanto tempo di attesa deve essere deterministico e quanto non deterministico.
-					#ALPHA in [0,1]. ALPHA=1 è completamente deterministico, ALPHA=0 non deterministico.
-					# (possiamo aggiungere dopo che ALPHA non è costante ma magari dipende da macchina a macchina, a seconda delle condizioni del traffico)
 
 	def __init__(self, cars):
 		self.cars = cars
@@ -84,7 +81,7 @@ class Simulator:
 		#print('started sim with inf counter', self.infected_counter)
 		while self.infected_counter > 0:
 			self.t += 1
-			for car in self.cars:	# k è la chiave dell'elemento
+			for car in self.cars:
 				if car.state == carState.INFECTED:
 					car.timer_infected -= 1
 
@@ -99,8 +96,9 @@ class Simulator:
 
 
 def init_cars():
-	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"
-	#city_name, scenario = "Cologne", "time23000Tper1000.txt"
+	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"   #USE LUXEMBURG
+	#city_name, scenario = "Cologne", "time23000Tper1000.txt"     #USE COLOGNE
+	#return init_cars_newyork()									  #USE NEWYORK
 	
 	fpath = os.path.join("cached", city_name+"_"+scenario+'.bin')
 	cached = _load_cached(fpath)
@@ -111,12 +109,10 @@ def init_cars():
 	p = open("grafi/"+city_name+"/pos/pos_"+scenario, "r")
 	for i in p:
 		d = i[:-1].split(' ')  #discard trailing \n
-		if d[0] == d[2] and d[2] == d[4]:  #riga fallata
+		if d[0] == d[2] and d[2] == d[4]:  #don't append malformed rows
 			positions.append(None)
 		else:
 			positions.append((float(d[2]), float(d[3])))
-			#sphere(pos=vector(float(d[2]),float(d[3]),0), radius=20)
-
 
 	a = open("grafi/"+city_name+"/adj/adj_"+scenario, "r")
 	adi = []
@@ -221,9 +217,6 @@ def performSimulations(n):
 		[str([c.state for c in s.cars]).count("State.RECOVERED") for s in sims],
 		[s.t_last_infected for s in sims],
 		[s.n_hop_last_infected for s in sims])
-	#return (Simulator.RMIN,  #for graphs
-	#	sum([s.sent_messages for s in sims])/n,
-	#	100*(infected+15) / (len(sims)*len(sims[0].cars)))
 
 
 

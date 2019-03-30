@@ -5,8 +5,8 @@ if "--no-graphics" in sys.argv:
 
 else:
 	import vpython as vp
-	#Inserisce le auto nel grafico e ritorna un dizionario che associa
-	#ogni pallina alla targa dell'auto corrispondente
+	#Insert vehicles in the graph and returns a dict associating each
+	#ball to the vehicle plate
 	palle={}
 
 	#for vpython useful commands see here: vpython.org/contents/docs/display.html

@@ -16,9 +16,9 @@ class State(Enum):
 	RECOVERED = 2
 
 
-def dist(p,q):
+def dist(p,q):  #eucledian distance
 	return sqrt((p[0]-q[0])**2+(p[1]-q[1])**2)
-def in_range(p,q,radius):  #ritorna se p e q sono distanti meno di 'radius'
+def in_range(p,q,radius):	#returns true whether the distance p,q is less than radiu
 	return dist(p,q) < radius
 
 
@@ -34,7 +34,7 @@ class Car:
 		self.sim = None  #simulator object
 
 	def modifyMsg(self, msg, msg_list):
-		#Modifico il messaggio con i miei dati
+		#Update the message with my data
 		msg.last_emit = self.pos
 		all_emitters = set([self.pos])
 		for m in msg_list:
@@ -51,20 +51,19 @@ class Car:
 		bcast = self.evaluate_positions2(self.messages, self.pos)
 		if (not bcast):
 			return
-		#manca il controllo delle direzioni
 
-		msg = self.messages[0].clone()  #prendo il primo messaggio della lista, quello che ha generato l'infezione
+		#take the first message in the list of incoming messages (the first message generated the infection)
+		msg = self.messages[0].clone()
 		self.modifyMsg(msg, self.messages)
 
-		#Se il messaggio è arrivato al limite di hop mi fermo
+		#Don't broadcast if the message reached its hop limit
 		if msg.hop == msg.ttl:
 			return
 
 		message_sent = False
 		for c, i in zip(self.adj, range(len(self.adj))):
 			if c == 1:
-				#Ho preso la macchina corrispondente
-				obj = self.sim.getCar(i)
+				obj = self.sim.getCar(i)  #take the car object
 				if obj == None:
 					continue
 
@@ -84,45 +83,45 @@ class Car:
 
 
 	def infect(self, msg):
-		#Simulo la perdita di una percentuale di messaggi *in ricezoione*
+		#Simulate message loss while receiving
 		if random.random() < Simulator.DROP:
 			return
 
-		self.sim.rcv_messages += 1
-		#se e' il primo messaggio faccio partire il timer di attesa
-		#altrimenti aggiungo solo il messaggio alla lista
-		if self.state == State.RECOVERED:   #Se è RECOVERED nessuna infezione ha effetto
+		self.sim.rcv_messages += 1   #for simulation statistics
+
+		# If I already received this message (RECOVERED state) I don't do anything
+		if self.state == State.RECOVERED:
 			return
 
-		if self.state == State.VULNERABLE:  #Se la macchina ancora non è infettata allora viene infettata e settato il timer
+		# If it's the first time that the message arrive, I go from VULNERABLE state to
+		# INFECTED state, then I start the waiting timer
+		if self.state == State.VULNERABLE:
 			self.sim.t_last_infected = self.sim.t
 			self.sim.n_hop_last_infected = msg.hop
 			self.transition_to_state(State.INFECTED)
-			self.timer_infected = self.getWaitingTime(msg.last_emit)   #setta il timer di attesa in funzione della distanza dell'emitter
-			#decomment to see all timers
-			#print("timer_infected set to:", self.timer_infected * Simulator.TIME_RESOLUTION, "seconds")
+			self.timer_infected = self.getWaitingTime(msg.last_emit)  #set waiting timer in function of the distance 
 
 		self.messages.append(msg)
 
 
 	def getWaitingTime(self, emit_pos):
-		#print(self.pos, emit_pos)
-		dAS = dist(self.pos, emit_pos)   #distanza tra me e l'emittente che me lo ha mandato, espressa in metri
-		t_dist = Simulator.TMAX*(1 - dAS/Simulator.RMAX)   #tempo di attesa dipendente dalla distanza, espresso in secondi
-		#t_non_determ = t_dist * random.random()   #tempo di attesa non deterministico in (0, t_dist) secondi
+		""" Returns the waiting time a vehicle has to wait when infected.
+		Calculated using the distance between me and the emitter that sent 
+		me the message, expressed as number of simulator ticks
+		"""
+		dAS = dist(self.pos, emit_pos) 
+		waiting_time = Simulator.TMAX*(1 - dAS/Simulator.RMAX)  #waiting time, in seconds
 
-		#tempo finale calcolato con il parametro ALPHA che decide il bilanciamento della componente deterministica e non deterministica.
-		#t_final è compreso tra ( (ALPHA)*t_dist , t_dist ) secondi
-		#t_final = Simulator.ALPHA*t_dist + (1-Simulator.ALPHA)*t_non_determ
-		t_final = t_dist
+		if waiting_time <= Simulator.TMIN:
+			waiting_time = Simulator.TMIN
+		if waiting_time >= Simulator.TMAX:
+			waiting_time = Simulator.TMAX
 
-		if t_final <= Simulator.TMIN:
-			t_final = Simulator.TMIN
-		if t_final >= Simulator.TMAX:
-			t_final = Simulator.TMAX
+		# Converts from seconds to simulator ticks
+		return waiting_time / Simulator.TIME_RESOLUTION
 
-		return t_final / Simulator.TIME_RESOLUTION    #ritorna il tempo di attesa espresso nel numero di step da fare al simulatore.
 
+	# WE DIDN'T USE THIS
 	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
@@ -151,6 +150,8 @@ class Car:
 			return True
 		return False
 
+
+	# WE DIDN'T USE THIS
 	def evaluate_positions4(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
 									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
@@ -173,6 +174,7 @@ class Car:
 		return quads!=[1,1,1,1]
 
 
+	# WE USED THIS
 	def evaluate_positions2(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 
 		neighbor_positions = []   #positions of neighbors cars
@@ -192,13 +194,13 @@ class Car:
 
 		return len(neighbor_positions) > 0   #ritorno true se ci sono ancora dei vicini non coperti da nessun emitter precedente
 
-
+	# WE DIDN'T USE THIS
 	def evaluate_positions3(self, messages, my_pos):
-		#ritrasmetti il messaggio con una certa probabilità P
-		P = self.sim.rmin
+		#relay the message with probability P
+		P = 0.9
 		return random.random() > (1-P)
 
-
+	# Transition a vehicle to a certain state
 	def transition_to_state(self, state_final):
 		if self.state == State.VULNERABLE and state_final == State.INFECTED:
 			self.sim.infected_counter += 1
@@ -208,8 +210,6 @@ class Car:
 			self.state = State.RECOVERED
 		else:
 			raise ValueError('Inconsistent state transition from', self.state, 'to', state_final)
-
-
 
 
 
