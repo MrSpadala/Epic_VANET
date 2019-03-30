@@ -1,6 +1,5 @@
 
 def get_largest_conn_component(cars):
-	assert(not (None in cars))
 	plates_to_cars = {car.plate: car for car in cars}
 	
 	components = []

@@ -3,3 +3,4 @@ settings.json
 cached/
 launch.json
 .vscode/
+*.pyc
