@@ -23,14 +23,14 @@ random.seed(42)
 class Simulator:
 
 	# Simulator parameters
-	TIME_RESOLUTION = 0.01 #how many seconds per step
+	TIME_RESOLUTION = 0.01  #how many seconds per step
 
 	# Environment parameters
-	TMAX = 0.9		#tempo di attesa massima prima di mandare un messaggio in broadcast, in secondi
-	TMIN = 0		#tempo di attesa minima prima di mandare un messaggio in broadcast, in secondi
-	RMIN = 250		#raggio minimo di comunicazione, espresso in metri
-	RMAX = 500		#raggio massimo di comunicazione, espresso in metri
-	DROP = 0.03		#rate di messaggi persi spontaneamente nella trasmissione
+	TMAX = 0.9		#max time to wait before sending a broadcast message
+	TMIN = 0		#min time to wait before sending a broadcast message
+	RMIN = 250		#Rmin, expressed in meters
+	RMAX = 500		#Rmax, expressed in meters
+	DROP = 0.03		#message drop rate
 
 	def __init__(self, cars):
 		self.cars = cars
@@ -43,18 +43,6 @@ class Simulator:
 		#_car_dict = {c.plate: c for c in self.cars}
 		_car_dict = {c.plate: c for c in self.cars if c != None}
 		self.car_dict = defaultdict(lambda: None, _car_dict)
-		
-		def print_density():
-			cars, edges = 0, 0
-			for k,car in self.car_dict.items():
-				cars += 1
-				for a in car.adj:
-					edges += 1 if (a==1 and self.car_dict[a]!=None) else 0
-			print('number of cars', cars)
-			print('number of edges', edges/2)
-			print('density', edges/(2*cars))
-
-		#print_density()
 
 		# Simulation variables
 		self.t = 0   #current simulation iteration
@@ -68,6 +56,8 @@ class Simulator:
 
 		# Args
 		self.no_graphics = "--no-graphics" in sys.argv
+		if not self.no_graphics:
+			print('GUI mode, to disable it run with --no-graphics')
 
 
 
@@ -154,6 +144,7 @@ def _load_cached(fpath):
 
 #Performs 'n' different simulations
 def performSimulations(n):
+	print('Starting', n, 'simulations')
 
 	#Perform a single simulation
 	def performSimulation(verbose=False):
@@ -164,6 +155,7 @@ def performSimulations(n):
 			for car in cars:
 				for a in car.adj:
 					grade += a
+			print('number of cars', len(cars))
 			print('number of edges', grade/2)
 			print('density', grade/(2*len(cars)))
 
@@ -219,17 +211,8 @@ def performSimulations(n):
 		[s.n_hop_last_infected for s in sims])
 
 
-
-def do_tests(r):
-	Simulator.RMIN = r
-	return performSimulations(100)
-
-
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		#for p in range(5, 101, 5):
-		#	do_tests(p/100)
-		do_tests(220)
-
+		performSimulations(100)
 	else:
 		performSimulations(1)
