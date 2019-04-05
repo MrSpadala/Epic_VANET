@@ -28,7 +28,7 @@ class Simulator:
 	# Environment parameters
 	TMAX = 0.9		#max time to wait before sending a broadcast message
 	TMIN = 0		#min time to wait before sending a broadcast message
-	RMIN = 250		#Rmin, expressed in meters
+	RMIN = 170		#Rmin, expressed in meters
 	RMAX = 500		#Rmax, expressed in meters
 	DROP = 0.03		#message drop rate
 

@@ -185,6 +185,7 @@ class Car:
 				if obj != None:
 					neighbor_positions.append(obj.pos)
 
+		n_neighbors = len(neighbor_positions)
 
 		for m in messages:
 			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
@@ -192,7 +193,12 @@ class Car:
 					if in_range(neighbor_pos, emit, self.sim.rmin):
 						neighbor_positions.remove(neighbor_pos)
 
-		return len(neighbor_positions) > 0   #ritorno true se ci sono ancora dei vicini non coperti da nessun emitter precedente
+		# return true (relay) if there still are uncovered neighbors
+		#return len(neighbor_positions) > 0
+		
+		# return true (relay) only if there is a percentage of uncoverd neighbors
+		alpha = 0.1
+		return len(neighbor_positions) > n_neighbors*alpha
 
 	# WE DIDN'T USE THIS
 	def evaluate_positions3(self, messages, my_pos):
