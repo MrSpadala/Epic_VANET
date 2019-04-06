@@ -66,7 +66,7 @@ plt.yticks(np.arange(0, 1.1, 0.1))
 #	loc='upper center', bbox_to_anchor=(0.5, -0.08),
 #    fancybox=True, shadow=True, ncol=5)
 plt.legend((p1[0], p2[0], p4[0]), ('Relay', 'EPIC high density', 'EPIC low density'), 
-  	loc='upper center', bbox_to_anchor=(0.5, 1.15), fancybox=True, shadow=True, ncol=5)
+  	loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
 
 plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
