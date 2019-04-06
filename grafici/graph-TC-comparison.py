@@ -111,10 +111,10 @@ ax.set_position([box.x0, box.y0 + box.height * 0.1,
 
 plt.ylabel('Nodes (%)')
 plt.title('')
-plt.xticks(ind+width+gap, ('Luxemburg', 'Cologne', 'New York'))
+plt.xticks(ind+width+gap, ('Luxembourg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
 plt.legend((p3[0], p2[0], p4[0], p6[0]), ('Relay', 'EPIC', r'Probabilistic $P=0.96$', r'Probabilistic $P=\widehat{P}$'), 
-	loc='upper center', bbox_to_anchor=(0.5, -0.08),
+	loc='upper center', bbox_to_anchor=(0.5, 1.13),
     fancybox=True, shadow=True, ncol=5)
 
 
