@@ -195,10 +195,14 @@ def performSimulations(n):
 
 	#sims = [performSimulation() for i in tqdm(range(n))]  #list with Simulator objects
 	#sims = list(filter(lambda x: x!=None, sims))    #filter out None
-	cpus = 4
-	with Pool(cpus) as pool:
-		print('[+] Starting', n, 'simulations with', cpus, 'parallel jobs')
-		sims = pool.map(performSimulation, range(n))
+	if n > 1:
+		cpus = 4
+		with Pool(cpus) as pool:
+			print('[+] Starting', n, 'simulations with', cpus, 'parallel jobs')
+			sims = pool.map(performSimulation, range(n))
+	else:
+		sims = [ performSimulation(0) ]
+	
 
 	print()
 	print("Average metrics with rmin =",Simulator.RMIN)
