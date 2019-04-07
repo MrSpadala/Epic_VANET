@@ -42,7 +42,7 @@ class Simulator:
 		# Create a dictionary plate-->car-object
 		#_car_dict = {c.plate: c for c in self.cars}
 		_car_dict = {c.plate: c for c in self.cars if c != None}
-		self.car_dict = defaultdict(lambda: None, _car_dict)
+		self.car_dict = defaultdict(_ret_none, _car_dict)
 
 		# Simulation variables
 		self.t = 0   #current simulation iteration
@@ -141,50 +141,64 @@ def _load_cached(fpath):
 		return pickle.load(open(fpath, "rb"))
 	return None
 
+def _ret_none():
+	return None
+
+
+
+
+#Perform a single simulation
+def performSimulation(i, verbose=True):
+	cars = init_cars()
+
+	def print_graph_stats():
+		grade = 0
+		for car in cars:
+			for a in car.adj:
+				grade += a
+		print('number of cars', len(cars))
+		print('number of edges', grade/2)
+		print('density', grade/(2*len(cars)))
+
+	#print_graph_stats()
+
+	s = Simulator(cars)
+
+	if s.no_graphics:
+		random.sample(cars, 1)[0].infect(Msg.dummy())
+	else:
+		bubbles = displayCars(s.car_dict)
+		firstinfected = s.getCar(firstInfection())
+		firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
+
+	s.runSimulation()
+
+	if verbose:
+		tmp = str([c.state for c in cars])
+		print("Simulation", i, "ended")
+		print("Vulnerable: ", tmp.count("State.VULNERABLE"))
+		print("Infected: ", tmp.count("State.INFECTED"))
+		print("Recovered: ", tmp.count("State.RECOVERED"))
+		print()
+
+	return s
+
+
+
 
 #Performs 'n' different simulations
 def performSimulations(n):
-	print('Starting', n, 'simulations')
 
-	#Perform a single simulation
-	def performSimulation(verbose=False):
-		cars = init_cars()
+	print('[+] Caching cars data')
+	init_cars()
+	print('[+] Done!')
 
-		def print_graph_stats():
-			grade = 0
-			for car in cars:
-				for a in car.adj:
-					grade += a
-			print('number of cars', len(cars))
-			print('number of edges', grade/2)
-			print('density', grade/(2*len(cars)))
-
-		#print_graph_stats()
-
-		s = Simulator(cars)
-
-		if s.no_graphics:
-			random.sample(cars, 1)[0].infect(Msg.dummy())
-		else:
-			bubbles = displayCars(s.car_dict)
-			firstinfected = s.getCar(firstInfection())
-			firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
-
-		s.runSimulation()
-
-		if verbose:
-			tmp = str([c.state for c in cars])
-			print("Simulation ended")
-			print("Vulnerable: ", tmp.count("State.VULNERABLE"))
-			print("Infected: ", tmp.count("State.INFECTED"))
-			print("Recovered: ", tmp.count("State.RECOVERED"))
-			print()
-
-		return s
-
-
-	sims = [performSimulation() for i in tqdm(range(n))]  #list with Simulator objects
-	sims = list(filter(lambda x: x!=None, sims))    #filter out None
+	#sims = [performSimulation() for i in tqdm(range(n))]  #list with Simulator objects
+	#sims = list(filter(lambda x: x!=None, sims))    #filter out None
+	cpus = 4
+	with Pool(cpus) as pool:
+		print('[+] Starting', n, 'simulations with', cpus, 'parallel jobs')
+		sims = pool.map(performSimulation, range(n))
 
 	print()
 	print("Average metrics with rmin =",Simulator.RMIN)
