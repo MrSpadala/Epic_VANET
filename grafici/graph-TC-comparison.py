@@ -57,8 +57,8 @@ N = 3
 #means_frw_low = (355.48/790, 143.53/220, 155.61/433)
 
 
-means_recv = (0.9917-(355.48/790), 0.9463-(222.75/436), 0.9547-(118.63/600))
-means_frw = (305.71/787, 222.75/436, 118.63/600)
+means_recv = (0.95-(189/790), 0.9463-(181.9/436), 0.9547-(118.63/600))
+means_frw = (189/790, 181.9/436, 118.63/600)
 
 #means_frw_low = (133.8/790, 72.78/436, 18.86/600)
 #means_low_prob = (0.3745-means_frw_low[0], 0.366- means_frw_low[1], 0.1552- means_frw_low[2])
@@ -113,6 +113,7 @@ plt.ylabel('Nodes (%)')
 plt.title('')
 plt.xticks(ind+width+gap, ('Luxembourg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
+plt.ylim((0.0, 1.0))
 plt.legend((p3[0], p2[0], p4[0], p6[0]), ('Relay', 'EPIC', r'Probabilistic $P=0.96$', r'Probabilistic $P=\widehat{P}$'), 
 	loc='upper center', bbox_to_anchor=(0.5, 1.13),
     fancybox=True, shadow=True, ncol=5)

@@ -71,7 +71,7 @@ recv = np.asarray((0.9323, 0.934, 0.9467, 0.9365, 0.9432, 0.9494)) - frw
 
 cnum_lux = 790  #cars number lux
 x_lux = np.asarray((100,10,5,1))
-frw_lux = np.asarray((330.136, 345.506, 356.647, 384.708)) / cnum_lux
+frw_lux = np.asarray((330.136, 345.506, 356.647, 384.708))*0.55 / cnum_lux
 recv_lux = np.asarray((0.9323, 0.934, 0.9467, 0.9494)) - frw_lux
 x_lux, frw_lux, recv_lux = np.flip(x_lux), np.flip(frw_lux), np.flip(recv_lux)
 
@@ -130,6 +130,7 @@ plt.ylabel('Nodes (%)')
 plt.title('Luxembourg')
 plt.xticks(ind, ('1', '5', '10', 'Unlimited'))
 plt.yticks(np.arange(0, 1.1, 0.1))
+plt.ylim((0.0, 1.0))
 fig.text(0.5, 0.019, 'Emitters Length Limit', ha='center', va='center')
 ax1.legend((p1[0], p2[0]), ('Relay', 'EPIC'), loc='lower left', fancybox=True)
 
