@@ -57,7 +57,7 @@ class Simulator:
 		# Args
 		self.no_graphics = "--no-graphics" in sys.argv
 		if not self.no_graphics:
-			print('GUI mode, to disable it run with --no-graphics')
+			print('GUI mode, to disable it run with \'--no-graphics\'')
 
 
 
@@ -231,6 +231,6 @@ def performSimulations(n):
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		performSimulations(100)
+		performSimulations(400)
 	else:
 		performSimulations(1)

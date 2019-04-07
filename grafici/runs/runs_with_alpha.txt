@@ -1,0 +1,11 @@
+lux high dens
+rmin 150
+a = 0.15
+Cars infected ratio: 96.99%
+#sent messages:  188.83
+
+col high dens
+rmin 130
+a = 0.1
+#sent messages:  181.9
+Cars infected ratio: 94.13%
