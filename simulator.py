@@ -193,8 +193,6 @@ def performSimulations(n):
 	init_cars()
 	print('[+] Done!')
 
-	#sims = [performSimulation() for i in tqdm(range(n))]  #list with Simulator objects
-	#sims = list(filter(lambda x: x!=None, sims))    #filter out None
 	if n > 1:
 		cpus = 4
 		with Pool(cpus) as pool:

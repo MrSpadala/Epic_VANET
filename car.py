@@ -197,14 +197,16 @@ class Car:
 		#return len(neighbor_positions) > 0
 		
 		# return true (relay) only if there is a percentage of uncoverd neighbors
-		alpha = 0.1
+		alpha = 0.05
 		return len(neighbor_positions) > n_neighbors*alpha
 
-	# WE DIDN'T USE THIS
+	# WE USED THIS as the probabilistic dissemination
 	def evaluate_positions3(self, messages, my_pos):
 		#relay the message with probability P
 		P = 0.9
 		return random.random() > (1-P)
+
+		
 
 	# Transition a vehicle to a certain state
 	def transition_to_state(self, state_final):
