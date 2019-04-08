@@ -1,0 +1,12 @@
+a = 0.05
+
+luxemburg and new york nothing interesting
+
+cologne:
+
+tmax=1.2 t=4.4s
+tmax=0.9 t=3.2s
+tmax=0.45 t=1.69s
+
+remaining is almost unchanghed
+
