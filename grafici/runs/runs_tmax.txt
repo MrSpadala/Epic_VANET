@@ -1,12 +1,47 @@
-a = 0.05
+a = 0.05, rmax=350
 
 luxemburg and new york nothing interesting
 
-cologne:
+ - - - - - - - - -
 
-tmax=1.2 t=4.4s
-tmax=0.9 t=3.2s
-tmax=0.45 t=1.69s
+ all in cologne
 
-remaining is almost unchanghed
 
+TMAX = 1.8
+Average metrics with rmin = 140
+#sent messages:  173.18
+#received messages:  3063.58
+time of last car infection:  7.9914
+#hops to reach last infected car:  16.3
+Cars infected ratio: 93.26%
+Cars infected std dev: 71.71
+
+
+TMAX = 0.9
+Average metrics with rmin = 150
+#sent messages:  163.43
+#received messages:  2874.78
+time of last car infection:  4.1298
+#hops to reach last infected car:  16.35
+Cars infected ratio: 93.75%
+Cars infected std dev: 74.42
+
+
+TMAX = 0.45
+Average metrics with rmin = 120
+#sent messages:  200.18
+#received messages:  3534.15
+time of last car infection:  2.0245
+#hops to reach last infected car:  16.82
+Cars infected ratio: 94.86%
+Cars infected std dev: 66.54
+
+
+TMAX = 0.225
+Average metrics with rmin = 90
+#sent messages:  241.0
+#received messages:  4242.13
+time of last car infection:  1.0092
+#hops to reach last infected car:  15.22
+Cars infected ratio: 94.16%
+Cars infected std dev: 74.52
