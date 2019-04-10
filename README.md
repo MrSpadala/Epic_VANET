@@ -1,4 +1,4 @@
-# Epidemic_VANET
+# Epic_VANET
 Source code of EPIC dissemination for VANETs.
 
 # Installation prerequisites:
