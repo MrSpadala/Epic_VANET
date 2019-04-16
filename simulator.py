@@ -31,6 +31,8 @@ class Simulator:
 	RMIN = 170		#Rmin, expressed in meters
 	RMAX = 500		#Rmax, expressed in meters
 	DROP = 0.03		#message drop rate
+	ALPHA = 0.05    #if at the end of the waiting timer, a fraction larger than ALPHA
+					#of my neighors has not been reached I relay the message
 
 	def __init__(self, cars):
 		self.cars = cars

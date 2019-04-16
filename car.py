@@ -48,7 +48,7 @@ class Car:
 		msg.hop += 1
 
 	def broadMsg(self):
-		bcast = self.evaluate_positions2(self.messages, self.pos)
+		bcast = self.evaluate_positions(self.messages, self.pos)
 		if (not bcast):
 			return
 
@@ -82,6 +82,7 @@ class Car:
 		self.messages.clear()
 
 
+
 	def infect(self, msg):
 		#Simulate message loss while receiving
 		if random.random() < Simulator.DROP:
@@ -104,6 +105,7 @@ class Car:
 		self.messages.append(msg)
 
 
+
 	def getWaitingTime(self, emit_pos):
 		""" Returns the waiting time a vehicle has to wait when infected.
 		Calculated using the distance between me and the emitter that sent 
@@ -121,61 +123,9 @@ class Car:
 		return waiting_time / Simulator.TIME_RESOLUTION
 
 
-	# WE DIDN'T USE THIS
-	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
-		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
-									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
-
-		for m in messages:
-
-			if quads[0]!=1:
-				if m.last_emit[0]>my_pos[0] and my_pos[1]-(abs((my_pos[0]-m.last_emit[0])/2)) <= m.last_emit[1] <= my_pos[1]-(abs((my_pos[0]-m.last_emit[0])/2)):		# X > myX	dx
-					quads[0]=1
-
-			if quads[1]!=1:
-				if m.last_emit[1]>my_pos[1] and (my_pos[0]-(abs((my_pos[1]-m.last_emit[1])/2)) <= m.last_emit[0] <= my_pos[0]-(abs((my_pos[1]-m.last_emit[1])/2))):		# Y > myY	su
-					quads[1]=1
-
-			if quads[2]!=1:
-				if m.last_emit[0]<my_pos[0] and (my_pos[1]-(abs((my_pos[0]-m.last_emit[0])/2)) <= m.last_emit[1] <= my_pos[1]-(abs((my_pos[0]-m.last_emit[0])/2))):		# X < myX	sx
-					quads[2]=1
-
-			if quads[3]!=1:
-				if m.last_emit[1]<my_pos[1] and (my_pos[0]-(abs((my_pos[1]-m.last_emit[1])/2)) <= m.last_emit[0] <= my_pos[0]-(abs((my_pos[1]-m.last_emit[1])/2))):		# Y < myY	giu
-					quads[3]=1
-
-		if quads==[1,1,1,1]:
-			return False
-		else:
-			return True
-		return False
-
-
-	# WE DIDN'T USE THIS
-	def evaluate_positions4(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
-		quads = [0,0,0,0]			# flags dei quadranti: 0 quadrante inesplorato, 1 quadrante esplorato
-									# abbiamo scelto quadranti divisi da una X dalla nostra posizione
-
-		for m in messages:
-			dx = m.last_emit[0] - my_pos[0]
-			dy = m.last_emit[1] - my_pos[1]
-			#print("pos", my_pos[0], my_pos[1])
-			#print("emit", m.last_emit[0], m.last_emit[1])
-			#print("d", dx,dy)
-			if dx >= 0 and dy >= 0:
-				quads[0] = 1
-			if dx >= 0 and dy  < 0:
-				quads[1] = 1
-			if dx  < 0 and dy >= 0:
-				quads[2] = 1
-			if dx  < 0 and dy  < 0:
-				quads[3] = 1
-
-		return quads!=[1,1,1,1]
-
 
 	# WE USED THIS
-	def evaluate_positions2(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
+	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 
 		neighbor_positions = []   #positions of neighbors cars
 		for c, i in zip(self.adj, range(len(self.adj))):
@@ -192,23 +142,22 @@ class Car:
 				for neighbor_pos in list(neighbor_positions):  #controllo se un mio vicino ha già ricevuto un messaggio da un emitter precedente
 					if in_range(neighbor_pos, emit, self.sim.rmin):
 						neighbor_positions.remove(neighbor_pos)
-
-		# return true (relay) if there still are uncovered neighbors
-		#return len(neighbor_positions) > 0
 		
-		# return true (relay) only if there is a percentage of uncoverd neighbors
-		alpha = 0.05
-		return len(neighbor_positions) > n_neighbors*alpha
+		# return true (relay) only if there is a percentage ALPHA of uncoverd neighbors
+		return len(neighbor_positions) > Simulator.ALPHA * n_neighbors
+
+
+
 
 	# WE USED THIS as the probabilistic dissemination
-	def evaluate_positions3(self, messages, my_pos):
+	def evaluate_positions_probabilistic(self, messages, my_pos):
 		#relay the message with probability P
 		P = 0.9
 		return random.random() > (1-P)
 
 		
 
-	# Transition a vehicle to a certain state
+	# utility: transition a vehicle to a certain state
 	def transition_to_state(self, state_final):
 		if self.state == State.VULNERABLE and state_final == State.INFECTED:
 			self.sim.infected_counter += 1
