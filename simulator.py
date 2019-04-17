@@ -192,7 +192,7 @@ def performSimulation(i, verbose=True):
 def performSimulations(n):
 
 	print('[+] Caching cars data')
-	init_cars()
+	init_cars()  #trick to cache the car graph before starting the simulation
 	print('[+] Done!')
 
 	if n > 1:
