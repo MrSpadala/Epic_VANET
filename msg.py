@@ -14,9 +14,13 @@ class Msg:
 		self.hop = hop
 		self.ttl = ttl
 
+	def size(self):
+		return 5+22*len(self.emitters)+len(self.text)
+
 	def clone(self):
 		return Msg(self.numSeq, self.text, self.origin, self.last_emit, self.hop, self.ttl, self.emitters)
 
 	@staticmethod
 	def dummy():
-		return Msg(1, 'ciao', (0,0), (0,0), 0, 100)
+		"""Returns a dummy message, with 100 bytes of payload"""
+		return Msg(1, '\xFF'*100, (0,0), (0,0), 0, 100)

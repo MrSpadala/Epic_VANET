@@ -55,6 +55,7 @@ class Simulator:
 		self.sent_messages = 0 #number of sent messages
 		self.t_last_infected = 0  #time step of the last car infected
 		self.n_hop_last_infected = 0  #number of hops of last infected car
+		self.network_traffic = 0   #network traffic expressed in bytes
 
 		# Args
 		self.no_graphics = "--no-graphics" in sys.argv
@@ -220,6 +221,7 @@ def performSimulations(n):
 	std_dev = (std_dev / len(sims))  -  ((infected/len(sims))**2)
 	std_dev = sqrt(std_dev)
 	print("Cars infected std dev: {:.2f}".format(std_dev))
+	print("Network traffic (bytes): ", sum([s.network_traffic for s in sims])/n)
 
 
 	return (Simulator.RMIN, #for boxplots

@@ -60,16 +60,17 @@ class Car:
 		if msg.hop == msg.ttl:
 			return
 
-		message_sent = False
+		#Update simulator statistics
+		self.sim.sent_messages += 1
+		self.sim.network_traffic += msg.size()   #EPIC
+		#self.sim.network_traffic += len(msg.text)  #probabilistic
+
+		#Send message to all my neighbors
 		for c, i in zip(self.adj, range(len(self.adj))):
 			if c == 1:
 				obj = self.sim.getCar(i)  #take the car object
 				if obj == None:
 					continue
-
-				if not message_sent:
-					message_sent = True
-					self.sim.sent_messages += 1
 
 				if not self.sim.no_graphics:
 					if obj.state == State.VULNERABLE:
