@@ -70,7 +70,7 @@ class Car:
 			if c == 1:
 				obj = self.sim.getCar(i)  #take the car object
 				if obj == None:
-					continue
+					continue					
 
 				if not self.sim.no_graphics:
 					if obj.state == State.VULNERABLE:
@@ -153,8 +153,21 @@ class Car:
 	# WE USED THIS as the probabilistic dissemination
 	def evaluate_positions_probabilistic(self, messages, my_pos):
 		#relay the message with probability P
-		P = 0.9
-		return random.random() > (1-P)
+		#P = 0.8
+		#return random.random() > (1-P)
+
+		#other prb relay
+		min_dist = Simulator.RMAX
+		for m in messages:
+			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
+				d = dist(emit, self.pos)
+				if d < min_dist:
+					min_dist = d
+		min_dist = min(min_dist, Simulator.RMAX)
+		p = min_dist / Simulator.RMIN    #p is the relay probability
+		return random.random() > (1-p)
+		
+
 
 		
 
