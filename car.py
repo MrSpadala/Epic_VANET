@@ -153,10 +153,11 @@ class Car:
 	# WE USED THIS as the probabilistic dissemination
 	def evaluate_positions_probabilistic(self, messages, my_pos):
 		#relay the message with probability P
-		#P = 0.8
-		#return random.random() > (1-P)
+		P = 0.93
+		return random.random() > (1-P)
 
-		#other prb relay
+		#other prb relay (inv proportional to the distance from the closest relay)
+		'''
 		min_dist = Simulator.RMAX
 		for m in messages:
 			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
@@ -166,6 +167,26 @@ class Car:
 		min_dist = min(min_dist, Simulator.RMAX)
 		p = min_dist / Simulator.RMIN    #p is the relay probability
 		return random.random() > (1-p)
+		'''
+
+		#other prb relay (inv prop with the number of neighbors)
+		'''
+		n_neighbors = 0   #number of neighbors cars
+		for c, i in zip(self.adj, range(len(self.adj))):
+			if c == 1:
+				#Ho preso la macchina corrispondente
+				obj = self.sim.getCar(i)
+				if obj != None:
+					n_neighbors += 1
+
+		k = 45  #const
+		if n_neighbors <= k:
+			return True
+		p = k/n_neighbors
+		return random.random() > (1-p)
+		'''
+
+
 		
 
 
