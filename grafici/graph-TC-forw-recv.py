@@ -94,7 +94,7 @@ plt.legend((p2[0], p4[0], p3[0]), ('Receivers high density', 'Receivers low dens
 
 plt.ylabel('Nodes (%)')
 plt.title('')
-plt.xticks(ind+width/2+gap/2, ('Luxemburg', 'Cologne', 'New York'))
+plt.xticks(ind+width/2+gap/2, ('Luxembourg', 'Cologne', 'New York'))
 plt.yticks(np.arange(0, 1.1, 0.1))
 plt.legend((p3[0], p2[0], p4[0]), ('Relay', 'EPIC high density', 'EPIC low density'),
       loc='upper center', bbox_to_anchor=(0.5, 1.15),
