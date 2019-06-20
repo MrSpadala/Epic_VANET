@@ -197,7 +197,7 @@ def performSimulations(n):
 	print('[+] Done!')
 
 	if n > 1:
-		cpus = 4
+		cpus = 2
 		with Pool(cpus) as pool:
 			print('[+] Starting', n, 'simulations with', cpus, 'parallel jobs')
 			sims = pool.map(performSimulation, range(n))
@@ -233,6 +233,6 @@ def performSimulations(n):
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		performSimulations(400)
+		performSimulations(50)
 	else:
 		performSimulations(1)

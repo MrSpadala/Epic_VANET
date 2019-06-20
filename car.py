@@ -149,6 +149,9 @@ class Car:
 
 
 
+	def evaluate_positions_no_geo(self, messages, my_pos):
+		return not len(messages)>3
+
 
 	# WE USED THIS as the probabilistic dissemination
 	def evaluate_positions_probabilistic(self, messages, my_pos):
