@@ -48,7 +48,7 @@ class Car:
 		msg.hop += 1
 
 	def broadMsg(self):
-		bcast = self.evaluate_positions(self.messages, self.pos)
+		bcast = self.evaluate_positions_w_p_pers(self.messages, self.pos)
 		if (not bcast):
 			return
 
@@ -151,6 +151,15 @@ class Car:
 
 	def evaluate_positions_no_geo(self, messages, my_pos):
 		return not len(messages)>3
+
+	def evaluate_positions_w_p_pers(self, messages, my_pos):
+		P = []
+		for m in messages:
+			d = dist(m.last_emit, my_pos)
+			Rmean = (Simulator.RMIN + Simulator.RMAX) / 2
+			P.append(d/Rmean)
+		return random.random() > (1-min(P))
+
 
 
 	# WE USED THIS as the probabilistic dissemination

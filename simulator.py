@@ -30,7 +30,7 @@ class Simulator:
 	TMIN = 0		#min time to wait before sending a broadcast message
 	RMIN = 170		#Rmin, expressed in meters
 	RMAX = 500		#Rmax, expressed in meters
-	DROP = 0.03		#message drop rate
+	DROP = 0.0		#message drop rate
 	ALPHA = 0.05    #if at the end of the waiting timer, a fraction larger than ALPHA
 					#of my neighors has not been reached I relay the message
 
