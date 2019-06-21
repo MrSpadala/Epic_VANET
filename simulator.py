@@ -10,6 +10,7 @@ from collections import defaultdict
 from car import Car, State as carState
 from msg import Msg
 from grafi.DFS import get_largest_conn_component
+from grafi.density import print_density
 from pdb import set_trace as breakpoint
 from visualGraph import *
 
@@ -193,7 +194,7 @@ def performSimulation(i, verbose=True):
 def performSimulations(n):
 
 	print('[+] Caching cars data')
-	init_cars()  #trick to cache the car graph before starting the simulation
+	cars_dummy = init_cars()  #trick to cache the car graph before starting the simulation
 	print('[+] Done!')
 
 	if n > 1:
@@ -206,6 +207,7 @@ def performSimulations(n):
 	
 
 	print()
+	print_density(cars_dummy)
 	print("Average metrics with rmin =",Simulator.RMIN)
 	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
 	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
