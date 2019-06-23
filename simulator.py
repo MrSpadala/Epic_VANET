@@ -27,11 +27,11 @@ class Simulator:
 	TIME_RESOLUTION = 0.01  #how many seconds per step
 
 	# Environment parameters
-	TMAX = 0.9		#max time to wait before sending a broadcast message
+	TMAX = 0.5		#max time to wait before sending a broadcast message
 	TMIN = 0		#min time to wait before sending a broadcast message
 	RMIN = 170		#Rmin, expressed in meters
 	RMAX = 500		#Rmax, expressed in meters
-	DROP = 0.0		#message drop rate
+	DROP = 0.01		#message drop rate
 	ALPHA = 0.05    #if at the end of the waiting timer, a fraction larger than ALPHA
 					#of my neighors has not been reached I relay the message
 
@@ -198,7 +198,7 @@ def performSimulations(n):
 	print('[+] Done!')
 
 	if n > 1:
-		cpus = 2
+		cpus = 4
 		with Pool(cpus) as pool:
 			print('[+] Starting', n, 'simulations with', cpus, 'parallel jobs')
 			sims = pool.map(performSimulation, range(n))
@@ -235,6 +235,6 @@ def performSimulations(n):
 
 if __name__ == "__main__":
 	if "--no-graphics" in sys.argv:
-		performSimulations(50)
+		performSimulations(400)
 	else:
 		performSimulations(1)

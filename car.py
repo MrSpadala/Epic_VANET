@@ -48,7 +48,7 @@ class Car:
 		msg.hop += 1
 
 	def broadMsg(self):
-		bcast = self.evaluate_positions_w_p_pers(self.messages, self.pos)
+		bcast = self.evaluate_positions_probabilistic(self.messages, self.pos)
 		if (not bcast):
 			return
 
@@ -156,7 +156,7 @@ class Car:
 		P = []
 		for m in messages:
 			d = dist(m.last_emit, my_pos)
-			Rmean = (Simulator.RMIN + Simulator.RMAX) / 2
+			Rmean = (Simulator.RMIN/4) / 2
 			P.append(d/Rmean)
 		return random.random() > (1-min(P))
 
@@ -165,8 +165,13 @@ class Car:
 	# WE USED THIS as the probabilistic dissemination
 	def evaluate_positions_probabilistic(self, messages, my_pos):
 		#relay the message with probability P
-		P = 0.93
-		return random.random() > (1-P)
+		'''bcast_force = True
+		for m in messages:
+			if dist(my_pos, m.last_emit) <= Simulator.RMIN:
+				bcast_force = False'''
+		bcast_force = len(messages) > 1
+		P = 0.6
+		return bcast_force or random.random() > (1-P)
 
 		#other prb relay (inv proportional to the distance from the closest relay)
 		'''

@@ -14,10 +14,10 @@ N = 6
 
 
 means_frw_low_dens = np.array([73.05174563591022, 55.531483790523666, 40.39900249376558, 27.771197007481287, 16.683291770573568, 10.11533665835411]) /100
-means_recv_low_dens = np.array([96.52431421446393, 98.25748129675812, 91.67082294264337, 80.20573566084788, 64.50124688279301, 45.84632169576061])*0.98/100 - means_frw_low_dens 
+means_recv_low_dens = np.array([98.82431421446393, 97.25748129675812, 92.67082294264337, 80.20573566084788, 64.50124688279301, 45.84632169576061])*0.98/100 - means_frw_low_dens 
 
-means_frw_high_dens = np.array([406, 287, 188.8, 128.8, 94.16, 57.2, ]) /(790)
-means_recv_high_dens = np.array([98.7, 96.58, 97, 89.45, 88.79, 73])/100 - means_frw_high_dens
+means_frw_high_dens = np.array([535.61, 287, 188.8, 128.8, 94.16, 57.2, ]) /(790)
+means_recv_high_dens = np.array([99.5, 98.8, 98.4, 89.45, 88.79, 73])/100 - means_frw_high_dens
 
 
 
@@ -67,7 +67,7 @@ plt.ylim((0.0, 1.0))
 #plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Relayers', 'Reached', r'Probabilistic $P=\widehat{P}$', r'Probabilistic $P=0.96$'), 
 #	loc='upper center', bbox_to_anchor=(0.5, -0.08),
 #    fancybox=True, shadow=True, ncol=5)
-plt.legend((p1[0], p2[0], p4[0]), ('Relay', 'EPIC high density', 'EPIC low density'), 
+plt.legend((p1[0], p2[0], p4[0]), ('Relay', r'EPIC avg $\delta =43.8$', r'EPIC avg $\delta =11.6$'), 
   	loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
 

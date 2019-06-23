@@ -1,0 +1,57 @@
+
+50 DENSITY
+Mean degree 11.662007623888183
+Edges 4589.0
+MST length on street (m): 24343.46
+Vehicle density (cars/km): 32.33
+Average metrics with rmin = 50
+#sent messages:  387.59
+#received messages:  4652.94
+time of last car infection:  3.4676
+#hops to reach last infected car:  13.96
+Cars infected ratio: 97.37%
+Cars infected std dev: 109.49
+Network traffic (bytes):  74578.05
+
+
+100 DENSITY
+Mean degree 24.79695431472081
+Edges 9770.0
+MST length on street (m): 20546.46
+Vehicle density (cars/km): 38.35
+Average metrics with rmin = 100
+#sent messages:  331.92
+#received messages:  7828.15
+time of last car infection:  2.2403999999999997
+#hops to reach last infected car:  10.35
+Cars infected ratio: 98.81%
+
+
+200 DENSITY
+Mean degree 35.97969543147208
+Edges 14176.0
+MST length on street (m): 19824.53
+Vehicle density (cars/km): 39.75
+Average metrics with rmin = 130
+#sent messages:  303.21
+#received messages:  10748.2
+time of last car infection:  1.8262
+#hops to reach last infected car:  8.54
+Cars infected ratio: 96.79%
+Cars infected std dev: 126.74
+Network traffic (bytes):  58308.33
+
+
+1000 density
+Mean degree 43.8379746835443
+Edges 17316.0
+MST length on street (m): 20138.87
+Vehicle density (cars/km): 39.23
+Average metrics with rmin = 170
+#sent messages:  239.54
+#received messages:  11076.21
+time of last car infection:  1.5206
+#hops to reach last infected car:  8.25
+Cars infected ratio: 97.34%
+Cars infected std dev: 77.82
+Network traffic (bytes):  46018.26
