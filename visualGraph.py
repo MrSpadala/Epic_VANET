@@ -13,6 +13,7 @@ else:
 	vp.scene.title= "Visual Test VANET"
 	vp.scene.x=0
 	vp.scene.y=0
+	vp.scene.background=vp.color.gray(0.8)
 	vp.scene.width= 1300
 	vp.scene.height=900
 	vp.scene.center=vp.vector(7000, 4500, 0)
@@ -49,4 +50,5 @@ else:
 	def visualInfect(src, dest):
 		global palle
 		palle[dest.plate].color=vp.color.red
+		palle[src.plate].color=vp.color.blue
 		vp.arrow(pos=vp.vector(src.pos[0],src.pos[1],0), axis=vp.vector(dest.pos[0] - src.pos[0], dest.pos[1] - src.pos[1], 0), shaftwidth=1, headwidth=2, headlength=3, color=vp.color.green)
