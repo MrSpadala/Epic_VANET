@@ -25,8 +25,8 @@ p60_frw = np.array(list(reversed(p60_frw)))
 w_pers_reached = np.array([97.54,96.32,95.40,99.91]) / 100
 w_pers_frw = np.array([577.78,553.9,542.75,569.41]) / 790
 
-epic_reached = np.array(list(reversed([97.37,98.81,96.79,97.34]))) / 100
-epic_frw = np.array(list(reversed([387.59,331.92,303.21,239.54]))) / 790
+epic_reached = np.array([97.37,98.81,96.79,97.34]) / 100
+epic_frw = np.array([387.59,331.92,303.21,239.54]) / 790
 
 ind = np.arange(4)  # 4 densities
 
