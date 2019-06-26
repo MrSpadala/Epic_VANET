@@ -48,7 +48,7 @@ class Car:
 		msg.hop += 1
 
 	def broadMsg(self):
-		bcast = self.evaluate_positions_probabilistic(self.messages, self.pos)
+		bcast = self.evaluate_positions(self.messages, self.pos)
 		if (not bcast):
 			return
 

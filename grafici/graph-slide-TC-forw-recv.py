@@ -53,8 +53,15 @@ plt.rc('ytick', labelsize=11.5)
 
 
 N = 4
-means_infected = (0.9725-0.575, 0.985-350/790, 0.978-300/790, 0.988-0.27)
-means_frw = (0.575, 350/790, 300/790, 0.27)
+#means_infected = (0.9725-0.575, 0.985-350/790, 0.978-300/790, 0.99-0.27)
+#means_frw = (0.575, 350/790, 300/790, 0.27)
+means_frw = (0.48, 0.415, 0.385, 0.27)
+means_infected = (0.9725, 0.985, 0.978, 0.985)
+
+means_infected = np.array(means_infected) - np.array(means_frw)
+
+
+
 ind = np.arange(N)    # the x locations for the groups
 width = 0.28       # the width of the bars: can also be len(x) sequence
 
