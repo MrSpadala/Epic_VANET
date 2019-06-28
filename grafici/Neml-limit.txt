@@ -1,0 +1,41 @@
+NEML = 3
+Mean degree 43.8379746835443
+Edges 17316.0
+MST length on street (m): 20138.87
+Vehicle density (cars/km): 39.23
+Average metrics with rmin = 170
+#sent messages:  243.29
+#received messages:  11277.48
+time of last car infection:  1.5039000000000002
+#hops to reach last infected car:  8.08
+Cars infected ratio: 96.55%
+Cars infected std dev: 104.71
+Network traffic (bytes):  41514.37
+
+NEML = 2
+Mean degree 43.8379746835443
+Edges 17316.0
+MST length on street (m): 20138.87
+Vehicle density (cars/km): 39.23
+Average metrics with rmin = 170
+#sent messages:  253.0
+#received messages:  11656.07
+time of last car infection:  1.5321
+#hops to reach last infected car:  8.15
+Cars infected ratio: 97.60%
+Cars infected std dev: 77.53
+Network traffic (bytes):  37675.22
+
+NEML = 1
+Mean degree 43.8379746835443
+Edges 17316.0
+MST length on street (m): 20138.87
+Vehicle density (cars/km): 39.23
+Average metrics with rmin = 170
+#sent messages:  269.88
+#received messages:  12320.21
+time of last car infection:  1.5090999999999999
+#hops to reach last infected car:  8.04
+Cars infected ratio: 96.70%
+Cars infected std dev: 109.33
+Network traffic (bytes):  34274.76
