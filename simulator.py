@@ -4,6 +4,7 @@ import sys
 import pickle
 import random
 import functools
+import numpy as np
 from math import sqrt
 from multiprocessing import Pool
 from collections import defaultdict
@@ -27,7 +28,7 @@ class Simulator:
 	TIME_RESOLUTION = 0.01  #how many seconds per step
 
 	# Environment parameters
-	TMAX = 0.5		#max time to wait before sending a broadcast message
+	TMAX = 0.3		#max time to wait before sending a broadcast message
 	TMIN = 0		#min time to wait before sending a broadcast message
 	RMIN = 170		#Rmin, expressed in meters
 	RMAX = 500		#Rmax, expressed in meters
@@ -57,6 +58,7 @@ class Simulator:
 		self.t_last_infected = 0  #time step of the last car infected
 		self.n_hop_last_infected = 0  #number of hops of last infected car
 		self.network_traffic = 0   #network traffic expressed in bytes
+		self.t_infected = defaultdict(int)  #t_infected[t] = [...] list of cars infected at t
 
 		# Args
 		self.no_graphics = "--no-graphics" in sys.argv
@@ -224,6 +226,15 @@ def performSimulations(n):
 	std_dev = sqrt(std_dev)
 	print("Cars infected std dev: {:.2f}".format(std_dev))
 	print("Network traffic (bytes): ", sum([s.network_traffic for s in sims])/n)
+
+	# Distribution of vehicle infection over time
+	t_infected_sum = np.zeros(10000)
+	for s in sims:
+		for t, n in s.t_infected.items():
+			t_infected_sum[t] += n
+	t_infected_normalized = t_infected_sum / (len(sims)*len(sims[0].cars))
+	print(t_infected_normalized)
+	pickle.dump(t_infected_normalized, open(f'grafici/runs/t_infected_normalized_TMAX-{Simulator.TMAX*1000}.pickle', 'wb'))
 
 
 	return (Simulator.RMIN, #for boxplots

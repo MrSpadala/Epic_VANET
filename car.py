@@ -99,6 +99,7 @@ class Car:
 		# INFECTED state, then I start the waiting timer
 		if self.state == State.VULNERABLE:
 			self.sim.t_last_infected = self.sim.t
+			self.sim.t_infected[self.sim.t] += 1
 			self.sim.n_hop_last_infected = msg.hop
 			self.transition_to_state(State.INFECTED)
 			self.timer_infected = self.getWaitingTime(msg.last_emit)  #set waiting timer in function of the distance 
@@ -121,7 +122,7 @@ class Car:
 			waiting_time = Simulator.TMAX
 
 		# Converts from seconds to simulator ticks
-		return waiting_time / Simulator.TIME_RESOLUTION
+		return 1 + (waiting_time / Simulator.TIME_RESOLUTION)
 
 
 
