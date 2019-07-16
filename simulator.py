@@ -22,6 +22,16 @@ except:
 
 random.seed(42)
 
+
+
+
+# Simulation parameters
+N_CPUS = 4	   		   #how many cores to use
+N_SIMULATIONS = 100    #how many simulations to perform
+
+
+
+
 class Simulator:
 
 	# Simulator parameters
@@ -35,6 +45,7 @@ class Simulator:
 	DROP = 0.01		#message drop rate
 	ALPHA = 0.05    #if at the end of the waiting timer, a fraction larger than ALPHA
 					#of my neighors has not been reached I relay the message
+
 
 	def __init__(self, cars):
 		self.cars = cars
@@ -61,9 +72,7 @@ class Simulator:
 		self.t_infected = defaultdict(int)  #t_infected[t] = [...] list of cars infected at t
 
 		# Args
-		self.no_graphics = "--no-graphics" in sys.argv
-		if not self.no_graphics:
-			print('GUI mode, to disable it run with \'--no-graphics\'')
+		self.no_graphics = not "--with-graphics" in sys.argv
 
 
 
@@ -92,9 +101,9 @@ class Simulator:
 
 
 def init_cars():
-	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"   #USE LUXEMBURG
-	#city_name, scenario = "Cologne", "time23000Tper1000.txt"     #USE COLOGNE
-	#return init_cars_newyork()									  #USE NEWYORK
+	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"   #DECOMMENT TO USE LUXEMBURG
+	#city_name, scenario = "Cologne", "time23000Tper1000.txt"     #DECOMMENT TO USE COLOGNE
+	#return init_cars_newyork()									  #DECOMMENT TO USE NEWYORK
 	
 	fpath = os.path.join("cached", city_name+"_"+scenario+'.bin')
 	cached = _load_cached(fpath)
@@ -196,13 +205,12 @@ def performSimulation(i, verbose=True):
 def performSimulations(n):
 
 	print('[+] Caching cars data')
-	cars_dummy = init_cars()  #trick to cache the car graph before starting the simulation
+	cars_dummy = init_cars()  #trick to cache the car graph on disk before starting the simulation
 	print('[+] Done!')
 
 	if n > 1:
-		cpus = 4
-		with Pool(cpus) as pool:
-			print('[+] Starting', n, 'simulations with', cpus, 'parallel jobs')
+		with Pool(N_CPUS) as pool:
+			print('[+] Starting', n, 'simulations with', N_CPUS, 'parallel jobs')
 			sims = pool.map(performSimulation, range(n))
 	else:
 		sims = [ performSimulation(0) ]
@@ -220,21 +228,20 @@ def performSimulations(n):
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
 	print("Cars infected ratio: {:.2f}%".format(100*(infected) / (len(sims)*len(sims[0].cars))))
 	std_dev = 0
-	for s in sims:
-		std_dev += (str([c.state for c in s.cars]).count("State.RECOVERED")) ** 2
-	std_dev = (std_dev / len(sims))  -  ((infected/len(sims))**2)
-	std_dev = sqrt(std_dev)
-	print("Cars infected std dev: {:.2f}".format(std_dev))
+	#for s in sims:
+	#	std_dev += (str([c.state for c in s.cars]).count("State.RECOVERED")) ** 2
+	#std_dev = (std_dev / len(sims))  -  ((infected/len(sims))**2)
+	#std_dev = sqrt(std_dev)
+	#print("Cars infected std dev: {:.2f}".format(std_dev))
 	print("Network traffic (bytes): ", sum([s.network_traffic for s in sims])/n)
 
 	# Distribution of vehicle infection over time
-	t_infected_sum = np.zeros(10000)
-	for s in sims:
-		for t, n in s.t_infected.items():
-			t_infected_sum[t] += n
-	t_infected_normalized = t_infected_sum / (len(sims)*len(sims[0].cars))
-	print(t_infected_normalized)
-	pickle.dump(t_infected_normalized, open(f'grafici/runs/t_infected_normalized_TMAX-{Simulator.TMAX*1000}.pickle', 'wb'))
+	#t_infected_sum = np.zeros(10000)
+	#for s in sims:
+	#	for t, n in s.t_infected.items():
+	#		t_infected_sum[t] += n
+	#t_infected_normalized = t_infected_sum / (len(sims)*len(sims[0].cars))
+	#pickle.dump(t_infected_normalized, open(f'grafici/runs/t_infected_normalized_TMAX-{Simulator.TMAX*1000}.pickle', 'wb'))
 
 
 	return (Simulator.RMIN, #for boxplots
@@ -245,7 +252,8 @@ def performSimulations(n):
 
 
 if __name__ == "__main__":
-	if "--no-graphics" in sys.argv:
-		performSimulations(400)
-	else:
+	if "--with-graphics" in sys.argv:
 		performSimulations(1)
+	else:
+		print('Test mode, to use the visual output run with \'--with-graphics\', need first to install vpython')
+		performSimulations(N_SIMULATIONS)

@@ -1,6 +1,6 @@
 
 import sys
-if "--no-graphics" in sys.argv:
+if not "--with-graphics" in sys.argv:
 	pass
 
 else:
