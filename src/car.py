@@ -19,10 +19,14 @@ class State(Enum):
 	RECOVERED = 2
 
 
+
+# TODO: dist and in_range are the critical part of the program (most of the time spent inside them)
+# change them and use something like LSH for neighbor gathering
+
 def dist(p,q):  #eucledian distance
 	return sqrt((p[0]-q[0])**2+(p[1]-q[1])**2)
 def in_range(p,q,radius):	#returns true whether the distance p,q is less than radius
-	return dist(p,q) < radius
+	return sqrt((p[0]-q[0])**2+(p[1]-q[1])**2) < radius
 
 
 class Car:
@@ -63,7 +67,6 @@ class Car:
 		key = lambda x: dist(x, self.pos)
 		all_emitters_srtd = sorted(list(all_emitters), key=key, reverse=True)
 		# Keep only the closest to me, since there is Msg.EMITTERS_LIMIT limit on the max. number of emitters stored inside a message
-		#msg.emitters = deque(all_emitters_srtd, maxlen=Msg.EMITTERS_LIMIT)
 		msg.emitters = all_emitters_srtd[:Msg.EMITTERS_LIMIT]
 
 		return msg
@@ -101,29 +104,6 @@ class Car:
 
 		# Change state to recovered, either the vehicle has broadcasted or not
 		self.transition_to_state(State.RECOVERED)
-
-
-
-	'''def send_msg_to_neighbors(self, msg):
-		"""
-		Send the message to all my neighbors 
-		"""
-		for c, i in zip(self.adj, range(len(self.adj))):
-			if c == 1:
-				obj = self.sim.getCar(i)  #take the car object
-				if obj == None:
-					continue		
-
-				# If needed update GUI
-				if not self.sim.no_graphics:
-					if obj.state == State.VULNERABLE:
-						visualInfect(self, obj)
-
-				obj.receive(msg)  #TODO: don't infect immediately, wait some time theta
-
-		# If using GUI sleep a bit
-		if not self.sim.no_graphics:
-			sleep(0.01)'''
 
 	
 
@@ -177,8 +157,29 @@ class Car:
 
 
 
+	def transition_to_state(self, state_final):
+		"""
+		Change the state of this vehicle to 'state_final'.
+		Also it updates some metric and counter of the simulator
+		"""
+		if self.state == State.VULNERABLE and state_final == State.INFECTED:
+			self.sim.t_last_infected = self.sim.t
+			self.sim.t_infected[self.sim.t] += 1
+			self.sim.infected_counter += 1
+			self.state = State.INFECTED
+		elif self.state == State.INFECTED and state_final == State.RECOVERED:
+			self.messages.clear()
+			self.sim.infected_counter -= 1
+			self.state = State.RECOVERED
+		else:
+			raise ValueError('Inconsistent state transition from', self.state, 'to', state_final)
 
 
+
+
+
+	# Now a barrage of different 'evaluate_positions' functions, that decide whether
+	# or not a vehicle has to relay a message. Each function follows its own policy
 
 
 	# WE USED THIS
@@ -204,10 +205,11 @@ class Car:
 		return len(neighbor_positions) > simulator.Simulator.ALPHA * n_neighbors
 
 
-
+	# WE USED THIS as algorithm comparison
 	def evaluate_positions_no_geo(self, messages, my_pos):
 		return not len(messages)>3
 
+	# WE USED THIS as algorithm comparison
 	def evaluate_positions_w_p_pers(self, messages, my_pos):
 		P = []
 		for m in messages:
@@ -259,30 +261,4 @@ class Car:
 		return random.random() > (1-p)
 		'''
 
-
-		
-
-
-		
-
-	def transition_to_state(self, state_final):
-		"""
-		Change the state of this vehicle to 'state_final'.
-		Also it updates some metric and counter of the simulator
-		"""
-		if self.state == State.VULNERABLE and state_final == State.INFECTED:
-			self.sim.t_last_infected = self.sim.t
-			self.sim.t_infected[self.sim.t] += 1
-			self.sim.infected_counter += 1
-			self.state = State.INFECTED
-		elif self.state == State.INFECTED and state_final == State.RECOVERED:
-			self.messages.clear()
-			self.sim.infected_counter -= 1
-			self.state = State.RECOVERED
-		else:
-			raise ValueError('Inconsistent state transition from', self.state, 'to', state_final)
-
-
-
-#from simulator import Simulator  #se lo metto sopra si sfascia (cyclic imports), TODO soluzione migliore
 

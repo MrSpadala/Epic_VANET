@@ -118,7 +118,15 @@ class Simulator:
 
 
 
+
+
+
 def init_cars():
+	"""
+	Parses graph files and returns list of Car objects.
+	It also caches the result on disk in a pickle archive
+	"""
+
 	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"   #DECOMMENT TO USE LUXEMBURG
 	#city_name, scenario = "Cologne", "time23000Tper1000.txt"     #DECOMMENT TO USE COLOGNE
 	#return init_cars_newyork()									  #DECOMMENT TO USE NEWYORK
@@ -148,6 +156,10 @@ def init_cars():
 	return cars
 
 def init_cars_newyork():
+	"""
+	New York graph has a different file format, thus needed a different function
+	to parse it and load vehicle data
+	"""
 	fname = 'Newyork5003.mat'
 	fpath = os.path.join("cached", fname+'.bin')
 	cached = _load_cached(fpath)
@@ -181,23 +193,18 @@ def _ret_none():
 
 
 
-#Perform a single simulation
+
 def performSimulation(i, verbose=True):
+	"""
+	Performs a single simulation, with id 'i'
+	"""
+	# Load vehicle data
 	cars = init_cars()
 
-	def print_graph_stats():
-		grade = 0
-		for car in cars:
-			for a in car.adj:
-				grade += a
-		print('number of cars', len(cars))
-		print('number of edges', grade/2)
-		print('density', grade/(2*len(cars)))
-
-	#print_graph_stats()
-
+	# Init simulator with the vehicle connectivity graph
 	s = Simulator(cars)
 
+	# Get one random car and start the dissemination from it
 	if s.no_graphics:
 		random.sample(cars, 1)[0].on_receive(Msg.dummy())
 	else:
@@ -205,8 +212,10 @@ def performSimulation(i, verbose=True):
 		firstinfected = s.getCar(firstInfection())
 		firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
 
+	# Run simulation
 	s.runSimulation()
 
+	# If verbose print the result of this simulation
 	if verbose:
 		tmp = str([c.state for c in cars])
 		print("Simulation", i, "ended")
@@ -220,8 +229,11 @@ def performSimulation(i, verbose=True):
 
 
 
-#Performs 'n' different simulations
 def performSimulations(n):
+	"""
+	Performs 'n' different simulations in parallel using multiprocessing.Pool.
+	If n==1 the simulation is run without process Pool
+	"""
 
 	print('[+] Caching cars data')
 	cars_dummy = init_cars()  #trick to cache the car graph on disk before starting the simulation
@@ -234,6 +246,9 @@ def performSimulations(n):
 	else:
 		sims = [ performSimulation(0) ]
 	
+
+
+	#  ~  All metrics print below  ~
 
 	print()
 	print_MST_stats(cars_dummy)
