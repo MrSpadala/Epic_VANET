@@ -18,7 +18,7 @@ def dist(c1, c2):
 # A Python program for Prim's Minimum Spanning Tree (MST) algorithm. 
 # The program is for adjacency matrix representation of the graph 
 
-def print_density(cars):
+def print_MST_stats(cars):
 
     #print([c.plate for c in cars])
     #print(len([c.plate for c in cars]))

@@ -9,6 +9,7 @@ from enum import Enum
 from visualGraph import *
 
 import Events
+import simulator
 
 
 
@@ -77,29 +78,30 @@ class Car:
 
 		# Decide whether to relay or not
 		bcast = self.evaluate_positions(self.messages, self.pos)
-		if not bcast:
-			return
+		
+		if bcast:
+			# Take the first message in the list of incoming messages (the first message generated the infection)
+			# and modify it to be ready for broadcast
+			msg_recv = self.messages[0]
+			msg = self.modifyMsg(msg_recv)
 
-		# Take the first message in the list of incoming messages (the first message generated the infection)
-		# and modify it to be ready for broadcast
-		msg_recv = self.messages[0]
-		msg = self.modifyMsg(msg_recv)
+			# Don't broadcast if the message reached its hop limit
+			if msg.hop == msg.ttl:
+				return
 
-		# Don't broadcast if the message reached its hop limit
-		if msg.hop == msg.ttl:
-			return
+			# Update simulator statistics
+			self.sim.sent_messages += 1
+			self.sim.network_traffic += msg.size()   #EPIC
+			#self.sim.network_traffic += len(msg.text)  #probabilistic
 
-		# Update simulator statistics
-		self.sim.sent_messages += 1
-		self.sim.network_traffic += msg.size()   #EPIC
-		#self.sim.network_traffic += len(msg.text)  #probabilistic
+			# Send the message by scheduling an event for the simulator (this implements some network delay)
+			#self.send_msg_to_neighbors(msg)
+			bcast_event = Events.BroadcastEvent(self, msg)
+			self.sim.schedule_event(bcast_event)
 
-		# Send the message by scheduling an event for the simulator (this implements some network delay)
-		#self.send_msg_to_neighbors(msg)
-		bcast_event = Events.BroadcastEvent(self, msg)
-		self.sim.schedule_event(bcast_event)
+		# Change state to recovered, either the vehicle has broadcasted or not
+		self.transition_to_state(State.RECOVERED)
 
-		self.messages.clear()
 
 
 	'''def send_msg_to_neighbors(self, msg):
@@ -171,7 +173,7 @@ class Car:
 			waiting_time = Simulator.TMAX
 
 		# Converts from seconds to simulator ticks
-		return ceil(waiting_time / Simulator.TIME_RESOLUTION)
+		return waiting_time / Simulator.TIME_RESOLUTION
 
 
 
@@ -274,6 +276,7 @@ class Car:
 			self.sim.infected_counter += 1
 			self.state = State.INFECTED
 		elif self.state == State.INFECTED and state_final == State.RECOVERED:
+			self.messages.clear()
 			self.sim.infected_counter -= 1
 			self.state = State.RECOVERED
 		else:
@@ -282,4 +285,4 @@ class Car:
 
 
 #from simulator import Simulator  #se lo metto sopra si sfascia (cyclic imports), TODO soluzione migliore
-import simulator
+

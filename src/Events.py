@@ -1,5 +1,6 @@
 
 import abc
+import math
 import simulator
 
 class _Event:
@@ -8,7 +9,10 @@ class _Event:
 	"""
 
 	def __init__(self, t):
-		self.delay = t  # simulator time to wait before scheduling the event
+		self.delay = math.ceil(t)  # simulator time to wait before scheduling the event
+
+	def __lt__(self, event):
+		return True
 
 	@abc.abstractmethod
 	def execute(self, sim):
@@ -38,7 +42,7 @@ class BroadcastEvent(_Event):
 	TX_DELAY = 2    # transmission delay, expressed in ms
 
 	def __init__(self, vehicle_src, msg):
-		delay = (1000 * self.TX_DELAY) / simulator.Simulator.TIME_RESOLUTION
+		delay = (self.TX_DELAY / 1000) / simulator.Simulator.TIME_RESOLUTION
 		super().__init__(delay)
 		self.vehicle = vehicle_src
 		self.msg = msg
@@ -69,7 +73,7 @@ class BroadcastEvent(_Event):
 
 if __name__ == "__main__":
 	import sys
-	sys.append("./src/")
+	sys.path.append("./src/")
 
 
 	

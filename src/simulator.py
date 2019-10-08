@@ -9,11 +9,11 @@ import numpy as np
 from math import sqrt
 from multiprocessing import Pool
 from collections import defaultdict
-from car import Car, State as carState
 from msg import Msg
-from grafi.DFS import get_largest_conn_component
-from grafi.density import print_density
+from graph_utils.DFS import get_largest_conn_component
+from graph_utils.density import print_MST_stats
 from pdb import set_trace as breakpoint
+import car
 from visualGraph import *
 
 try:
@@ -28,7 +28,7 @@ random.seed(42)
 
 # Simulation parameters
 N_CPUS = 4	   		   #how many cores to use
-N_SIMULATIONS = 100    #how many simulations to perform
+N_SIMULATIONS = 1    #how many simulations to perform
 
 
 
@@ -80,7 +80,7 @@ class Simulator:
 
 	def runSimulation_old(self):
 		# Set counter for infected cats
-		cars_inftd = [c.state == carState.INFECTED for c in self.cars]   #cars infected at the start of the simulation
+		cars_inftd = [c.state == car.State.INFECTED for c in self.cars]   #cars infected at the start of the simulation
 		self.infected_counter = sum(cars_inftd)
 		# Set simulation tick  
 		self.t = 0
@@ -89,12 +89,12 @@ class Simulator:
 		while self.infected_counter > 0:
 			self.t += 1
 			for car in self.cars:
-				if car.state == carState.INFECTED:
+				if car.state == car.State.INFECTED:
 					car.timer_infected -= 1
 
 					if car.timer_infected <= 0:
 						car.timer_infected = None
-						car.transition_to_state(carState.RECOVERED)
+						car.transition_to_state(car.State.RECOVERED)
 						car.broadMsg()
 
 
@@ -141,7 +141,7 @@ def init_cars():
 	adi = []
 	for l in a:
 		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
-	cars = [Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
+	cars = [car.Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
 	cars = list(filter(lambda x: x != None, cars))
 	cars = get_largest_conn_component(cars)
 	pickle.dump(cars, open(fpath, 'wb'))
@@ -161,7 +161,7 @@ def init_cars_newyork():
 	coord = [(x,y) for x,y in zip(coord[0], coord[1])]
 	cars = []
 	for i,c,a in zip(range(len(adia)),coord,adia):
-		cars.append(Car(i,c,a))
+		cars.append(car.Car(i,c,a))
 	cars = get_largest_conn_component(cars)
 	pickle.dump(cars, open(fpath, 'wb'))
 	return cars
@@ -228,20 +228,20 @@ def performSimulations(n):
 	print('[+] Done!')
 
 	if n > 1:
+		print('[+] Starting', n, 'simulations with', N_CPUS, 'parallel jobs')
 		with Pool(N_CPUS) as pool:
-			print('[+] Starting', n, 'simulations with', N_CPUS, 'parallel jobs')
 			sims = pool.map(performSimulation, range(n))
 	else:
 		sims = [ performSimulation(0) ]
 	
 
 	print()
-	print_density(cars_dummy)
+	print_MST_stats(cars_dummy)
 	print("Average metrics with rmin =",Simulator.RMIN)
 	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
 	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
 	print("time of last car infection: ", sum([s.t_last_infected for s in sims])*Simulator.TIME_RESOLUTION/n)
-	print("#hops to reach last infected car: ",sum([s.n_hop_last_infected for s in sims])/n)
+	#print("#hops to reach last infected car: ",sum([s.n_hop_last_infected for s in sims])/n)
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
@@ -266,8 +266,8 @@ def performSimulations(n):
 	return (Simulator.RMIN, #for boxplots
 		[s.sent_messages for s in sims],
 		[str([c.state for c in s.cars]).count("State.RECOVERED") for s in sims],
-		[s.t_last_infected for s in sims],
-		[s.n_hop_last_infected for s in sims])
+		[s.t_last_infected for s in sims])
+		#[s.n_hop_last_infected for s in sims])
 
 
 if __name__ == "__main__":
