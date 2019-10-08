@@ -4,3 +4,4 @@ cached/
 launch.json
 .vscode/
 *.pyc
+tmp/
