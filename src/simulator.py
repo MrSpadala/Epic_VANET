@@ -50,6 +50,8 @@ class Simulator:
 
 	def __init__(self, cars):
 		self.cars = cars
+
+		# Register this 'Simulator' object to the vehicles
 		for car in self.cars:
 			car.sim = self
 
@@ -69,7 +71,6 @@ class Simulator:
 		self.rcv_messages = 0  #number of received messages
 		self.sent_messages = 0 #number of sent messages
 		self.t_last_infected = 0  #time step of the last car infected
-		self.n_hop_last_infected = 0  #number of hops of last infected car
 		self.network_traffic = 0   #network traffic expressed in bytes
 		self.t_infected = defaultdict(int)  #t_infected[t] = [...] list of cars infected at t
 
@@ -77,11 +78,7 @@ class Simulator:
 		self.no_graphics = not "--with-graphics" in sys.argv
 
 
-	def schedule_event(event):
-		heapq.heappush(self.events, event)
-
-
-	def runSimulation(self):
+	def runSimulation_old(self):
 		# Set counter for infected cats
 		cars_inftd = [c.state == carState.INFECTED for c in self.cars]   #cars infected at the start of the simulation
 		self.infected_counter = sum(cars_inftd)
@@ -99,6 +96,22 @@ class Simulator:
 						car.timer_infected = None
 						car.transition_to_state(carState.RECOVERED)
 						car.broadMsg()
+
+
+
+	def schedule_event(self, event):
+		heapq.heappush(self.events, (self.t+event.delay, event))
+
+
+	def runSimulation(self):
+		while len(self.events) > 0:
+			# Retrieve next event and set simulation tick
+			sim_time, event = heapq.heappop(self.events)
+			self.t = sim_time
+
+			# Execute event
+			event.execute(self)
+
 
 	def getCar(self, plate):
 		return self.car_dict[plate]
@@ -186,7 +199,7 @@ def performSimulation(i, verbose=True):
 	s = Simulator(cars)
 
 	if s.no_graphics:
-		random.sample(cars, 1)[0].infect(Msg.dummy())
+		random.sample(cars, 1)[0].on_receive(Msg.dummy())
 	else:
 		bubbles = displayCars(s.car_dict)
 		firstinfected = s.getCar(firstInfection())
@@ -258,6 +271,7 @@ def performSimulations(n):
 
 
 if __name__ == "__main__":
+	sys.path.append("./src/")
 	if "--with-graphics" in sys.argv:
 		performSimulations(1)
 	else:

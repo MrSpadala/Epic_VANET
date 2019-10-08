@@ -3,10 +3,12 @@ from time import sleep
 from decimal import Decimal
 from collections import deque
 from pdb import set_trace
-from math import sqrt
+from math import sqrt, ceil
 from msg import Msg
 from enum import Enum
 from visualGraph import *
+
+import Events
 
 
 
@@ -92,13 +94,15 @@ class Car:
 		self.sim.network_traffic += msg.size()   #EPIC
 		#self.sim.network_traffic += len(msg.text)  #probabilistic
 
-		# Send the message
-		self.send_msg_to_neighbors(msg)
+		# Send the message by scheduling an event for the simulator (this implements some network delay)
+		#self.send_msg_to_neighbors(msg)
+		bcast_event = Events.BroadcastEvent(self, msg)
+		self.sim.schedule_event(bcast_event)
 
 		self.messages.clear()
 
 
-	def send_msg_to_neighbors(self, msg):
+	'''def send_msg_to_neighbors(self, msg):
 		"""
 		Send the message to all my neighbors 
 		"""
@@ -117,17 +121,17 @@ class Car:
 
 		# If using GUI sleep a bit
 		if not self.sim.no_graphics:
-			sleep(0.01)
+			sleep(0.01)'''
 
 	
 
 
-	def receive(self, msg):
+	def on_receive(self, msg):
 		"""
 		Implements the receiving of a message
 		"""
 		#Simulate message loss while receiving
-		if random.random() < Simulator.DROP:
+		if random.random() < simulator.Simulator.DROP:
 			return
 
 		self.sim.rcv_messages += 1   #for simulation statistics
@@ -136,24 +140,28 @@ class Car:
 		if self.state == State.RECOVERED:
 			return
 
-		# If it's the first time that the message arrive, I go from VULNERABLE state to
-		# INFECTED state, then I start the waiting timer
+		# If it's the first time that I receive the message, then transition to state infected
 		if self.state == State.VULNERABLE:
-			self.sim.t_last_infected = self.sim.t
-			self.sim.t_infected[self.sim.t] += 1
-			self.sim.n_hop_last_infected = msg.hop
 			self.transition_to_state(State.INFECTED)
-			self.timer_infected = self.getWaitingTime(msg.last_emit)  #set waiting timer in function of the distance 
 
+			# Add waiting phase event
+			waiting_time = self.getWaitingTime(msg.last_emit)
+			event = Events.WaitingEvent(self, waiting_time)
+			self.sim.schedule_event(event)
+
+		# Store the received message
 		self.messages.append(msg)
 
 
 
 	def getWaitingTime(self, emit_pos):
-		""" Returns the waiting time a vehicle has to wait when infected.
+		"""
+		Returns the waiting time a vehicle has to wait when infected.
 		Calculated using the distance between me and the emitter that sent 
 		me the message, expressed as number of simulator ticks
 		"""
+		Simulator = simulator.Simulator
+
 		dAS = dist(self.pos, emit_pos) 
 		waiting_time = Simulator.TMAX*(1 - dAS/Simulator.RMAX)  #waiting time, in seconds
 
@@ -163,7 +171,11 @@ class Car:
 			waiting_time = Simulator.TMAX
 
 		# Converts from seconds to simulator ticks
-		return 1 + (waiting_time / Simulator.TIME_RESOLUTION)
+		return ceil(waiting_time / Simulator.TIME_RESOLUTION)
+
+
+
+
 
 
 
@@ -187,7 +199,7 @@ class Car:
 						neighbor_positions.remove(neighbor_pos)
 		
 		# return true (relay) only if there is a percentage ALPHA of uncoverd neighbors
-		return len(neighbor_positions) > Simulator.ALPHA * n_neighbors
+		return len(neighbor_positions) > simulator.Simulator.ALPHA * n_neighbors
 
 
 
@@ -251,9 +263,14 @@ class Car:
 
 		
 
-	# utility: transition a vehicle to a certain state
 	def transition_to_state(self, state_final):
+		"""
+		Change the state of this vehicle to 'state_final'.
+		Also it updates some metric and counter of the simulator
+		"""
 		if self.state == State.VULNERABLE and state_final == State.INFECTED:
+			self.sim.t_last_infected = self.sim.t
+			self.sim.t_infected[self.sim.t] += 1
 			self.sim.infected_counter += 1
 			self.state = State.INFECTED
 		elif self.state == State.INFECTED and state_final == State.RECOVERED:
@@ -264,4 +281,5 @@ class Car:
 
 
 
-from simulator import Simulator  #se lo metto sopra si sfascia (cyclic imports), todo soluzione migliore
+#from simulator import Simulator  #se lo metto sopra si sfascia (cyclic imports), TODO soluzione migliore
+import simulator

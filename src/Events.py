@@ -1,55 +1,77 @@
 
 import abc
-#import simulator
-simulator = None
+import simulator
 
 class _Event:
-    """
-    Abstract representation of a simulation event, which is scheduled and executed by the simulator
-    """
+	"""
+	Abstract representation of a simulation event, which is scheduled and executed by the simulator
+	"""
 
-    def __init__(self, t):
-        self.schedule_time = t  #simulation time to schedule the event
+	def __init__(self, t):
+		self.delay = t  # simulator time to wait before scheduling the event
 
-    def __lt__(self, event):
-        print("DEBUG: comparing")
-        return self.schedule_time < event.schedule_time
-
-    @abc.abstractmethod
-    def execute(*args, **kwargs):
-        pass
+	@abc.abstractmethod
+	def execute(self, sim):
+		pass
 
 
 
 class WaitingEvent(_Event):
-    """
-    Implements the waiting phase of a vehicle when it receives a message
-    """
-    def __init__(self, vehicle, t):
-        super().__init__(t)
-        self.vehicle = vehicle
-    
-    def execute():
-        vehicle.broadMsg()
+	"""
+	Implements the waiting phase of a vehicle when it receives a message
+	"""
+	def __init__(self, vehicle, t):
+		super().__init__(t)
+		self.vehicle = vehicle
+	
+	def execute(self, sim):
+		self.vehicle.broadcast_phase()
+
+
+
 
 
 class BroadcastEvent(_Event):
-    """
-    Implements a (constant) time delay from a message send to its reception by the receiver
-    """
-    TX_DELAY = 2    # transmission delay, expressed in ms
+	"""
+	Implements a (constant) time delay from a message send to its reception by the receiver
+	"""
+	TX_DELAY = 2    # transmission delay, expressed in ms
 
-    def __init__(self, vehicle):
-        sched_time = (1000 * TX_DELAY) / simulator.TIME_RESOLUTION
-        super().__init__(sched_time)
-        self.vehicle = vehicle
+	def __init__(self, vehicle_src, msg):
+		delay = (1000 * self.TX_DELAY) / simulator.Simulator.TIME_RESOLUTION
+		super().__init__(delay)
+		self.vehicle = vehicle_src
+		self.msg = msg
 
-    def execute():
-        pass
-        # TODO
+	def execute(self, sim):
+		"""
+		Send the message to all 'vehicle''s neighbors
+		"""
+		for c, i in zip(self.vehicle.adj, range(len(self.vehicle.adj))):
+			if c == 1:
+				neighbor = sim.getCar(i)  #take the car object
+				if neighbor == None:
+					continue		
+
+				# If needed update GUI
+				if not sim.no_graphics:
+					if neighbor.state == State.VULNERABLE:
+						visualInfect(self.vechicle, neighbor)
+
+				neighbor.on_receive(self.msg)  #TODO: don't infect immediately, wait some time theta
+
+		# If using GUI sleep a bit
+		if not sim.no_graphics:
+			sleep(0.01)
 
 
 
-    
+
+if __name__ == "__main__":
+	import sys
+	sys.append("./src/")
+
+
+	
 
 
