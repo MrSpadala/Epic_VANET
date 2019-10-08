@@ -1,6 +1,7 @@
 
 import os
 import sys
+import heapq
 import pickle
 import random
 import functools
@@ -35,7 +36,7 @@ N_SIMULATIONS = 100    #how many simulations to perform
 class Simulator:
 
 	# Simulator parameters
-	TIME_RESOLUTION = 0.01  #how many seconds per step
+	TIME_RESOLUTION = 0.001  #how many seconds per step
 
 	# Environment parameters
 	TMAX = 0.3		#max time to wait before sending a broadcast message
@@ -62,6 +63,7 @@ class Simulator:
 		# Simulation variables
 		self.t = 0   #current simulation iteration
 		self.infected_counter = 0	 #keep track of cars currently in INFECTED state
+		self.events = []   #scheduled events (will be used as a heap through 'heapq' module)
 
 		# Metrics variables
 		self.rcv_messages = 0  #number of received messages
@@ -74,6 +76,9 @@ class Simulator:
 		# Args
 		self.no_graphics = not "--with-graphics" in sys.argv
 
+
+	def schedule_event(event):
+		heapq.heappush(self.events, event)
 
 
 	def runSimulation(self):
@@ -157,6 +162,7 @@ def _load_cached(fpath):
 	return None
 
 def _ret_none():
+	# multiprocessing.Pool only uses functions in the global scope, no lambdas allowed
 	return None
 
 

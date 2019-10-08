@@ -18,12 +18,12 @@ class State(Enum):
 
 def dist(p,q):  #eucledian distance
 	return sqrt((p[0]-q[0])**2+(p[1]-q[1])**2)
-def in_range(p,q,radius):	#returns true whether the distance p,q is less than radiu
+def in_range(p,q,radius):	#returns true whether the distance p,q is less than radius
 	return dist(p,q) < radius
 
 
 class Car:
-	#Costruttore
+
 	def __init__(self, plate, pos, adj):
 		self.plate = plate
 		self.pos = pos
@@ -31,60 +31,101 @@ class Car:
 		self.state = State.VULNERABLE
 		self.timer_infected = None
 		self.adj = adj
-		self.sim = None  #simulator object
 
-	def modifyMsg(self, msg, msg_list):
-		#Update the message with my data
+		# Each car keeps track of its own simulator object, which is set right before starting the simulation
+		self.sim = None
+
+
+	def modifyMsg(self, _msg):
+		"""
+		Before a vehicle retransmit a message, this last one must be modified by
+		adding data of the vehicle which is about to broadcast it. It returns a new Msg object, no side effects
+		"""
+
+		msg = _msg.clone()
+		
+		# Update 'msg''s last emitter with this vehicle position
 		msg.last_emit = self.pos
-		all_emitters = set([self.pos])
-		for m in msg_list:
-			all_emitters = all_emitters.union(set(m.emitters))
-		
-		#I update the list of the emitters and if its length exceeds EMITTERS_LIMIT I keep the closest ones
-		key = lambda x: dist(x, self.pos)
-		all_emitters_srtd = sorted(list(all_emitters), key=key, reverse=True)
-		msg.emitters = deque(all_emitters_srtd, maxlen=Msg.EMITTERS_LIMIT)
-		
+
+		# Update hop counter
 		msg.hop += 1
 
-	def broadMsg(self):
+		# Retrieve the set of all known emitters. It is the union of all emitters inside all messages
+		# received during the sleep time.
+		all_emitters = set([self.pos])
+		for m in self.messages:
+			all_emitters = all_emitters.union(set(m.emitters))
+		
+		# Sort the emitters list by the distance between them and this vehicle, in ascending order
+		key = lambda x: dist(x, self.pos)
+		all_emitters_srtd = sorted(list(all_emitters), key=key, reverse=True)
+		# Keep only the closest to me, since there is Msg.EMITTERS_LIMIT limit on the max. number of emitters stored inside a message
+		#msg.emitters = deque(all_emitters_srtd, maxlen=Msg.EMITTERS_LIMIT)
+		msg.emitters = all_emitters_srtd[:Msg.EMITTERS_LIMIT]
+
+		return msg
+		
+		
+
+	def broadcast_phase(self):
+		"""
+		After the waiting phase, a vehicle has to decide whether or not to relay the received message.
+		Here we perform the decision process and, if positive, we send the message to all our radio neighbors (infect)
+		"""
+
+		# Decide whether to relay or not
 		bcast = self.evaluate_positions(self.messages, self.pos)
-		if (not bcast):
+		if not bcast:
 			return
 
-		#take the first message in the list of incoming messages (the first message generated the infection)
-		msg = self.messages[0].clone()
-		self.modifyMsg(msg, self.messages)
+		# Take the first message in the list of incoming messages (the first message generated the infection)
+		# and modify it to be ready for broadcast
+		msg_recv = self.messages[0]
+		msg = self.modifyMsg(msg_recv)
 
-		#Don't broadcast if the message reached its hop limit
+		# Don't broadcast if the message reached its hop limit
 		if msg.hop == msg.ttl:
 			return
 
-		#Update simulator statistics
+		# Update simulator statistics
 		self.sim.sent_messages += 1
 		self.sim.network_traffic += msg.size()   #EPIC
 		#self.sim.network_traffic += len(msg.text)  #probabilistic
 
-		#Send message to all my neighbors
-		for c, i in zip(self.adj, range(len(self.adj))):
-			if c == 1:
-				obj = self.sim.getCar(i)  #take the car object
-				if obj == None:
-					continue					
-
-				if not self.sim.no_graphics:
-					if obj.state == State.VULNERABLE:
-						visualInfect(self, obj)
-				obj.infect(msg)
-
-		if not self.sim.no_graphics:
-			sleep(0.01)
+		# Send the message
+		self.send_msg_to_neighbors(msg)
 
 		self.messages.clear()
 
 
+	def send_msg_to_neighbors(self, msg):
+		"""
+		Send the message to all my neighbors 
+		"""
+		for c, i in zip(self.adj, range(len(self.adj))):
+			if c == 1:
+				obj = self.sim.getCar(i)  #take the car object
+				if obj == None:
+					continue		
 
-	def infect(self, msg):
+				# If needed update GUI
+				if not self.sim.no_graphics:
+					if obj.state == State.VULNERABLE:
+						visualInfect(self, obj)
+
+				obj.receive(msg)  #TODO: don't infect immediately, wait some time theta
+
+		# If using GUI sleep a bit
+		if not self.sim.no_graphics:
+			sleep(0.01)
+
+	
+
+
+	def receive(self, msg):
+		"""
+		Implements the receiving of a message
+		"""
 		#Simulate message loss while receiving
 		if random.random() < Simulator.DROP:
 			return
