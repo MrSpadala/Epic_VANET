@@ -239,12 +239,12 @@ def performSimulations(n):
 	cars_dummy = init_cars()  #trick to cache the car graph on disk before starting the simulation
 	print('[+] Done!')
 
-	if n > 1:
-		print('[+] Starting', n, 'simulations with', N_CPUS, 'parallel jobs')
+	if n > 1 and N_CPUS > 1:
 		with Pool(N_CPUS) as pool:
+			print('[+] Starting', n, 'simulations with', N_CPUS, 'parallel jobs')
 			sims = pool.map(performSimulation, range(n))
 	else:
-		sims = [ performSimulation(0) ]
+		sims = [ performSimulation(i) for i in range(n)]
 	
 
 
