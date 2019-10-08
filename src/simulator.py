@@ -36,7 +36,7 @@ N_SIMULATIONS = 1    #how many simulations to perform
 class Simulator:
 
 	# Simulator parameters
-	TIME_RESOLUTION = 0.001  #how many seconds per step
+	TIME_RESOLUTION = 0.0001  #how many seconds per step
 
 	# Environment parameters
 	TMAX = 0.3		#max time to wait before sending a broadcast message

@@ -198,6 +198,7 @@ class Car:
 		for m in messages:
 			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
 				for neighbor_pos in list(neighbor_positions):  #controllo se un mio vicino ha già ricevuto un messaggio da un emitter precedente
+					# TODO test here how many times in range gets called, compared to branch 'test'
 					if in_range(neighbor_pos, emit, self.sim.rmin):
 						neighbor_positions.remove(neighbor_pos)
 		
