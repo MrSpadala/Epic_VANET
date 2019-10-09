@@ -30,7 +30,7 @@ random.seed(42)
 N_CPUS = 4	   		   #how many cores to use
 N_SIMULATIONS = 1    #how many simulations to perform
 
-
+# TODO: move some configuration parameters in a separate config file
 
 
 class Simulator:
