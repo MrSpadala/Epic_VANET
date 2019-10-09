@@ -65,7 +65,7 @@ class Car:
 		
 		# Sort the emitters list by the distance between them and this vehicle, in ascending order
 		key = lambda x: dist(x, self.pos)
-		all_emitters_srtd = sorted(list(all_emitters), key=key, reverse=True)
+		all_emitters_srtd = sorted(list(all_emitters), key=key)
 		# Keep only the closest to me, since there is Msg.EMITTERS_LIMIT limit on the max. number of emitters stored inside a message
 		msg.emitters = all_emitters_srtd[:Msg.EMITTERS_LIMIT]
 
@@ -198,7 +198,6 @@ class Car:
 		for m in messages:
 			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
 				for neighbor_pos in list(neighbor_positions):  #controllo se un mio vicino ha già ricevuto un messaggio da un emitter precedente
-					# TODO test here how many times in range gets called, compared to branch 'test'
 					if in_range(neighbor_pos, emit, self.sim.rmin):
 						neighbor_positions.remove(neighbor_pos)
 		
