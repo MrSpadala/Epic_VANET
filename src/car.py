@@ -65,7 +65,7 @@ class Car:
 		
 		# Sort the emitters list by the distance between them and this vehicle, in ascending order
 		key = lambda x: dist(x, self.pos)
-		all_emitters_srtd = sorted(list(all_emitters), key=key, reverse=True)
+		all_emitters_srtd = sorted(list(all_emitters), key=key)
 		# Keep only the closest to me, since there is Msg.EMITTERS_LIMIT limit on the max. number of emitters stored inside a message
 		msg.emitters = all_emitters_srtd[:Msg.EMITTERS_LIMIT]
 
