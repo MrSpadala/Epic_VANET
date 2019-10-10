@@ -247,18 +247,19 @@ def performSimulations(n):
 	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
 	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
 	print("time of last car infection: ", sum([s.t_last_infected for s in sims])*Simulator.TIME_RESOLUTION/n)
-	#print("#hops to reach last infected car: ",sum([s.n_hop_last_infected for s in sims])/n)
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
 	print("Cars infected ratio: {:.2f}%".format(100*(infected) / (len(sims)*len(sims[0].cars))))
-	std_dev = 0
+	print("Network traffic (bytes): ", sum([s.network_traffic for s in sims])/n)
+	
+	# Standard deviation
+	#std_dev = 0
 	#for s in sims:
 	#	std_dev += (str([c.state for c in s.cars]).count("State.RECOVERED")) ** 2
 	#std_dev = (std_dev / len(sims))  -  ((infected/len(sims))**2)
 	#std_dev = math.sqrt(std_dev)
 	#print("Cars infected std dev: {:.2f}".format(std_dev))
-	print("Network traffic (bytes): ", sum([s.network_traffic for s in sims])/n)
 
 	# Distribution of vehicle infection over time
 	#t_infected_sum = numpy.zeros(10000)
@@ -268,12 +269,6 @@ def performSimulations(n):
 	#t_infected_normalized = t_infected_sum / (len(sims)*len(sims[0].cars))
 	#pickle.dump(t_infected_normalized, open(f'grafici/runs/t_infected_normalized_TMAX-{Simulator.TMAX*1000}.pickle', 'wb'))
 
-
-	return (Simulator.RMIN, #for boxplots
-		[s.sent_messages for s in sims],
-		[str([c.state for c in s.cars]).count("State.RECOVERED") for s in sims],
-		[s.t_last_infected for s in sims])
-		#[s.n_hop_last_infected for s in sims])
 
 
 if __name__ == "__main__":
