@@ -4,4 +4,5 @@ cached/
 launch.json
 .vscode/
 *.pyc
+sim_parameters.json
 tmp/
