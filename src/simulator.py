@@ -201,7 +201,7 @@ def performSimulation(i, verbose=True):
 	else:
 		bubbles = displayCars(s.car_dict)
 		firstinfected = s.getCar(firstInfection())
-		firstinfected.infect(Msg(firstinfected.plate, 'ciao', (firstinfected.pos[0], firstinfected.pos[1]), (firstinfected.pos[0], firstinfected.pos[1]), 0, 100))
+		firstinfected.infect(Msg.dummy())
 
 	# Run simulation
 	s.runSimulation()

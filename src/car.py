@@ -145,7 +145,7 @@ class Car:
 		# received during the sleep time.
 		all_emitters = set([self.pos])
 		for m in self.messages:
-			all_emitters = all_emitters.union(set(m.emitters))
+			all_emitters = all_emitters.union(m.emitters)
 		
 		# Sort the emitters list by the distance between them and this vehicle, in ascending order
 		key = lambda x: dist(x, self.pos)
