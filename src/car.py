@@ -1,15 +1,12 @@
+
 import random
-from time import sleep
-from decimal import Decimal
-from collections import deque
-from pdb import set_trace
-from math import sqrt, ceil
-from msg import Msg
+import math
 from enum import Enum
-from visualGraph import *
 
 import Events
 import simulator
+from msg import Msg
+from visualGraph import *
 
 
 
@@ -26,9 +23,9 @@ class State(Enum):
 #       Maybe saving in each Car object the (plates of) other cars at distance <= RMIN
 
 def dist(p,q):  #eucledian distance
-	return sqrt((p[0]-q[0])**2+(p[1]-q[1])**2)
+	return math.sqrt((p[0]-q[0])**2+(p[1]-q[1])**2)
 def in_range(p,q,radius):	#returns true whether the distance p,q is less than radius
-	return sqrt((p[0]-q[0])**2+(p[1]-q[1])**2) < radius
+	return math.sqrt((p[0]-q[0])**2+(p[1]-q[1])**2) < radius
 
 
 class Car:

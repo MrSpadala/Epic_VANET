@@ -4,31 +4,25 @@ import sys
 import heapq
 import pickle
 import random
-import functools
-import numpy as np
-from math import sqrt
 from multiprocessing import Pool
 from collections import defaultdict
-from msg import Msg
+
+import scipy.io as sio
+
+import car
 from graph_utils.DFS import get_largest_conn_component
 from graph_utils.density import print_MST_stats
-from pdb import set_trace as breakpoint
-import car
+from msg import Msg
 from visualGraph import *
 
-try:
-	from tqdm import tqdm
-except:
-	tqdm = lambda x: x
+
 
 random.seed(42)
 
 
-
-
 # Simulation parameters
-N_CPUS = 4	   		   #how many cores to use
-N_SIMULATIONS = 1    #how many simulations to perform
+N_CPUS = 1	   		   #how many cores to use
+N_SIMULATIONS = 4    #how many simulations to perform
 
 # TODO: move some configuration parameters in a separate config file
 
@@ -58,7 +52,6 @@ class Simulator:
 		self.rmin = Simulator.RMIN
 
 		# Create a dictionary plate-->car-object
-		#_car_dict = {c.plate: c for c in self.cars}
 		_car_dict = {c.plate: c for c in self.cars if c != None}
 		self.car_dict = defaultdict(_ret_none, _car_dict)
 
@@ -166,8 +159,6 @@ def init_cars_newyork():
 	if cached:	return cached
 
 	print('Computing car graph...')
-	import scipy.io as sio
-	import numpy as np
 	contents = sio.loadmat(os.path.join('grafi/NewYork/', fname))
 	adia, coord = contents['Adia'], contents['coord']
 	coord = [(x,y) for x,y in zip(coord[0], coord[1])]
@@ -265,12 +256,12 @@ def performSimulations(n):
 	#for s in sims:
 	#	std_dev += (str([c.state for c in s.cars]).count("State.RECOVERED")) ** 2
 	#std_dev = (std_dev / len(sims))  -  ((infected/len(sims))**2)
-	#std_dev = sqrt(std_dev)
+	#std_dev = math.sqrt(std_dev)
 	#print("Cars infected std dev: {:.2f}".format(std_dev))
 	print("Network traffic (bytes): ", sum([s.network_traffic for s in sims])/n)
 
 	# Distribution of vehicle infection over time
-	#t_infected_sum = np.zeros(10000)
+	#t_infected_sum = numpy.zeros(10000)
 	#for s in sims:
 	#	for t, n in s.t_infected.items():
 	#		t_infected_sum[t] += n

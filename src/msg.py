@@ -1,3 +1,4 @@
+
 class Msg:
 
 	EMITTERS_LIMIT = 10
