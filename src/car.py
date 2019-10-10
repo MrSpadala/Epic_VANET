@@ -31,18 +31,103 @@ def in_range(p,q,radius):	#returns true whether the distance p,q is less than ra
 class Car:
 
 	def __init__(self, plate, pos, adj):
-		self.plate = plate
-		self.pos = pos
-		self.messages = []
-		self.state = State.VULNERABLE
-		self.timer_infected = None
-		self.adj = adj
+		self.plate = plate   #id of the car
+		self.pos = pos       #tuple (x,y)
+		self.messages = []   #messages received during the waiting phase
+		self.state = State.VULNERABLE    #state of the vehicle w.r.t. the disseminated message
+		self.adj = adj       #neighbors of the vehicle, in non-sparse notation: self.adi[i]=1 iff vehicle i is neighbor
 
 		# Each car keeps track of its own simulator object, which is set right before starting the simulation
 		self.sim = None
 
 
-	def modifyMsg(self, _msg):
+	def on_receive(self, msg):
+		"""
+		Implements the receiving of a message
+		"""
+		#Simulate message loss while receiving
+		if random.random() < simulator.Simulator.DROP:
+			return
+
+		self.sim.rcv_messages += 1   #for simulation statistics
+
+		# If I already received this message (RECOVERED state) I don't do anything
+		if self.state == State.RECOVERED:
+			return
+
+		if self.state == State.VULNERABLE:
+			# If it's the first time that I receive the message, then transition to state infected and update simulation stats
+			self.sim.t_last_infected = self.sim.t
+			self.sim.t_infected[self.sim.t] += 1
+			self.sim.infected_counter += 1
+			self.state = State.INFECTED
+
+			# Add waiting phase event
+			waiting_time = self.getWaitingTime(msg.last_emit)
+			event = Events.WaitingEvent(self, waiting_time)
+			self.sim.schedule_event(event)
+
+		# Store the received message
+		self.messages.append(msg)
+
+
+	def getWaitingTime(self, emit_pos):
+		"""
+		Returns the waiting time a vehicle has to wait when infected.
+		Calculated using the distance between me and the emitter that sent 
+		me the message, expressed as number of simulator ticks
+		"""
+		Simulator = simulator.Simulator
+
+		dAS = dist(self.pos, emit_pos) 
+		waiting_time = Simulator.TMAX*(1 - dAS/Simulator.RMAX)  #waiting time, in seconds
+
+		if waiting_time <= Simulator.TMIN:
+			waiting_time = Simulator.TMIN
+		if waiting_time >= Simulator.TMAX:
+			waiting_time = Simulator.TMAX
+
+		# Converts from seconds to simulator ticks
+		return waiting_time / Simulator.TIME_RESOLUTION
+
+
+
+	def broadcast_phase(self):
+		"""
+		After the waiting phase, a vehicle has to decide whether or not to relay the received message.
+		Here we perform the decision process and, if positive, we send the message to all our radio neighbors (infect)
+		"""
+
+		# Decide whether to relay or not
+		bcast = self.evaluate_positions(self.messages, self.pos)
+		
+		if bcast:
+			# Take the first message in the list of incoming messages (the first message generated the infection)
+			# and modify it to be ready for broadcast
+			msg_recv = self.messages[0]
+			msg = self.modify_msg(msg_recv)
+
+			# Don't broadcast if the message reached its hop limit
+			if msg.hop == msg.ttl:
+				return
+
+			# Update simulator statistics
+			self.sim.sent_messages += 1
+			self.sim.network_traffic += msg.size()   #EPIC
+			#self.sim.network_traffic += len(msg.text)  #probabilistic
+
+			# Send the message by scheduling an event for the simulator (this implements some network delay)
+			#self.send_msg_to_neighbors(msg)
+			bcast_event = Events.BroadcastEvent(self, msg)
+			self.sim.schedule_event(bcast_event)
+
+		# Change state to recovered and update simulation statistics, either the vehicle has broadcasted or not
+		self.messages.clear()
+		self.sim.infected_counter -= 1
+		self.state = State.RECOVERED
+
+
+	def modify_msg(self, _msg):
 		"""
 		Before a vehicle retransmit a message, this last one must be modified by
 		adding data of the vehicle which is about to broadcast it. It returns a new Msg object, no side effects
@@ -70,110 +155,6 @@ class Car:
 
 		return msg
 		
-		
-
-	def broadcast_phase(self):
-		"""
-		After the waiting phase, a vehicle has to decide whether or not to relay the received message.
-		Here we perform the decision process and, if positive, we send the message to all our radio neighbors (infect)
-		"""
-
-		# Decide whether to relay or not
-		bcast = self.evaluate_positions(self.messages, self.pos)
-		
-		if bcast:
-			# Take the first message in the list of incoming messages (the first message generated the infection)
-			# and modify it to be ready for broadcast
-			msg_recv = self.messages[0]
-			msg = self.modifyMsg(msg_recv)
-
-			# Don't broadcast if the message reached its hop limit
-			if msg.hop == msg.ttl:
-				return
-
-			# Update simulator statistics
-			self.sim.sent_messages += 1
-			self.sim.network_traffic += msg.size()   #EPIC
-			#self.sim.network_traffic += len(msg.text)  #probabilistic
-
-			# Send the message by scheduling an event for the simulator (this implements some network delay)
-			#self.send_msg_to_neighbors(msg)
-			bcast_event = Events.BroadcastEvent(self, msg)
-			self.sim.schedule_event(bcast_event)
-
-		# Change state to recovered, either the vehicle has broadcasted or not
-		self.transition_to_state(State.RECOVERED)
-
-	
-
-
-	def on_receive(self, msg):
-		"""
-		Implements the receiving of a message
-		"""
-		#Simulate message loss while receiving
-		if random.random() < simulator.Simulator.DROP:
-			return
-
-		self.sim.rcv_messages += 1   #for simulation statistics
-
-		# If I already received this message (RECOVERED state) I don't do anything
-		if self.state == State.RECOVERED:
-			return
-
-		# If it's the first time that I receive the message, then transition to state infected
-		if self.state == State.VULNERABLE:
-			self.transition_to_state(State.INFECTED)
-
-			# Add waiting phase event
-			waiting_time = self.getWaitingTime(msg.last_emit)
-			event = Events.WaitingEvent(self, waiting_time)
-			self.sim.schedule_event(event)
-
-		# Store the received message
-		self.messages.append(msg)
-
-
-
-	def getWaitingTime(self, emit_pos):
-		"""
-		Returns the waiting time a vehicle has to wait when infected.
-		Calculated using the distance between me and the emitter that sent 
-		me the message, expressed as number of simulator ticks
-		"""
-		Simulator = simulator.Simulator
-
-		dAS = dist(self.pos, emit_pos) 
-		waiting_time = Simulator.TMAX*(1 - dAS/Simulator.RMAX)  #waiting time, in seconds
-
-		if waiting_time <= Simulator.TMIN:
-			waiting_time = Simulator.TMIN
-		if waiting_time >= Simulator.TMAX:
-			waiting_time = Simulator.TMAX
-
-		# Converts from seconds to simulator ticks
-		return waiting_time / Simulator.TIME_RESOLUTION
-
-
-
-	def transition_to_state(self, state_final):
-		"""
-		Change the state of this vehicle to 'state_final'.
-		Also it updates some metric and counter of the simulator
-		"""
-		if self.state == State.VULNERABLE and state_final == State.INFECTED:
-			self.sim.t_last_infected = self.sim.t
-			self.sim.t_infected[self.sim.t] += 1
-			self.sim.infected_counter += 1
-			self.state = State.INFECTED
-		elif self.state == State.INFECTED and state_final == State.RECOVERED:
-			self.messages.clear()
-			self.sim.infected_counter -= 1
-			self.state = State.RECOVERED
-		else:
-			raise ValueError('Inconsistent state transition from', self.state, 'to', state_final)
-
-
 
 
 
