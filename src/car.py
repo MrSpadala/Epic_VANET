@@ -163,26 +163,18 @@ class Car:
 
 
 	# WE USED THIS
-	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
+	def evaluate_positions(self, messages, my_pos):
+		neighbor_positions = [self.sim.getCar(i).pos for i in self.neighbors]
 
-		neighbor_positions = []   #positions of neighbors cars
-		for i in self.neighbors:
-			#Ho preso la macchina corrispondente
-			obj = self.sim.getCar(i)
-			if obj != None:
-				neighbor_positions.append(obj.pos)
-			else:
-				raise "IS NONEEE"
-
-		n_neighbors = len(neighbor_positions)
-
-		for m in messages:
-			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
-				for neighbor_pos in list(neighbor_positions):  #controllo se un mio vicino ha già ricevuto un messaggio da un emitter precedente
-					if in_range(neighbor_pos, emit, self.sim.rmin):
+		#TODO more efficient loop
+		for m in messages:   #for each message m received
+			for emit in m.emitters:  #for each different emitter that broadcasted m
+				for neighbor_pos in list(neighbor_positions):  #for each of my neighbors
+					if in_range(neighbor_pos, emit, self.sim.rmin):  #check if my neighbor was covered by an emitter
 						neighbor_positions.remove(neighbor_pos)
 		
 		# return true (relay) only if there is a percentage ALPHA of uncoverd neighbors
+		n_neighbors = len(self.neighbors)
 		return len(neighbor_positions) > simulator.Simulator.ALPHA * n_neighbors
 
 

@@ -58,10 +58,7 @@ class BroadcastEvent(_Event):
 		Send the message to all 'vehicle''s neighbors
 		"""
 		for i in self.vehicle.neighbors:
-			neighbor = sim.getCar(i)  #take the car object
-			if neighbor == None:
-				raise "IS NONEEEE in events"
-				continue		
+			neighbor = sim.getCar(i)  #take the car object	
 
 			# If needed update GUI
 			if not sim.no_graphics:

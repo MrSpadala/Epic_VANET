@@ -51,9 +51,8 @@ class Simulator:
 		self.rmin = Simulator.RMIN
 
 		# Create a dictionary plate-->car-object
-		_car_dict = {c.plate: c for c in self.cars if c != None}
-		self.car_dict = defaultdict(_ret_none, _car_dict)
-
+		self.car_dict = {c.plate: c for c in self.cars}
+	
 		# Simulation variables
 		self.t = 0   #current simulation iteration
 		self.infected_counter = 0	 #keep track of cars currently in INFECTED state
@@ -184,9 +183,6 @@ def _load_cached(fpath):
 		return pickle.load(open(fpath, "rb"))
 	return None
 
-def _ret_none():
-	# multiprocessing.Pool only uses functions in the global scope, no lambdas allowed
-	return None
 
 
 
