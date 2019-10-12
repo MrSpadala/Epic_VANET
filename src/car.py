@@ -166,12 +166,13 @@ class Car:
 	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
 
 		neighbor_positions = []   #positions of neighbors cars
-		for c, i in zip(self.adj, range(len(self.adj))):
-			if c == 1:
-				#Ho preso la macchina corrispondente
-				obj = self.sim.getCar(i)
-				if obj != None:
-					neighbor_positions.append(obj.pos)
+		for i in self.neighbors:
+			#Ho preso la macchina corrispondente
+			obj = self.sim.getCar(i)
+			if obj != None:
+				neighbor_positions.append(obj.pos)
+			else:
+				raise "IS NONEEE"
 
 		n_neighbors = len(neighbor_positions)
 
@@ -194,7 +195,7 @@ class Car:
 		P = []
 		for m in messages:
 			d = dist(m.last_emit, my_pos)
-			Rmean = (Simulator.RMIN/4) / 2
+			Rmean = (simulator.Simulator.RMIN/4) / 2
 			P.append(d/Rmean)
 		return random.random() > (1-min(P))
 
