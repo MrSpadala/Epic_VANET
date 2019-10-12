@@ -2,6 +2,7 @@
 import abc
 import math
 import time
+import random
 
 import simulator
 import car
@@ -46,10 +47,12 @@ class BroadcastEvent(_Event):
 	"""
 	Implements a (constant) time delay from a message send to its reception by the receiver
 	"""
-	TX_DELAY = 2    # transmission delay, expressed in ms
 
 	def __init__(self, vehicle_src, msg):
-		delay = (self.TX_DELAY / 1000) / config.time_resolution
+		# tx_delay is unif. distributed in tx_max and tx_min
+		tx_min, tx_max = 0.5, 2.5  #expressed in ms
+		tx_delay = random.random() * (tx_max-tx_min) + tx_min
+		delay = (tx_delay / 1000) / config.time_resolution
 		super().__init__(delay)
 		self.vehicle = vehicle_src
 		self.msg = msg
