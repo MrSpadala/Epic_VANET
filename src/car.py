@@ -162,18 +162,23 @@ class Car:
 
 	# WE USED THIS
 	def evaluate_positions(self, messages, my_pos):
-		neighbor_positions = [self.sim.getCar(i).pos for i in self.neighbors]
+		# Fetch all emitters that broadcasted the message (union of emitters of each received message)
+		emitters = set()
+		for m in messages:
+			emitters = emitters.union(m.emitters)
 
-		#TODO more efficient loop
-		for m in messages:   #for each message m received
-			for emit in m.emitters:  #for each different emitter that broadcasted m
-				for neighbor_pos in list(neighbor_positions):  #for each of my neighbors
-					if in_range(neighbor_pos, emit, config.Rmin):  #check if my neighbor was covered by an emitter
-						neighbor_positions.remove(neighbor_pos)
+		# Find the set of my neighbors already covered by an emitter
+		covered_neighbors = set()
+		for neighbor in self.neighbors:  #for each of my neighbors
+			neighbor_pos = self.sim.getCar(neighbor).pos
+			for emit in emitters:  #for each different emitter
+				if in_range(neighbor_pos, emit, config.Rmin):  #check if my neighbor was covered by emit
+					covered_neighbors.add(neighbor_pos)
 		
 		# return true (relay) only if there is a percentage ALPHA of uncoverd neighbors
 		n_neighbors = len(self.neighbors)
-		return len(neighbor_positions) > config.alpha * n_neighbors
+		n_not_covered = n_neighbors - len(covered_neighbors)
+		return n_not_covered > config.alpha * n_neighbors
 
 
 	# WE USED THIS as algorithm comparison

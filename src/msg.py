@@ -9,7 +9,7 @@ class Msg:
 		#emitters è la lista di tutti quelli che hanno mandato questo messaggio
 		self.text = text
 		self.last_emit = emit
-		self.emitters = emitters
+		self.emitters = emitters  #is a set
 		self.hop = hop
 		self.ttl = ttl
 
