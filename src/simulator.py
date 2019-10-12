@@ -7,6 +7,7 @@ import random
 from multiprocessing import Pool
 from collections import defaultdict
 
+from tqdm import tqdm
 import scipy.io as sio
 
 import car
@@ -235,7 +236,7 @@ def performSimulations(n):
 	if n > 1 and N_CPUS > 1:
 		with Pool(N_CPUS) as pool:
 			print('[+] Starting', n, 'simulations with', N_CPUS, 'parallel jobs')
-			sims = pool.map(performSimulation, range(n))
+			sims = list(tqdm( pool.imap(performSimulation, range(n)) , total=n))
 	else:
 		sims = [ performSimulation(i) for i in range(n)]
 	
