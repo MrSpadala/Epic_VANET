@@ -11,6 +11,7 @@ from tqdm import tqdm
 import scipy.io as sio
 
 import car
+from sim_config import config
 from graph_utils.DFS import get_largest_conn_component
 from msg import Msg
 from visualGraph import *
@@ -19,28 +20,7 @@ from visualGraph import *
 
 random.seed(42)
 
-
-# Simulation parameters
-N_CPUS = 1	   		   #how many cores to use
-N_SIMULATIONS = 4    #how many simulations to perform
-
-# TODO: move some configuration parameters in a separate config file
-
-
 class Simulator:
-
-	# Simulator parameters
-	TIME_RESOLUTION = 0.0001  #how many seconds per step
-
-	# Environment parameters
-	TMAX = 0.3		#max time to wait before sending a broadcast message
-	TMIN = 0		#min time to wait before sending a broadcast message
-	RMIN = 170		#Rmin, expressed in meters
-	RMAX = 500		#Rmax, expressed in meters
-	DROP = 0.01		#message drop rate
-	ALPHA = 0.05    #if at the end of the waiting timer, a fraction larger than ALPHA
-					#of my neighors has not been reached I relay the message
-
 
 	def __init__(self, cars):
 		self.cars = cars
@@ -48,8 +28,6 @@ class Simulator:
 		# Register this 'Simulator' object to the vehicles
 		for car in self.cars:
 			car.sim = self
-
-		self.rmin = Simulator.RMIN
 
 		# Create a dictionary plate-->car-object
 		self.car_dict = {c.plate: c for c in self.cars}
@@ -234,9 +212,9 @@ def performSimulations(n):
 	cars_dummy = init_cars()  #trick to cache the car graph on disk before starting the simulation
 	print('[+] Done!')
 
-	if n > 1 and N_CPUS > 1:
-		with Pool(N_CPUS) as pool:
-			print('[+] Starting', n, 'simulations with', N_CPUS, 'parallel jobs')
+	if n > 1 and config.ncpus > 1:
+		with Pool(config.ncpus) as pool:
+			print('[+] Starting', n, 'simulations with', config.ncpus, 'parallel jobs')
 			sims = list(tqdm( pool.imap(performSimulation, range(n)) , total=n))
 	else:
 		sims = [ performSimulation(i) for i in range(n)]
@@ -246,10 +224,10 @@ def performSimulations(n):
 	#  ~  All metrics print below  ~
 
 	print()
-	print("Average metrics with rmin =",Simulator.RMIN)
+	print("Average metrics with rmin =",config.Rmin)
 	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
 	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
-	print("time of last car infection: ", sum([s.t_last_infected for s in sims])*Simulator.TIME_RESOLUTION/n)
+	print("time of last car infection: ", sum([s.t_last_infected for s in sims])*config.time_resolution/n)
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
@@ -280,4 +258,4 @@ if __name__ == "__main__":
 		performSimulations(1)
 	else:
 		print('Test mode, to use the visual output run with \'--with-graphics\', need first to install vpython')
-		performSimulations(N_SIMULATIONS)
+		performSimulations(config.nsimulations)

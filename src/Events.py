@@ -6,6 +6,7 @@ import time
 import simulator
 import car
 import visualGraph
+from sim_config import config
 
 class _Event:
 	"""
@@ -48,7 +49,7 @@ class BroadcastEvent(_Event):
 	TX_DELAY = 2    # transmission delay, expressed in ms
 
 	def __init__(self, vehicle_src, msg):
-		delay = (self.TX_DELAY / 1000) / simulator.Simulator.TIME_RESOLUTION
+		delay = (self.TX_DELAY / 1000) / config.time_resolution
 		super().__init__(delay)
 		self.vehicle = vehicle_src
 		self.msg = msg
