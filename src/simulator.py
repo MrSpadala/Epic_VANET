@@ -141,11 +141,19 @@ def init_cars():
 			positions.append((float(d[2]), float(d[3])))
 
 	a = open("grafi/"+city_name+"/adj/adj_"+scenario, "r")
-	adi = []
-	for l in a:
-		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
-	cars = [car.Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
-	cars = list(filter(lambda x: x != None, cars))
+	
+	cars = []
+	i = 0
+	for line in a:
+		adi_split = l.split(' ')
+		neighbors = [i for i in range(len(adi_split)) if adi_split[i]=='1' and positions[i]!=None]
+		cars.append( car.Car(i,) )
+		i+=1
+	#for l in a:
+	#	adi.append([int(n) for n in l.split(' ')])   #get the value as an int
+	#cars = [car.Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
+	#cars = list(filter(lambda x: x != None, cars))
+
 	cars = get_largest_conn_component(cars)
 	pickle.dump(cars, open(fpath, 'wb'))
 	return cars

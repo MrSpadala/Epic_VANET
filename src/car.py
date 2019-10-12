@@ -30,15 +30,15 @@ def in_range(p,q,radius):	#returns true whether the distance p,q is less than ra
 
 class Car:
 
-	def __init__(self, plate, pos, adj):
-		self.plate = plate   #id of the car
+	def __init__(self, plate, pos, neighbors):
+		self.plate = plate   #identifier of the car
 		self.pos = pos       #tuple (x,y)
+		self.neighbors = []  #list of plates of neighbor cars
+
+		# Simulation attributes
 		self.messages = []   #messages received during the waiting phase
 		self.state = State.VULNERABLE    #state of the vehicle w.r.t. the disseminated message
-		self.adj = adj       #neighbors of the vehicle, in non-sparse notation: self.adi[i]=1 iff vehicle i is neighbor
-
-		# Each car keeps track of its own simulator object, which is set right before starting the simulation
-		self.sim = None
+		self.sim = None   # Each car keeps track of its own simulator object, which is set right before starting the simulation
 
 
 	def on_receive(self, msg):
