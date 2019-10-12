@@ -12,9 +12,11 @@ class _Event:
 	"""
 
 	def __init__(self, t):
-		self.delay = math.ceil(t)  # simulator time to wait before scheduling the event
+		"""simulation time to wait before scheduling the event"""
+		self.delay = math.ceil(t)
 
 	def __lt__(self, event):
+		"""Look to Simulator.schedule_event for informations"""
 		return True
 
 	@abc.abstractmethod

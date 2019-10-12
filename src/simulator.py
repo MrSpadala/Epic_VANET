@@ -71,32 +71,35 @@ class Simulator:
 		self.no_graphics = not "--with-graphics" in sys.argv
 
 
-	def runSimulation_old(self):
-		# Set counter for infected cats
-		cars_inftd = [c.state == car.State.INFECTED for c in self.cars]   #cars infected at the start of the simulation
-		self.infected_counter = sum(cars_inftd)
-		# Set simulation tick  
-		self.t = 0
-
-		#print('started sim with inf counter', self.infected_counter)
-		while self.infected_counter > 0:
-			self.t += 1
-			for car in self.cars:
-				if car.state == car.State.INFECTED:
-					car.timer_infected -= 1
-
-					if car.timer_infected <= 0:
-						car.timer_infected = None
-						car.transition_to_state(car.State.RECOVERED)
-						car.broadMsg()
+	def getCar(self, plate):
+		"""
+		Returns Car object given its identifier plate
+		"""
+		return self.car_dict[plate]
 
 
 
 	def schedule_event(self, event):
+		"""
+		Pushes an event to the event queue. It will be executed
+		at the current time of the simulation + the delay of the event. 
+		e.g. if the event must be executed after 100 units of time after its
+		creation (event.delay=100) and the current time of the simulation
+		is 10000, then the event is executed at simulation time 10100.
+
+		heapq.heappush will push to the heap the tuple (T, event), where
+		T is the time when the event will be executed. The heap is ordered
+		by T, so that when we fetch the next event we are taking the event
+		with the smallest T. Event.__lt__ is defined to be always true, 
+		since we care only that they are ordered by T
+		"""
 		heapq.heappush(self.events, (self.t+event.delay, event))
 
 
 	def runSimulation(self):
+		"""
+		Loop that fetches and executes the most recent event
+		"""
 		while len(self.events) > 0:
 			# Retrieve next event and set simulation tick
 			sim_time, event = heapq.heappop(self.events)
@@ -106,8 +109,7 @@ class Simulator:
 			event.execute(self)
 
 
-	def getCar(self, plate):
-		return self.car_dict[plate]
+
 
 
 
