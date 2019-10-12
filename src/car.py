@@ -17,7 +17,6 @@ class State(Enum):
 	RECOVERED = 2
 
 
-# TODO: transform the representation of the connectivity graph, from adjacency matrix to list of neighbors
 
 # TODO: dist and in_range are the critical part of the program (most of the time spent inside them).
 #       Should precompute, for the current value of RMIN, the which car is in range of which other car,
