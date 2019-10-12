@@ -7,6 +7,7 @@ import Events
 import simulator
 from msg import Msg
 from visualGraph import *
+from sim_config import config
 
 
 
@@ -16,7 +17,6 @@ class State(Enum):
 	RECOVERED = 2
 
 
-# TODO: transform the representation of the connectivity graph, from adjacency matrix to list of neighbors
 
 # TODO: dist and in_range are the critical part of the program (most of the time spent inside them).
 #       Should precompute, for the current value of RMIN, the which car is in range of which other car,
@@ -46,7 +46,7 @@ class Car:
 		Implements the receiving of a message
 		"""
 		#Simulate message loss while receiving
-		if random.random() < simulator.Simulator.DROP:
+		if random.random() < config.drop:
 			return
 
 		self.sim.rcv_messages += 1   #for simulation statistics
@@ -77,18 +77,16 @@ class Car:
 		Calculated using the distance between me and the emitter that sent 
 		me the message, expressed as number of simulator ticks
 		"""
-		Simulator = simulator.Simulator
-
 		dAS = dist(self.pos, emit_pos) 
-		waiting_time = Simulator.TMAX*(1 - dAS/Simulator.RMAX)  #waiting time, in seconds
+		waiting_time = config.Tmax*(1 - dAS/config.Rmax)  #waiting time, in seconds
 
-		if waiting_time <= Simulator.TMIN:
-			waiting_time = Simulator.TMIN
-		if waiting_time >= Simulator.TMAX:
-			waiting_time = Simulator.TMAX
+		if waiting_time <= config.Tmin:
+			waiting_time = config.Tmin
+		if waiting_time >= config.Tmax:
+			waiting_time = config.Tmax
 
 		# Converts from seconds to simulator ticks
-		return waiting_time / Simulator.TIME_RESOLUTION
+		return waiting_time / config.time_resolution
 
 
 
@@ -170,12 +168,12 @@ class Car:
 		for m in messages:   #for each message m received
 			for emit in m.emitters:  #for each different emitter that broadcasted m
 				for neighbor_pos in list(neighbor_positions):  #for each of my neighbors
-					if in_range(neighbor_pos, emit, self.sim.rmin):  #check if my neighbor was covered by an emitter
+					if in_range(neighbor_pos, emit, config.Rmin):  #check if my neighbor was covered by an emitter
 						neighbor_positions.remove(neighbor_pos)
 		
 		# return true (relay) only if there is a percentage ALPHA of uncoverd neighbors
 		n_neighbors = len(self.neighbors)
-		return len(neighbor_positions) > simulator.Simulator.ALPHA * n_neighbors
+		return len(neighbor_positions) > config.alpha * n_neighbors
 
 
 	# WE USED THIS as algorithm comparison
@@ -187,7 +185,7 @@ class Car:
 		P = []
 		for m in messages:
 			d = dist(m.last_emit, my_pos)
-			Rmean = (simulator.Simulator.RMIN/4) / 2
+			Rmean = (config.Rmin/4) / 2
 			P.append(d/Rmean)
 		return random.random() > (1-min(P))
 
