@@ -4,7 +4,8 @@ import math
 import time
 
 import simulator
-
+import car
+import visualGraph
 
 class _Event:
 	"""
@@ -12,9 +13,11 @@ class _Event:
 	"""
 
 	def __init__(self, t):
-		self.delay = math.ceil(t)  # simulator time to wait before scheduling the event
+		"""simulation time to wait before scheduling the event"""
+		self.delay = math.ceil(t)
 
 	def __lt__(self, event):
+		"""Look to Simulator.schedule_event for informations"""
 		return True
 
 	@abc.abstractmethod
@@ -54,18 +57,15 @@ class BroadcastEvent(_Event):
 		"""
 		Send the message to all 'vehicle''s neighbors
 		"""
-		for c, i in zip(self.vehicle.adj, range(len(self.vehicle.adj))):
-			if c == 1:
-				neighbor = sim.getCar(i)  #take the car object
-				if neighbor == None:
-					continue		
+		for i in self.vehicle.neighbors:
+			neighbor = sim.getCar(i)  #take the car object	
 
-				# If needed update GUI
-				if not sim.no_graphics:
-					if neighbor.state == State.VULNERABLE:
-						visualInfect(self.vechicle, neighbor)
+			# If needed update GUI
+			if not sim.no_graphics:
+				if neighbor.state == car.State.VULNERABLE:
+					visualGraph.visualInfect(self.vehicle, neighbor)
 
-				neighbor.on_receive(self.msg)
+			neighbor.on_receive(self.msg)
 
 		# If using GUI sleep a bit
 		if not sim.no_graphics:
