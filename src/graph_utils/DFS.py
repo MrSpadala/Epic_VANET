@@ -1,5 +1,8 @@
 
 def get_largest_conn_component(cars):
+	"""
+	Returns largest connected component in the graph represented by 'cars'
+	"""
 	plates_to_cars = {car.plate: car for car in cars}
 	
 	components = []
@@ -16,8 +19,9 @@ def get_largest_conn_component(cars):
 
 
 def _dfs(curr_car, visited, plates_to_cars):
-	for c, i in zip(curr_car.adj, range(len(curr_car.adj))):
-		if c == 1 and (not i in visited) and (i in plates_to_cars):
+	#for c, i in zip(curr_car.adj, range(len(curr_car.adj))):
+	for i in curr_car.neighbors:
+		if (not i in visited) and (i in plates_to_cars):
 			visited.add(i)
 			new_car = plates_to_cars[i]
 			_dfs(new_car, visited, plates_to_cars)
