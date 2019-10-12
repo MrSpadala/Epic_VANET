@@ -12,7 +12,6 @@ import scipy.io as sio
 
 import car
 from graph_utils.DFS import get_largest_conn_component
-from graph_utils.density import print_MST_stats
 from msg import Msg
 from visualGraph import *
 
@@ -53,9 +52,8 @@ class Simulator:
 		self.rmin = Simulator.RMIN
 
 		# Create a dictionary plate-->car-object
-		_car_dict = {c.plate: c for c in self.cars if c != None}
-		self.car_dict = defaultdict(_ret_none, _car_dict)
-
+		self.car_dict = {c.plate: c for c in self.cars}
+	
 		# Simulation variables
 		self.t = 0   #current simulation iteration
 		self.infected_counter = 0	 #keep track of cars currently in INFECTED state
@@ -136,17 +134,21 @@ def init_cars():
 	p = open("grafi/"+city_name+"/pos/pos_"+scenario, "r")
 	for i in p:
 		d = i[:-1].split(' ')  #discard trailing \n
-		if d[0] == d[2] and d[2] == d[4]:  #don't append malformed rows
+		if d[0] == d[2] and d[2] == d[4]:  #append None if it is a malformed row
 			positions.append(None)
 		else:
 			positions.append((float(d[2]), float(d[3])))
 
 	a = open("grafi/"+city_name+"/adj/adj_"+scenario, "r")
-	adi = []
-	for l in a:
-		adi.append([int(n) for n in l.split(' ')])   #get the value as an int
-	cars = [car.Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
-	cars = list(filter(lambda x: x != None, cars))
+	
+	cars, i = [], 0
+	for line in a:
+		if positions[i] != None:
+			adi_split = line.split(' ')
+			neighbors = [j for j in range(len(adi_split)) if adi_split[j]=='1' and positions[j]!=None]
+			cars.append( car.Car(i, positions[i], neighbors) )
+		i+=1
+
 	cars = get_largest_conn_component(cars)
 	pickle.dump(cars, open(fpath, 'wb'))
 	return cars
@@ -166,8 +168,10 @@ def init_cars_newyork():
 	adia, coord = contents['Adia'], contents['coord']
 	coord = [(x,y) for x,y in zip(coord[0], coord[1])]
 	cars = []
-	for i,c,a in zip(range(len(adia)),coord,adia):
-		cars.append(car.Car(i,c,a))
+	for i,c,a in zip(range(len(coord)),coord,adia):
+		neighbors = [j for j in range(len(a)) if a[j]==1]
+		cars.append( car.Car(i, c, neighbors) )
+
 	cars = get_largest_conn_component(cars)
 	pickle.dump(cars, open(fpath, 'wb'))
 	return cars
@@ -180,9 +184,6 @@ def _load_cached(fpath):
 		return pickle.load(open(fpath, "rb"))
 	return None
 
-def _ret_none():
-	# multiprocessing.Pool only uses functions in the global scope, no lambdas allowed
-	return None
 
 
 
@@ -245,7 +246,6 @@ def performSimulations(n):
 	#  ~  All metrics print below  ~
 
 	print()
-	print_MST_stats(cars_dummy)
 	print("Average metrics with rmin =",Simulator.RMIN)
 	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
 	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)

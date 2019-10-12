@@ -30,15 +30,15 @@ def in_range(p,q,radius):	#returns true whether the distance p,q is less than ra
 
 class Car:
 
-	def __init__(self, plate, pos, adj):
-		self.plate = plate   #id of the car
-		self.pos = pos       #tuple (x,y)
+	def __init__(self, plate, pos, neighbors):
+		self.plate = plate          #identifier of the car
+		self.pos = pos              #tuple (x,y)
+		self.neighbors = neighbors  #list of plates of neighbor cars
+
+		# Simulation attributes
 		self.messages = []   #messages received during the waiting phase
 		self.state = State.VULNERABLE    #state of the vehicle w.r.t. the disseminated message
-		self.adj = adj       #neighbors of the vehicle, in non-sparse notation: self.adi[i]=1 iff vehicle i is neighbor
-
-		# Each car keeps track of its own simulator object, which is set right before starting the simulation
-		self.sim = None
+		self.sim = None   # Each car keeps track of its own simulator object, which is set right before starting the simulation
 
 
 	def on_receive(self, msg):
@@ -163,25 +163,18 @@ class Car:
 
 
 	# WE USED THIS
-	def evaluate_positions(self, messages, my_pos):   # 1 messaggio solo  ## valuta se mandare in broadcast o no
+	def evaluate_positions(self, messages, my_pos):
+		neighbor_positions = [self.sim.getCar(i).pos for i in self.neighbors]
 
-		neighbor_positions = []   #positions of neighbors cars
-		for c, i in zip(self.adj, range(len(self.adj))):
-			if c == 1:
-				#Ho preso la macchina corrispondente
-				obj = self.sim.getCar(i)
-				if obj != None:
-					neighbor_positions.append(obj.pos)
-
-		n_neighbors = len(neighbor_positions)
-
-		for m in messages:
-			for emit in m.emitters:  #per ogni emitter diversa che ha mandato il messaggio
-				for neighbor_pos in list(neighbor_positions):  #controllo se un mio vicino ha già ricevuto un messaggio da un emitter precedente
-					if in_range(neighbor_pos, emit, self.sim.rmin):
+		#TODO more efficient loop
+		for m in messages:   #for each message m received
+			for emit in m.emitters:  #for each different emitter that broadcasted m
+				for neighbor_pos in list(neighbor_positions):  #for each of my neighbors
+					if in_range(neighbor_pos, emit, self.sim.rmin):  #check if my neighbor was covered by an emitter
 						neighbor_positions.remove(neighbor_pos)
 		
 		# return true (relay) only if there is a percentage ALPHA of uncoverd neighbors
+		n_neighbors = len(self.neighbors)
 		return len(neighbor_positions) > simulator.Simulator.ALPHA * n_neighbors
 
 
@@ -194,7 +187,7 @@ class Car:
 		P = []
 		for m in messages:
 			d = dist(m.last_emit, my_pos)
-			Rmean = (Simulator.RMIN/4) / 2
+			Rmean = (simulator.Simulator.RMIN/4) / 2
 			P.append(d/Rmean)
 		return random.random() > (1-min(P))
 
