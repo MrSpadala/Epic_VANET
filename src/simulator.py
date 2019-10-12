@@ -135,24 +135,20 @@ def init_cars():
 	p = open("grafi/"+city_name+"/pos/pos_"+scenario, "r")
 	for i in p:
 		d = i[:-1].split(' ')  #discard trailing \n
-		if d[0] == d[2] and d[2] == d[4]:  #don't append malformed rows
+		if d[0] == d[2] and d[2] == d[4]:  #append None if it is a malformed row
 			positions.append(None)
 		else:
 			positions.append((float(d[2]), float(d[3])))
 
 	a = open("grafi/"+city_name+"/adj/adj_"+scenario, "r")
 	
-	cars = []
-	i = 0
+	cars, i = [], 0
 	for line in a:
-		adi_split = l.split(' ')
-		neighbors = [i for i in range(len(adi_split)) if adi_split[i]=='1' and positions[i]!=None]
-		cars.append( car.Car(i,) )
+		if positions[i] != None:
+			adi_split = line.split(' ')
+			neighbors = [j for j in range(len(adi_split)) if adi_split[j]=='1' and positions[j]!=None]
+			cars.append( car.Car(i, positions[i], neighbors) )
 		i+=1
-	#for l in a:
-	#	adi.append([int(n) for n in l.split(' ')])   #get the value as an int
-	#cars = [car.Car(i,p,a) if p else None for i,p,a in zip(range(len(adi)),positions,adi)]   #Use as plate the index of the car
-	#cars = list(filter(lambda x: x != None, cars))
 
 	cars = get_largest_conn_component(cars)
 	pickle.dump(cars, open(fpath, 'wb'))
@@ -173,8 +169,10 @@ def init_cars_newyork():
 	adia, coord = contents['Adia'], contents['coord']
 	coord = [(x,y) for x,y in zip(coord[0], coord[1])]
 	cars = []
-	for i,c,a in zip(range(len(adia)),coord,adia):
-		cars.append(car.Car(i,c,a))
+	for i,c,a in zip(range(len(coord)),coord,adia):
+		neighbors = [j for j in range(len(a)) if a[j]==1]
+		cars.append( car.Car(i, c, neighbors) )
+
 	cars = get_largest_conn_component(cars)
 	pickle.dump(cars, open(fpath, 'wb'))
 	return cars

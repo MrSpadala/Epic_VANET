@@ -31,9 +31,9 @@ def in_range(p,q,radius):	#returns true whether the distance p,q is less than ra
 class Car:
 
 	def __init__(self, plate, pos, neighbors):
-		self.plate = plate   #identifier of the car
-		self.pos = pos       #tuple (x,y)
-		self.neighbors = []  #list of plates of neighbor cars
+		self.plate = plate          #identifier of the car
+		self.pos = pos              #tuple (x,y)
+		self.neighbors = neighbors  #list of plates of neighbor cars
 
 		# Simulation attributes
 		self.messages = []   #messages received during the waiting phase
