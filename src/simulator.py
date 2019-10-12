@@ -11,7 +11,6 @@ import scipy.io as sio
 
 import car
 from graph_utils.DFS import get_largest_conn_component
-from graph_utils.density import print_MST_stats
 from msg import Msg
 from visualGraph import *
 
@@ -250,7 +249,6 @@ def performSimulations(n):
 	#  ~  All metrics print below  ~
 
 	print()
-	print_MST_stats(cars_dummy)
 	print("Average metrics with rmin =",Simulator.RMIN)
 	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
 	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
