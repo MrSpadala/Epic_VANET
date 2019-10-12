@@ -85,8 +85,7 @@ class Car:
 		if waiting_time >= config.Tmax:
 			waiting_time = config.Tmax
 
-		# Converts from seconds to simulator ticks
-		return waiting_time / config.time_resolution
+		return waiting_time  #in seconds
 
 
 

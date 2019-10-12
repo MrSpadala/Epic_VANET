@@ -16,7 +16,7 @@ class _Event:
 
 	def __init__(self, t):
 		"""simulation time to wait before scheduling the event"""
-		self.delay = math.ceil(t)
+		self.delay = math.ceil(t / config.time_resolution)
 
 	def __lt__(self, event):
 		"""Look to Simulator.schedule_event for informations"""
@@ -52,8 +52,7 @@ class BroadcastEvent(_Event):
 		# tx_delay is unif. distributed in tx_max and tx_min
 		tx_min, tx_max = 0.5, 2.5  #expressed in ms
 		tx_delay = random.random() * (tx_max-tx_min) + tx_min
-		delay = (tx_delay / 1000) / config.time_resolution
-		super().__init__(delay)
+		super().__init__(tx_delay / 1000)   #ms to s
 		self.vehicle = vehicle_src
 		self.msg = msg
 
