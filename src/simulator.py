@@ -217,8 +217,9 @@ def performSimulations(n):
 	# vehicle to spread the message
 	if n > len(cars_dummy):
 		raise Exception("More simulations than vehicles")
-	first_vehicles_indices = list(range(n))  #this is dirty...
+	first_vehicles_indices = list(range(len(cars_dummy)))  #this is dirty...
 	random.shuffle(first_vehicles_indices)
+	first_vehicles_indices = first_vehicles_indices[:n]
 
 	if n > 1 and config.ncpus > 1:
 		# Launch parallel simulations
