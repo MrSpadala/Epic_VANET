@@ -166,9 +166,10 @@ def _load_cached(fpath):
 
 
 
-def performSimulation(i, verbose=True):
+def performSimulation(i, first_vehicle, verbose=True):
 	"""
-	Performs a single simulation, with id 'i'
+	Performs a single simulation with id 'i' starting the message spreading
+	from the vehicle with index 'first_vehicle' in cars list
 	"""
 	# Load vehicle data
 	cars = init_cars()
@@ -178,7 +179,7 @@ def performSimulation(i, verbose=True):
 
 	# Get one random car and start the dissemination from it
 	if s.no_graphics:
-		random.sample(cars, 1)[0].on_receive(Msg.dummy())
+		cars[first_vehicle].on_receive(Msg.dummy())
 	else:
 		bubbles = displayCars(s.car_dict)
 		firstinfected = s.getCar(firstInfection())
@@ -211,12 +212,23 @@ def performSimulations(n):
 	cars_dummy = init_cars()  #trick to cache the car graph on disk before starting the simulation
 	print('[+] Done!')
 
+	# Compute a random permutation of vehicles having as lenght the number of simulations.
+	# Each vehicle in the permutation is then passed to the simulation, and will be the first
+	# vehicle to spread the message
+	if n > len(cars_dummy):
+		raise Exception("More simulations than vehicles")
+	first_vehicles_indices = list(range(n))  #this is dirty...
+	random.shuffle(first_vehicles_indices)
+
 	if n > 1 and config.ncpus > 1:
+		# Launch parallel simulations
 		with Pool(config.ncpus) as pool:
 			print('[+] Starting', n, 'simulations with', config.ncpus, 'parallel jobs')
-			sims = pool.map(performSimulation, range(n))
+			sims = pool.starmap(performSimulation, zip(range(n), first_vehicles_indices))
+	
 	else:
-		sims = [ performSimulation(i) for i in range(n)]
+		# mainly for debugging purposes (without multiprocessing)
+		sims = [ performSimulation(i,v) for i,v in zip(range(n), first_vehicles_indices)]
 	
 
 
