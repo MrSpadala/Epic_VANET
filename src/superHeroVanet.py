@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 
-from simulator			import	Simulator, init_cars
-from lib_prog.parser	import	Parser
-from lib_prog.cscalgo	import	CscAlgo
+from simulator					import	Simulator, init_cars
+from connected_DSC_lib.parser	import	Parser
+from connected_DSC_lib.cscalgo	import	CscAlgo
 
 cars = init_cars()
 
