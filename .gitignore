@@ -6,3 +6,4 @@ launch.json
 *.pyc
 sim_parameters.json
 tmp/
+.DS_Store
