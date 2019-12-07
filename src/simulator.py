@@ -108,7 +108,7 @@ def init_cars():
 
 	print('Computing car graph...')
 	positions = []
-	p = open("grafi/"+city_name+"/pos/pos_"+scenario, "r")
+	p = open("../grafi/"+city_name+"/pos/pos_"+scenario, "r")
 	for i in p:
 		d = i[:-1].split(' ')  #discard trailing \n
 		if d[0] == d[2] and d[2] == d[4]:  #append None if it is a malformed row
@@ -116,7 +116,7 @@ def init_cars():
 		else:
 			positions.append((float(d[2]), float(d[3])))
 
-	a = open("grafi/"+city_name+"/adj/adj_"+scenario, "r")
+	a = open("../grafi/"+city_name+"/adj/adj_"+scenario, "r")
 	
 	cars, i = [], 0
 	for line in a:
@@ -141,7 +141,7 @@ def init_cars_newyork():
 	if cached:	return cached
 
 	print('Computing car graph...')
-	contents = sio.loadmat(os.path.join('grafi/NewYork/', fname))
+	contents = sio.loadmat(os.path.join('../grafi/NewYork/', fname))
 	adia, coord = contents['Adia'], contents['coord']
 	coord = [(x,y) for x,y in zip(coord[0], coord[1])]
 	cars = []
