@@ -5,7 +5,7 @@
 class CscAlgo:
 	def __init__(self, V,S,G):
 		self.V	=	V
-		self.S	=	S
+		#self.G	=	S
 		self.G	=	G
 		self.R	=	[]		#list of lists
 		self.U	=	None	#list
@@ -128,7 +128,7 @@ class CscAlgo:
 
 		################	FIRST STEP	###################################
 		#Choose S0 ∈ S such that |S0| is the maximum
-		S_0		=	self.choseMaxS(self.S)
+		S_0		=	self.choseMaxS(self.G)
 		
 		#let R = {S0} and U = S0
 		self.R.append(S_0)
@@ -147,7 +147,7 @@ class CscAlgo:
 			# For each S ∈ S \ R which is cover-adjacent or graph-adjacent 
 			# with a set in R
 
-			elemNotR	=	self.getElemS1notS2(self.S,self.R)
+			elemNotR	=	self.getElemS1notS2(self.G,self.R)
 
 			for Sx	in	elemNotR:
 				resultCovAdj	= self.coverAdjacent(Sx,self.R)
