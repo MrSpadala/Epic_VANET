@@ -29,6 +29,9 @@ class CscAlgo:
 			. P[-1] is T
 			. Every other node in not in R
 		"""
+		# Convert input from list to int (identifiers)
+		R = list(map(lambda x: x[0], R))
+		T = T[0]
 
 		# Take neighbors of T
 		T_neighbors = self.get_neighbors(T)
@@ -66,6 +69,8 @@ class CscAlgo:
 			node = next_nodes[node]
 		P.append(T)  #append last node T to path
 
+		# Convert path from identifier to list
+		P = list(map(self.G[p] for p in P))
 		return P
 
 
