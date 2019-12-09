@@ -133,6 +133,7 @@ class CscAlgo:
 		print("-")
 		print(S2)
 		print("-------------------------")
+		
 		tempS1	=	[]
 		
 
