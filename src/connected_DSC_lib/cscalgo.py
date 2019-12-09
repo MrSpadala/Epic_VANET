@@ -163,12 +163,14 @@ class CscAlgo:
 		self.R.append(S_0)
 		self.U	=	S_0
 		
-		minimum_EPs		=	10000000000
-		minimum_Ps 		= 	[]
-		minimum_CPs		=	[]
+		
 
 		# While V \ U != ∅ DO
 		while self.differenceTwoList(self.V,self.U) !=  []:
+
+			minimum_EPs		=	10000000000
+			minimum_Ps 		= 	[]
+			minimum_CPs		=	[]
 			
 			#fino a qui va tutto bene con G oleeeee
 
