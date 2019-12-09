@@ -128,21 +128,34 @@ class CscAlgo:
 
 	def getElemS1notS2(self,S1,S2):
 		#where is a list of lists MORE ATTENTION HERE!
+		
+		print(S1)
+		print("-")
+		print(S2)
+		print("-------------------------")
 		tempS1	=	[]
+		
 
 		for elG in S1:
 			flag = False
 			for elR in S2:
 				diff = self.differenceTwoList(elG,elR)
 				
-				if diff == []:
-					break
-
 				flag = True
+				print(diff)
 				
-			if flag:
+				if diff == []:
+					S1.remove(elG)
+
+					flag = False
+
+				
+		
+			if flag:				
 				tempS1.append(elG)
 
+		print(tempS1)
+		print("######################")
 		return tempS1
 
 	def doConnectedSetCover(self):
@@ -163,7 +176,7 @@ class CscAlgo:
 		self.R.append(S_0)
 		self.U	=	S_0
 		
-		
+		veryG	= self.G
 
 		# While V \ U != ∅ DO
 		while self.differenceTwoList(self.V,self.U) !=  []:
@@ -177,8 +190,13 @@ class CscAlgo:
 			# For each S ∈ S \ R which is cover-adjacent or graph-adjacent 
 			# with a set in R
 
-			elemNotR	=	self.getElemS1notS2(self.G,self.R)
 
+			print(self.G)
+
+			elemNotR	=	self.getElemS1notS2(veryG,self.R)
+			
+			
+			
 			
 			for Sx	in	elemNotR:
 				resultCovAdj	= self.coverAdjacent(Sx,self.R)
@@ -187,11 +205,13 @@ class CscAlgo:
 				
 				if resultCovAdj or resultGraphAdj:
 					#Try It
-				
+					
 
 					shortest_Path		=	self.find_shortest_path(self.R,Sx)
 
-					C_PS				=	self.getElemS1notS2(shortest_Path, self.R)
+					tmpSPS				=	shortest_Path
+
+					C_PS				=	self.getElemS1notS2(tmpSPS, self.R)
 
 					list_verticesPath	=	self.getVertices(shortest_Path)
 					
@@ -201,17 +221,24 @@ class CscAlgo:
 
 					lengthCPS	=	len(C_PS)
 					
-					e_PS		=	float(lengthPS/lengthCPS)
+					if lengthCPS == 0 or lengthPS == 0:
+						e_PS	=	0
+					else:
+						e_PS		=	float(lengthPS/lengthCPS)
 
 
 					
 
 					if e_PS < minimum_EPs and e_PS != 0:
+						
 						minimum_EPs	=	e_PS
-						self.R		+=	self.getElemS1notS2(shortest_Path,self.R)
+						self.R		+=	C_PS
 						tmpVCPS		=	set(self.getVertices(C_PS))
 						self.U		=	list(set(self.U).union(tmpVCPS))
 						
+						
+
+
 
 		return self.R
 

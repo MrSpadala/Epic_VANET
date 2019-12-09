@@ -38,17 +38,18 @@ G = [
 	]
 
 """
-V	=	[1,2,3,4,5,6,7,8,9]
+V	=	[1,2,3,4,5,6,7,8,9,10]
 G	=	[
 			[1,2,3],
 			[2,1],
-			[3,1,4,7],
+			[3,1,4,7,10],
 			[4,3,5],
 			[5,4,8,6],
 			[6,5,7],
 			[7,6,3,9],
 			[8,5],
-			[9,7]
+			[9,7],
+			[10,3]
 		]
 
 #initializate  CSC ALGO
@@ -56,7 +57,7 @@ cscAlgo	=	CscAlgo(V,G)
 
 connected_set_cover = cscAlgo.doConnectedSetCover()
 
-print(connected_set_cover)
+#print(connected_set_cover)
 
 
 
