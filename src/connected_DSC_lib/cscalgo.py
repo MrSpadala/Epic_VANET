@@ -129,35 +129,22 @@ class CscAlgo:
 	def getElemS1notS2(self,S1,S2):
 		#where is a list of lists MORE ATTENTION HERE!
 		
-		print(S1)
-		print("-")
-		print(S2)
-		print("-------------------------")
-		
-		tempS1	=	[]
-		
+		tempFound	=	[]
 
-		for elG in S1:
-			flag = False
-			for elR in S2:
-				diff = self.differenceTwoList(elG,elR)
-				
-				flag = True
-				print(diff)
+		for elS1 in S1:
+			found = False
+
+			for elS2 in S2:
+				diff = self.differenceTwoList(elS1,elS2)
 				
 				if diff == []:
-					S1.remove(elG)
-
-					flag = False
-
-				
+					found	=	True
+					break
 		
-			if flag:				
-				tempS1.append(elG)
+			if not found:				
+				tempFound.append(elS1)
 
-		print(tempS1)
-		print("######################")
-		return tempS1
+		return tempFound
 
 	def doConnectedSetCover(self):
 		#######################################################################
@@ -192,7 +179,7 @@ class CscAlgo:
 			# with a set in R
 
 
-			print(self.G)
+			
 
 			elemNotR	=	self.getElemS1notS2(veryG,self.R)
 			

@@ -57,7 +57,7 @@ cscAlgo	=	CscAlgo(V,G)
 
 connected_set_cover = cscAlgo.doConnectedSetCover()
 
-#print(connected_set_cover)
+print(connected_set_cover)
 
 
 
