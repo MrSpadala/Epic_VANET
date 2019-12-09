@@ -20,27 +20,31 @@ S	=	parser.S
 G	=	parser.G
 ###################
 
-V=[1,2,3,4]
-G=[[1,2],[2,1,3],[3,2],[4]]
 
-"""
+
+#V=[1,2,3,4]
+#G=[[1,2],[2,1,3],[3,2],[4]]
+
+
 V=[1,2,3,4,5,6,7]
 G = [
-		[1,0,2,7],
+		[1,2,7],
 		[2,1,3,4,5,6],
-		[3,0,2,6],
+		[3,2,6],
 		[4,2,7],
 		[5,2],
 		[6,2,3],
 		[7,4,1]
 	]
-"""
 
 
 #initializate  CSC ALGO
 cscAlgo	=	CscAlgo(V,G)
 
-# Chose S_0 € S_corsivo s.t. |S_0| is the maximum, and let R={S_0} and U = S_0x
+connected_set_cover = cscAlgo.doConnectedSetCover()
+
+print(connected_set_cover)
+
 
 
 
