@@ -22,7 +22,6 @@ G	=	parser.G
 
 
 V=[1,2,3,4]
-#S=[[1,2],[1],[2],[2,3],[4]]
 G=[[1,2],[2,1,3],[3,2],[4]]
 
 """
@@ -40,7 +39,7 @@ G = [
 
 
 #initializate  CSC ALGO
-cscAlgo	=	CscAlgo(V,S,G)
+cscAlgo	=	CscAlgo(V,G)
 
 # Chose S_0 € S_corsivo s.t. |S_0| is the maximum, and let R={S_0} and U = S_0x
 

@@ -3,9 +3,8 @@
 
 
 class CscAlgo:
-	def __init__(self, V,S,G):
+	def __init__(self, V, G):
 		self.V	=	V
-		#self.G	=	S
 		self.G	=	G
 		self.R	=	[]		#list of lists
 		self.U	=	None	#list
@@ -14,11 +13,11 @@ class CscAlgo:
 
 
 
-	def get_neighbors(self, S):
+	def get_neighbors(self, V):
 		"""
-		Returns (a deep copy of) the list of neighbors of vertex S in G
+		Returns (a deep copy of) the list of neighbors of vertex V in G
 		"""
-		return list(self.G[S][1:])
+		return list(self.G[V][1:])
 
 
 	def find_shortest_path(self, R, T):
@@ -86,6 +85,9 @@ class CscAlgo:
 		return False
 
 
+	def differenceTwoList(self, first, second):
+		second = set(second)
+		return [item for item in first if item not in second]
 
 #remodule coverAdjacent with S1 and S2  
 	def coverAdjacent(self, S1, S2):
@@ -99,10 +101,10 @@ class CscAlgo:
 		return	True
 
 
-	def choseMaxS(self,S):
+	def getMaxFromList(self,L):
 		#1 Chose S_0 € S_corsivo s.t. |S_0| is the maximum, and let R={S_0} and U = S_0
 		#return a list inside the first maximum |S_0|
-		return max(S, key=len)
+		return max(L, key=len)
 
 	def getElemS1notS2(self,S1,S2):
 		#where is a list of lists MORE ATTENTION HERE!
@@ -128,21 +130,21 @@ class CscAlgo:
 
 		################	FIRST STEP	###################################
 		#Choose S0 ∈ S such that |S0| is the maximum
-		S_0		=	self.choseMaxS(self.G)
+
+		S_0		=	self.getMaxFromList(self.G)
+		
+		
 		
 		#let R = {S0} and U = S0
 		self.R.append(S_0)
 		self.U	=	S_0
 		
-
-		#################	SECOND STEP	################
-		# create a set of V and U
-
-		setV	=	set(self.V)
-		setU	=	set(self.U)
+		
 
 		# While V \ U != ∅ DO
-		while setV.difference(setU) != set():
+		while self.differenceTwoList(self.V,self.U):
+
+			#fino a qui va tutto bene con G oleeeee#
 
 			# For each S ∈ S \ R which is cover-adjacent or graph-adjacent 
 			# with a set in R
