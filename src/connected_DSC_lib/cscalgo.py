@@ -73,6 +73,26 @@ class CscAlgo:
 		return P
 
 
+
+
+	def differenceTwoList(self, first, second):
+		second = set(second)
+		return [item for item in first if item not in second]
+
+	def intersectionTwoList(self, lst1, lst2): 
+		lst3 = [value for value in lst1 if value in lst2] 
+		return lst3
+
+
+
+#remodule coverAdjacent with S1 and S2  
+	def coverAdjacent(self, S1, S2):
+		for lS2	in	S2:
+			if self.intersectionTwoList(S1,lS2)	!=	[]:
+				return	True
+		
+		return	False
+
 	def graphAdjacent(self, S1, S2, G):
 		for elems1 in S1:
 
@@ -85,22 +105,6 @@ class CscAlgo:
 		return False
 
 
-	def differenceTwoList(self, first, second):
-		second = set(second)
-		return [item for item in first if item not in second]
-
-#remodule coverAdjacent with S1 and S2  
-	def coverAdjacent(self, S1, S2):
-		setS1	=	set(S1)
-		for lS2	in	S2:
-			setS2	=	set(lS2)
-
-			if setS1.intersection(setS2)	==	set():
-				return	False
-		
-		return	True
-
-
 	def getMaxFromList(self,L):
 		#1 Chose S_0 € S_corsivo s.t. |S_0| is the maximum, and let R={S_0} and U = S_0
 		#return a list inside the first maximum |S_0|
@@ -110,15 +114,19 @@ class CscAlgo:
 		#where is a list of lists MORE ATTENTION HERE!
 		tempS1	=	[]
 
-		for lsS1 in S1:
-			setS1	=	set(lsS1)
-			for lsS2 in S2:
-				setS2	=	set(lsS2)
+		for elG in S1:
+			flag = False
+			for elR in S2:
+				diff = self.differenceTwoList(elG,elR)
+				
+				if diff == []:
+					break
 
-				# S1 \ S2
-				if setS1.difference(setS2) != set():
-					tempS1.append(list(setS1))
-					continue
+				flag = True
+				
+			if flag:
+				tempS1.append(elG)
+
 		return tempS1
 
 	def doAlgorithm(self):
@@ -144,13 +152,14 @@ class CscAlgo:
 		# While V \ U != ∅ DO
 		while self.differenceTwoList(self.V,self.U):
 
-			#fino a qui va tutto bene con G oleeeee#
+			#fino a qui va tutto bene con G oleeeee
 
 			# For each S ∈ S \ R which is cover-adjacent or graph-adjacent 
 			# with a set in R
 
 			elemNotR	=	self.getElemS1notS2(self.G,self.R)
 
+			
 			for Sx	in	elemNotR:
 				resultCovAdj	= self.coverAdjacent(Sx,self.R)
 				resultGraphAdj	= self.graphAdjacent(Sx,self.R,self.G)
