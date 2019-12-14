@@ -17,10 +17,13 @@ parser.CarToInputCSC()
 
 #Input initialization
 V	=	parser.V
-S	=	parser.S
 G	=	parser.G
 ###################
 
+
+
+print(G[810])
+exit(1)
 
 
 #V=[1,2,3,4]
@@ -85,7 +88,6 @@ G = [
 		[7,3]
 
 ]
-"""
 
 V	=	[1,2,3,4,5,6,7,8,9,10]
 G	=	[
@@ -100,13 +102,15 @@ G	=	[
 			[9,7],
 			[10,3]
 		]
-
+"""
 #initializate  CSC ALGO
 cscAlgo	=	CscAlgo(V,G)
 
 connected_set_cover = cscAlgo.doConnectedSetCover()
 
 print(connected_set_cover)
+
+
 """
 testkgraph = Gcreator.kindgraph()
 testnumn = Gcreator.numnodes()

@@ -15,9 +15,9 @@ class CscAlgo:
 		"""
 		Returns (a deep copy of) the list of neighbors of vertex V in G
 		"""
-		return list(self.G[V-1][1:])
+		#return list(self.G[V-1][1:])
 
-		#return list(self.G[V][1:])		#if you start from 0
+		return list(self.G[V][1:])		#if you start from 0
 
 
 	def find_shortest_path(self, R, T):
@@ -71,8 +71,8 @@ class CscAlgo:
 		tP = []
 
 		for p in P:
-			tP.append(self.G[p-1])
-			#tP.append(self.G[p])	#if you start from 0
+			#tP.append(self.G[p-1])
+			tP.append(self.G[p])	#if you start from 0
 
 		# Convert path from identifier to list
 		#tP = list(map(self.G[p] for p in P, P))
