@@ -15,7 +15,7 @@ class Parser:
 	There was a problem because it wasn't considered if there was a car that
 	not are linked with each other, therefore thare are a error named "index out of range"
 	"""
-	#NOT FUNCTION I THINK USE DICT 
+	#NOT FUNCTION I THINK USE DICT !IMPORTANT
 	def CarToInputCSC(self):
 		index			=	0
 
