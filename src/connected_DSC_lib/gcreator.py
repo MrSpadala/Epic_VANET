@@ -19,21 +19,59 @@ class Gcreator:
 
 	def knitgraph(kind, numn):
 		G = []
-		tmp = []
-		total = numn + 1
+		V = []
+		total = numn+1
 		for i in range(1,total):
-			tmp.insert(i,i)
-			tmp.append(G)
-			print(G)
-		#print('I have {} {}'.format(kind,howmany))
+			tmp = []
+			tmp.append(i)
+			if i+1 == total:
+				tmp.append(1)
+			else:
+				tmp.append(i+1)
+			G.append(tmp)
+		for j in range(1,total):
+			V.append(j)
 		return G
 
-	def treegraph(kindgraph, numnodes):
+	def treegraph(kindgraph, numn):
 		G = []
-
+		V = []
+		total = numn+1
+		x=1
+		while x != total:
+			y=0
+			z=0
+			ry=0
+			tmp= []
+			y=x*2
+			z=y+1
+			ry=x//2
+			tmp.append(x)
+			if x != 1:
+				tmp.append(ry)
+			if y < total:
+				tmp.append(y)
+			if z < total:	
+				tmp.append(z)
+			x=x+1
+			G.append(tmp)
+		for j in range(1,total):
+			V.append(j)
 		return G
 
-	def pathgraphgraph(kindgraph, numnodes):
+	def pathgraph(kindgraph, numn):
 		G = []
-
+		V = []
+		total = numn+1
+		for i in range(1,total):
+			print(i)
+			tmp = []
+			tmp.append(i)
+			if i+1 != total:
+				tmp.append(i+1)
+			if i != 1:
+				tmp.append(i-1)
+			G.append(tmp)
+		for j in range(1,total):
+			V.append(j)
 		return G
