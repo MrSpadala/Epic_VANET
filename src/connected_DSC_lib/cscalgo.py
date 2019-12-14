@@ -193,8 +193,8 @@ class CscAlgo:
 				
 				if resultCovAdj or resultGraphAdj:
 					#Try It
-					
 
+					
 					shortest_Path		=	self.find_shortest_path(self.R,Sx)
 
 					tmpSPS				=	shortest_Path

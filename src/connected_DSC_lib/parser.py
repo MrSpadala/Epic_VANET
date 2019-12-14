@@ -15,19 +15,24 @@ class Parser:
 	There was a problem because it wasn't considered if there was a car that
 	not are linked with each other, therefore thare are a error named "index out of range"
 	"""
-
+	#NOT FUNCTION I THINK USE DICT 
 	def CarToInputCSC(self):
-		lenItemsCars	=	len(self.cars.items())
 		index			=	0
 
 		for plate, car in self.cars.items():
 
 			if plate != index:
-				tmpG		=	[index]
+				"""
+				tmpG		=	[index] 
 				tmpplate	=	index
 				self.V.append(tmpplate)
 				self.G.append(tmpG)
-				index	+=	1
+				"""
+				tmpG	=	[plate] + car.neighbors
+				self.V.append(plate)
+				self.G.append(tmpG)
+				index	+=	2
+				continue
 
 			
 			index	+=	1

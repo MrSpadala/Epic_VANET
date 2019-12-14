@@ -20,10 +20,7 @@ V	=	parser.V
 G	=	parser.G
 ###################
 
-
-
-print(G[810])
-exit(1)
+exit()
 
 
 #V=[1,2,3,4]
