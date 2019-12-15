@@ -100,6 +100,12 @@ G	=	[
 		]
 """
 #initializate  CSC ALGO
+"""
+gCreator = Gcreator(500)
+gCreator.knitgraph()
+G = gCreator.G
+V = gCreator.V
+"""
 start_time = time.time()
 print('Start Algo for: %s nodes' % len(G))
 
@@ -114,4 +120,3 @@ print(vertices_csc)
 print('End Algo TO CSC use only: %s nodes ' % len_vertices_csc)
 
 print("--- %s seconds ---" % (time.time() - start_time))
-

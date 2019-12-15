@@ -2,41 +2,38 @@
 # -*- coding: utf-8 -*-
 
 class Gcreator:
-	def __init__(self, V, G):
-		self.V	=	V
-		self.G	=	G
-		self.R	=	[]		#list of lists
-		self.U	=	None	#list
+	def __init__(self, numn):
+		self.V			=	[]
+		self.G			=	[]
+		self.numn	 	=	numn
 
-
-	def kindgraph():
-		kind = input("Press 1 for tree, 2 for knit, 3 for path\n")
-		return int(kind)
-
-	def numnodes():
-		howmany = input("How many nodes do you want?\n")
-		return int(howmany)
-
-	def knitgraph(kind, numn):
+	def knitgraph(self):
+		self.G = []
+		self.V = []
 		G = []
 		V = []
-		total = numn+1
-		for i in range(1,total):
+		total = self.numn#+1
+		for i in range(0,total):
 			tmp = []
 			tmp.append(i)
+			if i == 0:
+				tmp.append(total-1)
+			else:
+				tmp.append(i-1)
 			if i+1 == total:
-				tmp.append(1)
+				tmp.append(0)
 			else:
 				tmp.append(i+1)
-			G.append(tmp)
-		for j in range(1,total):
-			V.append(j)
-		return G
+			self.G.append(tmp)
+		for j in range(0,total-1):
+			self.V.append(j)
 
-	def treegraph(kindgraph, numn):
+	def treegraph(self):
+		self.G = []
+		self.V = []
 		G = []
 		V = []
-		total = numn+1
+		total = self.numn+1
 		x=1
 		while x != total:
 			y=0
@@ -55,16 +52,22 @@ class Gcreator:
 				tmp.append(z)
 			x=x+1
 			G.append(tmp)
-		for j in range(1,total):
-			V.append(j)
-		return G
+		for j in range(0,total-1):
+			self.V.append(j)
+		for tutti in G:
+			tmp = []
+			for x in tutti:
 
-	def pathgraph(kindgraph, numn):
+				tmp += [x-1]
+			self.G.append(tmp)
+
+	def pathgraph(self):
+		self.G = []
+		self.V = []
 		G = []
 		V = []
-		total = numn+1
+		total = self.numn+1
 		for i in range(1,total):
-			print(i)
 			tmp = []
 			tmp.append(i)
 			if i+1 != total:
@@ -72,6 +75,10 @@ class Gcreator:
 			if i != 1:
 				tmp.append(i-1)
 			G.append(tmp)
-		for j in range(1,total):
-			V.append(j)
-		return G
+		for j in range(0,total-1):
+			self.V.append(j)
+		for tutti in G:
+			tmp = []
+			for x in tutti:
+				tmp += [x-1]
+			self.G.append(tmp)
