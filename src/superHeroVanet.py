@@ -26,7 +26,7 @@ G	=	parser.G
 #G=[[1,2],[2,1,3],[3,2],[4]]
 
 """
-V=[1,2,3,4,5,6,7]
+V=[0,1,2,3,4,5,6,7]
 G = [
 		[1,2,7],
 		[2,1,3,4,5,6],
@@ -105,9 +105,13 @@ print('Start Algo for: %s nodes' % len(G))
 
 cscAlgo	=	CscAlgo(V,G)
 
-connected_set_cover = cscAlgo.doConnectedSetCover()
+connected_set_cover	=	cscAlgo.doConnectedSetCover()
+vertices_csc		=	list(map(lambda x: x[0], connected_set_cover))
+len_vertices_csc	=	len(vertices_csc)
 
-print(connected_set_cover)
+print(vertices_csc)
+
+print('End Algo TO CSC use only: %s nodes ' % len_vertices_csc)
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
