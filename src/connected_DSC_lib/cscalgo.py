@@ -15,8 +15,6 @@ class CscAlgo:
 		"""
 		Returns (a deep copy of) the list of neighbors of vertex V in G
 		"""
-		#return list(self.G[V-1][1:])
-
 		return list(self.G[V][1:])		#if you start from 0
 
 
@@ -58,10 +56,6 @@ class CscAlgo:
 			explored.add(node)
 
 		else:
-			print(R)  				#help in debugging if there's exception
-			print("----------")		#help in debugging if there's exception
-			print(T_neighbors)		#help in debugging if there's exception
-
 			raise Exception("starting_node not found")
 
 		# Use next_nodes to contruct path P
@@ -75,7 +69,6 @@ class CscAlgo:
 		tP = []
 
 		for p in P:
-			#tP.append(self.G[p-1])
 			tP.append(self.G[p])	#if you start from 0
 
 		# Convert path from identifier to list
@@ -229,10 +222,6 @@ class CscAlgo:
 						self.R		+=	C_PS
 						tmpVCPS		=	set(self.getVertices(C_PS))
 						self.U		=	list(set(self.U).union(tmpVCPS))
-						
-						print (self.R, self.U)
-						
-
 
 
 		return self.R

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
+import time
 from simulator					import	Simulator, init_cars
 from connected_DSC_lib.parser	import	Parser
 from connected_DSC_lib.cscalgo	import	CscAlgo
@@ -100,18 +100,14 @@ G	=	[
 		]
 """
 #initializate  CSC ALGO
+start_time = time.time()
+print('Start Algo for: %s nodes' % len(G))
+
 cscAlgo	=	CscAlgo(V,G)
 
 connected_set_cover = cscAlgo.doConnectedSetCover()
 
 print(connected_set_cover)
 
+print("--- %s seconds ---" % (time.time() - start_time))
 
-"""
-testkgraph = Gcreator.kindgraph()
-testnumn = Gcreator.numnodes()
-
-testprint = Gcreator.knitgraph(testkgraph,testnumn)
-
-print(testprint)
-"""
