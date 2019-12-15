@@ -7,33 +7,35 @@ class Parser:
 	def __init__(self, cars):
 		self.cars	=	cars
 		self.V		=	[]
+		self.S		=	[]
 		self.G		=	[]
 
-
 	"""
-	This algorithm is use for parse an cars object defined by car.py class.
+	This algorithm is used for parse an cars object defined by car.py class.
 	There was a problem because it wasn't considered if there was a car that
 	not are linked with each other, therefore thare are a error named "index out of range"
 	"""
 	#NOT FUNCTION I THINK USE DICT !IMPORTANT
 	def CarToInputCSC(self):
 		index			=	0
-
 		for plate, car in self.cars.items():
+			tmpdiff		=	(plate-index)
 
-			if plate != index:
-				"""
-				tmpG		=	[index] 
-				tmpplate	=	index
-				self.V.append(tmpplate)
-				self.G.append(tmpG)
-				"""
+			if tmpdiff > 0:
+				for x in range(0,tmpdiff):
+
+					tmpG		=	[index] 
+					tmpplate	=	index
+					#self.V.append(tmpplate)
+					self.G.append(tmpG)
+					index += 1
+
+
 				tmpG	=	[plate] + car.neighbors
 				self.V.append(plate)
 				self.G.append(tmpG)
-				index	+=	2
+				index += 1				
 				continue
-
 			
 			index	+=	1
 			tmpG	=	[plate] + car.neighbors
@@ -41,4 +43,3 @@ class Parser:
 			self.G.append(tmpG)
 
 		return True
-
