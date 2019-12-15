@@ -58,6 +58,10 @@ class CscAlgo:
 			explored.add(node)
 
 		else:
+			print(R)  				#help in debugging if there's exception
+			print("----------")		#help in debugging if there's exception
+			print(T_neighbors)		#help in debugging if there's exception
+
 			raise Exception("starting_node not found")
 
 		# Use next_nodes to contruct path P
@@ -115,7 +119,7 @@ class CscAlgo:
 			for setsS2 in S2:
 				for elsubsS2 in setsS2:
 
-					if elems1 in G[elsubsS2-1]:
+					if elems1 in G[elsubsS2]: #G[elsubsS2-1] if you start from 1 like in example
 						return True
 
 		return False
@@ -187,10 +191,12 @@ class CscAlgo:
 			
 			
 			for Sx	in	elemNotR:
+
 				resultCovAdj	= self.coverAdjacent(Sx,self.R)
 				resultGraphAdj	= self.graphAdjacent(Sx,self.R,self.G)
 				
 				
+
 				if resultCovAdj or resultGraphAdj:
 					#Try It
 
@@ -224,6 +230,7 @@ class CscAlgo:
 						tmpVCPS		=	set(self.getVertices(C_PS))
 						self.U		=	list(set(self.U).union(tmpVCPS))
 						
+						print (self.R, self.U)
 						
 
 
