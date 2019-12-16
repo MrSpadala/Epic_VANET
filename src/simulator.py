@@ -98,9 +98,9 @@ def init_cars():
 	It also caches the result on disk in a pickle archive
 	"""
 
-	#city_name, scenario = "Luxembourg", "time27100Tper1000.txt"   #DECOMMENT TO USE LUXEMBURG
+	city_name, scenario = "Luxembourg", "time27100Tper1000.txt"   #DECOMMENT TO USE LUXEMBURG
 	#city_name, scenario = "Cologne", "time23000Tper1000.txt"     #DECOMMENT TO USE COLOGNE
-	return init_cars_newyork()									  #DECOMMENT TO USE NEWYORK
+	#return init_cars_newyork()									  #DECOMMENT TO USE NEWYORK
 	
 	fpath = os.path.join("cached", city_name+"_"+scenario+'.bin')
 	cached = _load_cached(fpath)

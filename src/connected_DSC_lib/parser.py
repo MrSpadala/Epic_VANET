@@ -18,7 +18,7 @@ class Parser:
 
 					tmpG		=	[index] 
 					tmpplate	=	index
-					#self.V.append(tmpplate)	#with this it creates deadlock
+					self.V.append(tmpplate)
 					self.G.append(tmpG)
 					index += 1
 

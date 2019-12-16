@@ -8,7 +8,15 @@ class CscAlgo:
 		self.G	=	G
 		self.R	=	[]		#list of lists
 		self.U	=	None	#list
+		self.initialize()
 
+	def initialize(self):
+		r = []
+		for x in self.G:
+			if len(x)==1:
+				r += x
+		for x in r:
+			self.V.remove(x)
 	
 
 	def get_neighbors(self, V):
