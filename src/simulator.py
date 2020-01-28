@@ -258,7 +258,7 @@ def performSimulations(n):
 	print("Cars infected ratio: {:.2f}%".format(cars_infected_ratio))
 	print("Network traffic (bytes): ", network_traffic)
 	
-	return sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic
+	return len(cars_dummy), sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic
 
 	# Standard deviation
 	#std_dev = 0
