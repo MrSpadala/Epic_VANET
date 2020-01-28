@@ -23,6 +23,17 @@ class config:
 	alpha = 0.05    #if at the end of the waiting timer, a fraction larger than ALPHA
 					#of my neighors has not been reached I relay the message
 
+	# Connectivity graph
+	city_name = "Luxembourg"
+	scenario = "time27100Tper1000.txt"
+	
+	# Cologne
+	# city_name = "Cologne"
+	# scenario = "time23000Tper1000.txt"
+
+	# New York
+	# city_name = "NewYork"
+	# scenario = "Newyork5003.mat"
 
 
 def _json_encode(file_out):
