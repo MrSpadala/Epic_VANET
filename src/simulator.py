@@ -238,17 +238,28 @@ def performSimulations(n):
 
 	#  ~  All metrics print below  ~
 
-	print()
-	print("Average metrics with rmin =",config.Rmin)
-	print("#sent messages: ", sum([s.sent_messages for s in sims])/n)
-	print("#received messages: ", sum([s.rcv_messages for s in sims])/n)
-	print("time of last car infection: ", sum([s.t_last_infected for s in sims])*config.time_resolution/n)
+	sent_msgs = sum([s.sent_messages for s in sims])/n
+	recv_msgs = sum([s.rcv_messages for s in sims])/n
+	t_last_infect = sum([s.t_last_infected for s in sims])*config.time_resolution/n
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
-	print("Cars infected ratio: {:.2f}%".format(100*(infected) / (len(sims)*len(sims[0].cars))))
-	print("Network traffic (bytes): ", sum([s.network_traffic for s in sims])/n)
+	cars_infected_ratio = 100*(infected) / (len(sims)*len(sims[0].cars))
+	network_traffic = sum([s.network_traffic for s in sims])/n
+
+	print()
+	print("Average metrics with rmin =",config.Rmin)
+	print("#sent messages: ", sent_msgs)
+	print("#received messages: ", recv_msgs)
+	print("time of last car infection: ", t_last_infect)
+	infected = 0
+	for s in sims:
+		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
+	print("Cars infected ratio: {:.2f}%".format(cars_infected_ratio))
+	print("Network traffic (bytes): ", network_traffic)
 	
+	return sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic
+
 	# Standard deviation
 	#std_dev = 0
 	#for s in sims:
