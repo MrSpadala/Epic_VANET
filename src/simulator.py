@@ -244,7 +244,7 @@ def performSimulations(n):
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
-	cars_infected_ratio = 100*(infected) / (len(sims)*len(sims[0].cars))
+	cars_infected_ratio = (infected) / (len(sims)*len(sims[0].cars))
 	network_traffic = sum([s.network_traffic for s in sims])/n
 
 	print()
@@ -255,7 +255,7 @@ def performSimulations(n):
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
-	print("Cars infected ratio: {:.2f}%".format(cars_infected_ratio))
+	print("Cars infected ratio: {:.2f}%".format(100*cars_infected_ratio))
 	print("Network traffic (bytes): ", network_traffic)
 	
 	return len(cars_dummy), sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic
