@@ -3,10 +3,10 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
-def make_plot(n_cars, means_recv, means_frwd):
+def make_plot(n_cars, means_recv_ratio, means_frwd):
 
-    assert(len(means_recv) == len(means_frwd))
-    N = len(means_recv)
+    assert(len(means_recv_ratio) == len(means_frwd))
+    N = len(means_recv_ratio)
 
     # pyplot config
     plt.rcParams.update({'font.size': 18.3})
@@ -14,12 +14,14 @@ def make_plot(n_cars, means_recv, means_frwd):
     plt.rc('xtick', labelsize=13.5)
     plt.rc('ytick', labelsize=11.5)
 
-    means_recv = np.asarray(means_recv) / n_cars
-    means_frwd = np.asarray(means_frwd) / n_cars
+    means_frwd_ratio = np.asarray(means_frwd) / n_cars
+    means_recv_ratio = np.asarray(means_recv_ratio) - means_frwd_ratio
 
 
     ind = np.arange(N)    # the x locations for the groups
-    width = 0.21       # the width of the bars: can also be len(x) sequence
+    width = 0.3       # the width of the bars: can also be len(x) sequence
+
+    #plt.bar(ind, means)
 
     #fig, ax = plt.subplots()
     fig = plt.figure()
@@ -30,14 +32,14 @@ def make_plot(n_cars, means_recv, means_frwd):
     scale = 0.5
     plt.figure(figsize=(15*scale, 10*scale))
 
-    p1 = plt.bar(ind, means_frwd, width, color='b', edgecolor='k')
-    p2 = plt.bar(ind, means_recv, width,
-                bottom=means_frwd, color='#ffa500', edgecolor='k')
+    p1 = plt.bar(ind, means_frwd_ratio, width, color='b', edgecolor='k')
+    p2 = plt.bar(ind, means_recv_ratio, width,
+                bottom=means_frwd_ratio, color='#ffa500', edgecolor='k')
 
 
     """
     p3 = plt.bar(ind+width+gap, means_frw_low_dens, width, color='b', edgecolor='k')
-    p4 = plt.bar(ind+width+gap, means_recv_low_dens, width,
+    p4 = plt.bar(ind+width+gap, means_recv_ratio_low_dens, width,
                 bottom=means_frw_low_dens, color='#cc6e00', edgecolor='k')
     """
 
