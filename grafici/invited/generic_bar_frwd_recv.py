@@ -56,7 +56,7 @@ def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
     plt.ylabel('Nodes (%)')
     plt.xlabel(r'$R_{min}$ (m)')
     plt.title('')
-    if labels != None:
+    if not labels is None:
         plt.xticks(ind, map(str, labels)) 
     plt.yticks(np.arange(0, 1.1, 0.1))
     plt.ylim((0.0, 1.0))
