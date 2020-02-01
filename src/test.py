@@ -11,7 +11,7 @@ ratios_infected_vals = np.zeros_like(tmax_vals)
 sent_msgs_vals = np.zeros_like(tmax_vals)
 
 
-for i, tmax in enumerate(np.linspace(0, 0.2, 9)):
+for i, tmax in enumerate(tmax_vals):
     config.Tmax = tmax
     
     res = performSimulations(config.nsimulations)
@@ -25,8 +25,11 @@ print("RATIOS")
 print(ratios_infected_vals)
 print("SENT_MSGS")
 print(sent_msgs_vals)
+print("TMAX VALS")
+print(tmax_vals)
 
-
+"""
 from matplotlib import pyplot as plt
 plt.plot(tmax_vals, t_last_infctd_vals)
 plt.show() 
+"""

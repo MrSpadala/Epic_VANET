@@ -3,7 +3,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 
-def make_plot(n_cars, means_recv_ratio, means_frwd):
+def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
 
     assert(len(means_recv_ratio) == len(means_frwd))
     N = len(means_recv_ratio)
@@ -56,7 +56,8 @@ def make_plot(n_cars, means_recv_ratio, means_frwd):
     plt.ylabel('Nodes (%)')
     plt.xlabel(r'$R_{min}$ (m)')
     plt.title('')
-    plt.xticks(ind, ('50', '100', '150', '200', '250', '300')) 
+    if labels != None:
+        plt.xticks(ind, map(str, labels)) 
     plt.yticks(np.arange(0, 1.1, 0.1))
     plt.ylim((0.0, 1.0))
 
