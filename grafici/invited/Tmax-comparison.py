@@ -8,8 +8,15 @@ sys.path.append("src")
 from sim_config import config
 from simulator import performSimulations
 
+if config.city_name == "NewYork":
+    tmax_vals = np.linspace(0, 0.07, 9)
+elif config.city_name == "Luxembourg":
+    tmax_vals = np.linspace(0, 0.07, 9)
+elif config.city_name == "Cologne":
+    tmax_vals = np.linspace(0, 0.07, 9)
+else:
+    raise Exception(f"city {config.city_name} NA")
 
-tmax_vals = np.linspace(0, 0.2, 9)
 t_last_infctd_vals = np.zeros_like(tmax_vals)
 ratios_infected_vals = np.zeros_like(tmax_vals)
 sent_msgs_vals = np.zeros_like(tmax_vals)
