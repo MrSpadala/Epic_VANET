@@ -56,14 +56,16 @@ def make_plot(n_cars, means_recv_ratio, means_frwd):
     plt.ylabel('Nodes (%)')
     plt.xlabel(r'$R_{min}$ (m)')
     plt.title('')
-    #plt.xticks(ind, ('50', '100', '150', '200', '250', '300')) 
-    #plt.yticks(np.arange(0, 1.1, 0.1))
-    #plt.ylim((0.0, 1.0))
+    plt.xticks(ind, ('50', '100', '150', '200', '250', '300')) 
+    plt.yticks(np.arange(0, 1.1, 0.1))
+    plt.ylim((0.0, 1.0))
 
 
     #plt.legend((p1[0], p2[0], p4[0]), ('Relay', r'EPIC avg $\delta =43.8$', r'EPIC avg $\delta =11.6$'), 
     #    loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
+    plt.legend((p1[0], p2[0]), ('Relay', 'Receivers'), 
+        loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
     plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
     plt.show()
