@@ -4,6 +4,7 @@ import sys
 import heapq
 import pickle
 import random
+import numpy as np
 from multiprocessing import Pool
 from collections import defaultdict
 
@@ -111,7 +112,7 @@ def init_cars():
 
 	print('Computing car graph...')
 	positions = []
-	p = open("../grafi/"+city_name+"/pos/pos_"+scenario, "r")
+	p = open("grafi/"+city_name+"/pos/pos_"+scenario, "r")
 	for i in p:
 		d = i[:-1].split(' ')  #discard trailing \n
 		if d[0] == d[2] and d[2] == d[4]:  #append None if it is a malformed row
@@ -119,7 +120,7 @@ def init_cars():
 		else:
 			positions.append((float(d[2]), float(d[3])))
 
-	a = open("../grafi/"+city_name+"/adj/adj_"+scenario, "r")
+	a = open("grafi/"+city_name+"/adj/adj_"+scenario, "r")
 	
 	cars, i = [], 0
 	for line in a:
@@ -144,7 +145,7 @@ def init_cars_newyork():
 	if cached:	return cached
 
 	print('Computing car graph...')
-	contents = sio.loadmat(os.path.join('../grafi/NewYork/', fname))
+	contents = sio.loadmat(os.path.join('grafi/NewYork/', fname))
 	adia, coord = contents['Adia'], contents['coord']
 	coord = [(x,y) for x,y in zip(coord[0], coord[1])]
 	cars = []
@@ -238,6 +239,7 @@ def performSimulations(n):
 
 	#  ~  All metrics print below  ~
 
+	""" AVERAGES
 	sent_msgs = sum([s.sent_messages for s in sims])/n
 	recv_msgs = sum([s.rcv_messages for s in sims])/n
 	t_last_infect = sum([s.t_last_infected for s in sims])*config.time_resolution/n
@@ -246,6 +248,18 @@ def performSimulations(n):
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
 	cars_infected_ratio = (infected) / (len(sims)*len(sims[0].cars))
 	network_traffic = sum([s.network_traffic for s in sims])/n
+	"""
+
+	# MEDIANS
+	sent_msgs = np.median([s.sent_messages for s in sims])
+	recv_msgs = np.median([s.rcv_messages for s in sims])
+	t_last_infect = np.median([s.t_last_infected for s in sims])*config.time_resolution
+	infected_list = []
+	for s in sims: 
+		infected_list.append(str([c.state for c in s.cars]).count("State.RECOVERED"))
+	infected = np.median(infected_list)
+	cars_infected_ratio = infected / len(sims[0].cars)
+	network_traffic = np.median([s.network_traffic for s in sims])
 
 	print()
 	print("Average metrics with rmin =",config.Rmin)
