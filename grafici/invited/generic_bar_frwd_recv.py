@@ -1,6 +1,50 @@
+
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+
+import sys
+sys.path.append("src")
+from sim_config import config
+from simulator import performSimulations
+
+
+if config.city_name == "Luxembourg":
+    rmin_vals = np.linspace(120, 220, 9)   #luxemburg
+elif config.city_name == "Cologne":
+    rmin_vals = np.linspace(70, 170, 9)   #cologne
+else:
+    raise Exception("not implemented")
+
+t_last_infctd_vals = np.zeros_like(rmin_vals)
+ratios_infected_vals = np.zeros_like(rmin_vals)
+sent_msgs_vals = np.zeros_like(rmin_vals)
+
+
+for i, rmin in enumerate(rmin_vals):
+    config.Rmin = rmin
+    
+    res = performSimulations(config.nsimulations)
+    n_cars, sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic = res
+
+    t_last_infctd_vals[i] = t_last_infect
+    ratios_infected_vals[i] = cars_infected_ratio
+    sent_msgs_vals[i] = sent_msgs
+
+def mypprint(arr):
+    print("[", end="")
+    for v in arr:
+        print(f"{v}, ", end="")
+    print("]")
+
+print("RATIOS")
+mypprint(ratios_infected_vals)
+print("SENT_MSGS")
+mypprint(sent_msgs_vals)
+print("RMIN VALS")
+mypprint(rmin_vals)
+
+
 
 
 def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
@@ -51,7 +95,12 @@ def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
     ax.set_position([box.x0, box.y0 + box.height * 0.1,
                     box.width, box.height * 0.9])
 
-
+    if config.city_name == "Luxembourg":
+        plt.hlines(279/790,-0.3,8.3, colors="g", linestyles="--")  #LUXEMBOURG CSC
+    elif config.city_name == "Cologne":
+        plt.hlines(214/436,-0.3,8.3, colors="g", linestyles="--")  #COLOGNE CSC
+    else:
+        raise Exception("not implemented")
 
     plt.ylabel('Nodes (%)')
     plt.xlabel(r'$R_{min}$ (m)')
@@ -72,9 +121,11 @@ def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
     plt.show()
     #plt.savefig('grafici/top_car/rmin_comparison.png', dpi=300)
 
-if __name__ == "__main__":
-    inf_ratio = [0.99734177, 0.98512658, 0.88582278, 0.98126582, 0.98392405, 0.9835443, 0.98373418, 0.98468354, 0.98436709]
-    sent = [732.5 , 297.55, 245.15, 261.6 , 243.15, 242.15, 246.05, 245.65, 253.85]
-    n_cars = 790
 
-    make_plot(n_cars, inf_ratio, sent)
+labels = map(lambda x: f"{x:.0f}", rmin_vals)
+make_plot(
+    n_cars,
+    ratios_infected_vals,
+    sent_msgs_vals,
+    labels=labels
+)
