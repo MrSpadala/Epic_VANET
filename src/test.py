@@ -7,7 +7,7 @@ from sim_config import config
 from simulator import performSimulations
 
 
-tmax_vals = np.linspace(0, 0.2, 7)
+tmax_vals = np.linspace(0, 0.1, 7)
 t_last_infctd_vals = np.zeros_like(tmax_vals)
 ratios_infected_vals = np.zeros_like(tmax_vals)
 sent_msgs_vals = np.zeros_like(tmax_vals)
@@ -89,10 +89,10 @@ def make_plot_frwd_recv(n_cars, means_recv_ratio, means_frwd, labels=None):
 
 
     plt.ylabel('Nodes (%)')
-    plt.xlabel(r'$R_{min}$ (m)')
+    plt.xlabel(r'$T_{max}$ (ms)')
     plt.title('')
     if not labels is None:
-        plt.xticks(ind, map(str, labels)) 
+        plt.xticks(ind, labels) 
     plt.yticks(np.arange(0, 1.1, 0.1))
     plt.ylim((0.0, 1.0))
 
@@ -109,15 +109,18 @@ def make_plot_frwd_recv(n_cars, means_recv_ratio, means_frwd, labels=None):
 
 
 def make_plot_time(tmax_vals, t_last_infctd_vals):
-    plt.plot(tmax_vals, t_last_infctd_vals)
+    plt.plot(tmax_vals*1000, t_last_infctd_vals)
+    plt.ylabel('Transmission time (s)')
+    plt.xlabel(r'$T_{max}$ (ms)')
     plt.show()
 
 
+labels = map(lambda x: f"{1000*x:.0f}", tmax_vals)
 make_plot_frwd_recv(
     n_cars,
     ratios_infected_vals,
     sent_msgs_vals,
-    labels=tmax_vals
+    labels=labels
 )
 
 make_plot_time(
