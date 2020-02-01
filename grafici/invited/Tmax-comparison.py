@@ -3,11 +3,13 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
+import sys
+sys.path.append("src")
 from sim_config import config
 from simulator import performSimulations
 
 
-tmax_vals = np.linspace(0, 0.1, 7)
+tmax_vals = np.linspace(0, 0.2, 9)
 t_last_infctd_vals = np.zeros_like(tmax_vals)
 ratios_infected_vals = np.zeros_like(tmax_vals)
 sent_msgs_vals = np.zeros_like(tmax_vals)
