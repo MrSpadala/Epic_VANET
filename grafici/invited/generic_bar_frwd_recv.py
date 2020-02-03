@@ -13,6 +13,8 @@ if config.city_name == "Luxembourg":
     rmin_vals = np.linspace(120, 220, 9)   #luxemburg
 elif config.city_name == "Cologne":
     rmin_vals = np.linspace(70, 170, 9)   #cologne
+elif config.city_name == "NewYork":
+    rmin_vals = np.linspace(530, 730, 9)   #ny
 else:
     raise Exception("not implemented")
 
@@ -99,6 +101,8 @@ def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
         plt.hlines(279/790,-0.3,8.3, colors="g", linestyles="--")  #LUXEMBOURG CSC
     elif config.city_name == "Cologne":
         plt.hlines(214/436,-0.3,8.3, colors="g", linestyles="--")  #COLOGNE CSC
+    elif config.city_name == "NewYork":
+        pass   # NO COMPARISON WITH NY AVAILABLE YET
     else:
         raise Exception("not implemented")
 
