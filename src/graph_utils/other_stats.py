@@ -11,30 +11,35 @@ n_cars = len(cars)
 
 print("Printing graph stats for:", config.city_name, config.scenario)
 
-# n nodes
+# NUMBER OF NODES
 print("nodes: ", n_cars)
 
-# n edges
+# NUMBER OF EDGES
 edges = 0
 for c in cars:
     edges += len(c.neighbors)
 edges /= 2
 print("number of edges: ", edges)
 
-# avg degree
+# AVERAGE DEGREE
 deg = 0
 for c in cars:
     deg += len(c.neighbors)
 deg /= n_cars
 print("average degree: ", deg)
 
-# std dev of nodes degree
+# STD DEV OF DEGREE
 from matplotlib import pyplot as plt
 import pandas as pd
 degrees = np.array(list(map(lambda c: len(c.neighbors), cars)))
 print("std dev of nodes degree: ", np.std(degrees))
 
-# diameter
+# DIAMETER, using exact ANF algorithm
+h = 0
+M_prev = {}
+for c in cars:
+    M_prev[c.plate] = set([c.plate])  # M[x] --> set of nodes reachable from x within h steps
+
 def all_equals(M):
     val = None
     for reachable in M.values():
@@ -43,11 +48,6 @@ def all_equals(M):
         elif val != reachable:
             return False
     return True
-
-h = 0
-M_prev = {}
-for c in cars:
-    M_prev[c.plate] = set([c.plate])  # M[x] --> set of nodes reachable from x within h steps
 
 while True:
     M_curr = {}
