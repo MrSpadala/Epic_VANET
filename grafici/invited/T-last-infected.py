@@ -23,8 +23,8 @@ plt.ylabel('Transmission time (s)')
 plt.xlabel(r'$T_{max}$ (ms)')
 
 plt.scatter(x, newyork, label="New York", marker="o", color="blue")
-plt.scatter(x, luxembourg, label="Luxembourg", marker="s", color="green")
-plt.scatter(x, cologne, label="Cologne", marker="^", color="red")
+plt.scatter(x, luxembourg, label="Luxembourg", marker="s", color="red")
+plt.scatter(x, cologne, label="Cologne", marker="^", color="green")
 
 plt.legend()
 
