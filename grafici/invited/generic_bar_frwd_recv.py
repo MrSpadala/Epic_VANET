@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import sys
 sys.path.append("src")
 from sim_config import config
-from simulator import performSimulations
+from simulator import performSimulations, computeMetrics
 
 
 if config.city_name == "Luxembourg":
@@ -26,7 +26,8 @@ sent_msgs_vals = np.zeros_like(rmin_vals)
 for i, rmin in enumerate(rmin_vals):
     config.Rmin = rmin
     
-    res = performSimulations(config.nsimulations)
+    sims = performSimulations(config.nsimulations)
+    res = computeMetrics(sims)
     n_cars, sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic = res
 
     t_last_infctd_vals[i] = t_last_infect

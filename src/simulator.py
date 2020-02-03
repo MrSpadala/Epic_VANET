@@ -235,7 +235,13 @@ def performSimulations(n):
 		# mainly for debugging purposes (without multiprocessing)
 		sims = [ performSimulation(i,v) for i,v in zip(range(n), first_vehicles_indices)]
 	
+	return sims
 
+
+def computeMetrics(sims):
+	"""
+	Given a list of simulator objects prints and returns various metrics
+	"""
 
 	#  ~  All metrics print below  ~
 
@@ -272,7 +278,7 @@ def performSimulations(n):
 	print("Cars infected ratio: {:.2f}%".format(100*cars_infected_ratio))
 	print("Network traffic (bytes): ", network_traffic)
 	
-	return len(cars_dummy), sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic
+	return len(sims[0].cars), sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic
 
 	# Standard deviation
 	#std_dev = 0
@@ -295,7 +301,8 @@ def performSimulations(n):
 if __name__ == "__main__":
 	sys.path.append("./src/")
 	if "--with-graphics" in sys.argv:
-		performSimulations(1)
+		sims = performSimulations(1)
 	else:
 		print('Test mode, to use the visual output run with \'--with-graphics\', need first to install vpython')
-		performSimulations(config.nsimulations)
+		sims = performSimulations(config.nsimulations)
+	computeMetrics(sims)
