@@ -9,11 +9,11 @@ from sim_config import config
 from simulator import performSimulations
 
 if config.city_name == "NewYork":
-    tmax_vals = np.linspace(0, 0.07, 9)
+    tmax_vals = np.linspace(0, 0.1, 11)
 elif config.city_name == "Luxembourg":
-    tmax_vals = np.linspace(0, 0.07, 9)
+    tmax_vals = np.linspace(0, 0.1, 11)
 elif config.city_name == "Cologne":
-    tmax_vals = np.linspace(0, 0.07, 9)
+    tmax_vals = np.linspace(0, 0.1, 11)
 else:
     raise Exception(f"city {config.city_name} NA")
 
