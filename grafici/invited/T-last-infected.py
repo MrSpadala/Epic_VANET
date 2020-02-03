@@ -16,6 +16,7 @@ plt.rcParams.update({'font.size': 18.3})
 plt.rc('legend', fontsize=13)
 plt.rc('xtick', labelsize=13.5)
 plt.rc('ytick', labelsize=11.5)
+plt.rc('grid', linestyle="--", color='black')
 plt.gcf().subplots_adjust(bottom=0.15)
 
 plt.ylabel('Transmission time (s)')
@@ -27,5 +28,7 @@ plt.scatter(x, cologne, label="Cologne", marker="^", color="red")
 
 plt.legend()
 
+# Grid
+plt.grid(True)
 
 plt.show()
