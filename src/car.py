@@ -96,6 +96,7 @@ class Car:
 		"""
 
 		# Decide whether to relay or not
+		# TODO: If using CBF bcast is True if len(self.messages)==1
 		bcast = self.evaluate_positions(self.messages, self.pos)
 		
 		if bcast:
