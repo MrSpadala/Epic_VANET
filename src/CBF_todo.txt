@@ -1,0 +1,3 @@
+Each receiver contends to be a potential relay, thenode winning the contention relaying and all other nodes overhearing the re-lay stopping their contention
+
+http://www.eurecom.fr/en/publication/3771/download/cm-publi-3771.pdf
