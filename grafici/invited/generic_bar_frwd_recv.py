@@ -8,7 +8,7 @@ sys.path.append("src")
 from sim_config import config
 from simulator import performSimulations, computeMetrics
 
-
+"""
 if config.city_name == "Luxembourg":
     if config.scenario.endswith("1000.txt"):
         rmin_vals = np.linspace(120, 220, 9)   #luxemburg high density
@@ -22,6 +22,14 @@ elif config.city_name == "NewYork":
     rmin_vals = np.linspace(330, 530, 9)   #ny
 else:
     raise Exception("not implemented")
+"""
+
+# Use N_COLS different values, ranging +-W_SIZE from the optimal Rmin
+W_SIZE = 50
+N_COLS = 9
+
+rmin_vals = np.linspace(config.Rmin-W_SIZE, config.Rmin+W_SIZE, N_COLS)
+
 
 if config.use_CBF:
     # If we use CBF we don't care about Rmin, we just use one value
