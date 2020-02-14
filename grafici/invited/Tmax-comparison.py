@@ -8,12 +8,14 @@ sys.path.append("src")
 from sim_config import config
 from simulator import performSimulations, computeMetrics
 
+THETA = 0.0015  #mean of the underlying channel tx delay (s) 
+
 if config.city_name == "NewYork":
-    tmax_vals = np.linspace(0, 0.1, 11)
+    tmax_vals = np.linspace(0, 100, 11) * THETA
 elif config.city_name == "Luxembourg":
-    tmax_vals = np.linspace(0, 0.1, 11)
+    tmax_vals = np.linspace(0, 100, 11) * THETA
 elif config.city_name == "Cologne":
-    tmax_vals = np.linspace(0, 0.1, 11)
+    tmax_vals = np.linspace(0, 100, 11) * THETA
 else:
     raise Exception(f"city {config.city_name} NA")
 
@@ -99,7 +101,7 @@ def make_plot_frwd_recv(n_cars, means_recv_ratio, means_frwd, labels=None):
 
 
     plt.ylabel('Nodes (%)')
-    plt.xlabel(r'$T_{max}$ (ms)')
+    plt.xlabel(r'$\frac{T_{max}}{\theta}$')
     plt.title('')
     if not labels is None:
         plt.xticks(ind, labels) 
@@ -114,8 +116,9 @@ def make_plot_frwd_recv(n_cars, means_recv_ratio, means_frwd, labels=None):
         loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
     plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
-    plt.show()
-    #plt.savefig('grafici/top_car/rmin_comparison.png', dpi=300)
+    #plt.show()
+    city, scenario = config.city_name, config.scenario
+    plt.savefig(f'grafici/invited/imgs/tmax/{city}-{scenario}.png', dpi=300)
 
 
 def make_plot_time(tmax_vals, t_last_infctd_vals):
@@ -125,7 +128,7 @@ def make_plot_time(tmax_vals, t_last_infctd_vals):
     plt.show()
 
 
-labels = map(lambda x: f"{1000*x:.0f}", tmax_vals)
+labels = map(lambda x: f"{x/THETA:.0f}", tmax_vals)
 make_plot_frwd_recv(
     n_cars,
     ratios_infected_vals,
@@ -133,10 +136,12 @@ make_plot_frwd_recv(
     labels=labels
 )
 
+"""
 make_plot_time(
     tmax_vals,
     t_last_infctd_vals
 )
+"""
 
 
 """
