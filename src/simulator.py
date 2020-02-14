@@ -139,7 +139,7 @@ def init_cars_newyork():
 	New York graph has a different file format, thus needed a different function
 	to parse it and load vehicle data
 	"""
-	fname = 'Newyork5003.mat'
+	fname = config.scenario
 	fpath = os.path.join("cached", fname+'.bin')
 	cached = _load_cached(fpath)
 	if cached:	return cached

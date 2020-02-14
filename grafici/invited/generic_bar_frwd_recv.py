@@ -19,7 +19,7 @@ if config.city_name == "Luxembourg":
 elif config.city_name == "Cologne":
     rmin_vals = np.linspace(70, 170, 9)   #cologne
 elif config.city_name == "NewYork":
-    rmin_vals = np.linspace(530, 730, 9)   #ny
+    rmin_vals = np.linspace(330, 530, 9)   #ny
 else:
     raise Exception("not implemented")
 

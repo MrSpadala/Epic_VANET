@@ -35,12 +35,67 @@ class config:
 	# city_name = "NewYork"
 	# scenario = "Newyork5003.mat"
 
+	# If True, it overwrites values of parameters like Rmin and others with 
+	# ones in `_optimal_parameters`, depending on the scenario
+	use_optimal = False
+
 	# Use CBF algorithm instead of EPIC
 	use_CBF = False
 	# If use_CBF is True, then this variable represent the number of messages a vehicle
 	# has to receive during the waiting in order to not relay a message. 
 	# If use_CBF is False this is not used.
 	CBF_msg_thresh = 1
+
+# TODO: add CBF msg threshold
+_optimal_parameters = {
+	# Luxembourg
+	"time27100Tper1000.txt": {
+		"Rmin": 182,
+		"Rmax": 500,
+		"alpha": 0.05,
+	},
+	"time27100Tper50.txt": {
+		"Rmin": 90,
+		"Rmax": 500,
+		"alpha": 0.0
+	},
+
+	# Cologne
+	"time23000Tper1000": {
+		"Rmin": 132,
+		"Rmax": 500,
+		"alpha": 0.05
+	},
+	"time23000Tper50.txt": {
+		"Rmin": 95,
+		"Rmax": 500,
+		"alpha": 0.0
+	},
+
+	# New York
+	"Newyork7005.mat": {
+		"Rmin": 430,  
+		"alpha": 0.1,
+		"Rmax": 1000,
+	},
+	"Newyork3005.mat": {
+		"Rmin": 430,  
+		"alpha": 0.1,
+		"Rmax": 1000,
+	}
+}
+
+def load_opt_parameters():
+	"""
+	Loads into config the optimal parameters for config.scenario
+	"""
+	scenario = config.scenario
+	if not scenario in _optimal_parameters:
+		raise Exception(f"WARN: scenario {scenario} does not have registered optimal parameters")
+	params = _optimal_parameters[scenario]
+	for k,v in params.items():
+		setattr(config, k, v)
+
 
 
 def _json_encode(file_out):
@@ -52,6 +107,8 @@ def _json_decode(file_in):
 	d = json.load(file)
 	for k,v in d.items():
 		setattr(config, k, v)
+	if config.use_optimal:
+		load_opt_parameters()
 
 
 if not os.path.isfile("sim_parameters.json"):
