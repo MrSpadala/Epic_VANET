@@ -28,6 +28,10 @@ else:
 W_SIZE = 50
 N_COLS = 9
 
+
+# if using new york double W_size, since the values of Rmin of ny are much greater
+if config.city_name == "NewYork":
+    W_SIZE *= 2
 rmin_vals = np.linspace(config.Rmin-W_SIZE, config.Rmin+W_SIZE, N_COLS)
 
 
@@ -140,8 +144,9 @@ def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
         loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
     plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
-    plt.show()
-    #plt.savefig('grafici/top_car/rmin_comparison.png', dpi=300)
+    #plt.show()
+    city, scenario = config.city_name, config.scenario
+    plt.savefig(f'grafici/invited/imgs/rmin/{city}-{scenario}.png', dpi=300)
 
 
 labels = map(lambda x: f"{x:.0f}", rmin_vals)
