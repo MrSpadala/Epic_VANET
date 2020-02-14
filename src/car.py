@@ -95,9 +95,15 @@ class Car:
 		Here we perform the decision process and, if positive, we send the message to all our radio neighbors (infect)
 		"""
 
-		# Decide whether to relay or not
-		# TODO: If using CBF bcast is True if len(self.messages)==1
-		bcast = self.evaluate_positions(self.messages, self.pos)
+		# Decide whether to relay or not. If the CBF algorithm is being used, it just
+		# counts how many messages it has received and broadcasts if they are lower than the threshold.
+		if config.use_CBF:
+			# Here -1 since len(self.messages) is always >=1, because it will always contain the
+			# message that infected this vehicle. The message threshold refers to how many messages
+			# are received during the waiting phase, so not considering this first message.
+			bcast = len(self.messages) - 1 < config.CBF_msg_thresh
+		else:
+			bcast = self.evaluate_positions(self.messages, self.pos)
 		
 		if bcast:
 			# Take the first message in the list of incoming messages (the first message generated the infection)

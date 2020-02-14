@@ -15,7 +15,7 @@ class config:
 	time_resolution = 0.0001   #discretized time resolution
 
 	# Environment parameters
-	Tmax = 0.3      #max time to wait before sending a broadcast message
+	Tmax = 0.1      #max time to wait before sending a broadcast message
 	Tmin = 0        #min time to wait before sending a broadcast message
 	Rmin = 170      #Rmin, expressed in meters
 	Rmax = 500	    #Rmax, expressed in meters
@@ -34,6 +34,13 @@ class config:
 	# New York
 	# city_name = "NewYork"
 	# scenario = "Newyork5003.mat"
+
+	# Use CBF algorithm instead of EPIC
+	use_CBF = False
+	# If use_CBF is True, then this variable represent the number of messages a vehicle
+	# has to receive during the waiting in order to not relay a message. 
+	# If use_CBF is False this is not used.
+	CBF_msg_thresh = 1
 
 
 def _json_encode(file_out):
