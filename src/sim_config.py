@@ -50,7 +50,7 @@ class config:
 _optimal_parameters = {
 	# Luxembourg
 	"time27100Tper1000.txt": {
-		"Rmin": 182,
+		"Rmin": 194,
 		"Rmax": 500,
 		"alpha": 0.05,
 	},
@@ -61,7 +61,7 @@ _optimal_parameters = {
 	},
 
 	# Cologne
-	"time23000Tper1000": {
+	"time23000Tper1000.txt": {
 		"Rmin": 132,
 		"Rmax": 500,
 		"alpha": 0.05
