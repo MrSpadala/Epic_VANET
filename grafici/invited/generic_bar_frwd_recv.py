@@ -10,13 +10,22 @@ from simulator import performSimulations, computeMetrics
 
 
 if config.city_name == "Luxembourg":
-    rmin_vals = np.linspace(120, 220, 9)   #luxemburg
+    if config.scenario.endswith("1000.txt"):
+        rmin_vals = np.linspace(120, 220, 9)   #luxemburg high density
+    elif config.scenario.endswith("50.txt"):
+        rmin_vals = np.linspace(40, 140, 9)   #luxemburg low density
+    else:
+        raise Exception("scenario density not implemented")
 elif config.city_name == "Cologne":
     rmin_vals = np.linspace(70, 170, 9)   #cologne
 elif config.city_name == "NewYork":
     rmin_vals = np.linspace(530, 730, 9)   #ny
 else:
     raise Exception("not implemented")
+
+if config.use_CBF:
+    # If we use CBF we don't care about Rmin, we just use one value
+    rmin_vals = rmin_vals[:1]
 
 t_last_infctd_vals = np.zeros_like(rmin_vals)
 ratios_infected_vals = np.zeros_like(rmin_vals)
