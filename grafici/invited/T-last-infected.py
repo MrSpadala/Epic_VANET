@@ -11,27 +11,32 @@ cologne_1000 = [0.01955, 0.12145, 0.22690000000000002, 0.33585000000000004, 0.44
 cologne_50 = [0.01755, 0.11495000000000001, 0.19790000000000002, 0.30625, 0.3947, 0.4923, 0.55805, 0.641, 0.72355, 0.8239000000000001, 0.9342, ]
 
 # tmax values values
-x = np.linspace(0, 0.1, 11) * 1000
+x = np.linspace(0, 100, 11)
 
+def plot_config():
+    plt.rcParams.update({'font.size': 18.3})
+    plt.rc('legend', fontsize=13)
+    plt.rc('xtick', labelsize=13.5)
+    plt.rc('ytick', labelsize=11.5)
+    plt.rc('grid', linestyle="--", color='black')
+    plt.gcf().subplots_adjust(bottom=0.16)
 
-# pyplot config
-plt.rcParams.update({'font.size': 18.3})
-plt.rc('legend', fontsize=13)
-plt.rc('xtick', labelsize=13.5)
-plt.rc('ytick', labelsize=11.5)
-plt.rc('grid', linestyle="--", color='black')
-plt.gcf().subplots_adjust(bottom=0.15)
+    plt.ylabel('Transmission time (s)')
+    plt.xlabel(r'$\frac{T_{max}}{\theta}$')
 
-plt.ylabel('Transmission time (s)')
-plt.xlabel(r'$T_{max}$ (ms)')
+    plt.grid(True)
 
-plt.scatter(x, newyork, label="New York", marker="o", color="blue")
-plt.scatter(x, luxembourg, label="Luxembourg", marker="s", color="red")
-plt.scatter(x, cologne, label="Cologne", marker="^", color="green")
-
+# High density
+plot_config()
+plt.scatter(x, newyork_7005, label="New York high dens.", marker="o", color="blue")
+plt.scatter(x, luxembourg_1000, label="Luxembourg high dens.", marker="s", color="red")
+plt.scatter(x, cologne_1000, label="Cologne high dens.", marker="^", color="green")
 plt.legend()
+plt.show()
 
-# Grid
-plt.grid(True)
-
+plot_config()
+plt.scatter(x, newyork_3005, label="New York low dens.", marker="o", color="blue")
+plt.scatter(x, luxembourg_50, label="Luxembourg low dens.", marker="s", color="red")
+plt.scatter(x, cologne_50, label="Cologne low dens.", marker="^", color="green")
+plt.legend()
 plt.show()
