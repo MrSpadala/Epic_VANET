@@ -10,6 +10,7 @@ import sys
 sys.path.append("src")
 import sim_config
 from simulator import performSimulations, computeMetrics
+from graph_utils.other_stats import get_avg_degree
 
 
 
@@ -47,11 +48,13 @@ for city, scenarios in city_scenario.items():
     frw_low_dens  = np.zeros(N)
     rcv = [rcv_high_dens, rcv_low_dens]
     frw = [frw_high_dens, frw_low_dens]
+    avg_degree = [0, 0]
 
     for i, scenario in enumerate(scenarios):  #two scenarios per city, they must be in order high density then low density
         sim_config.config.city_name = city
         sim_config.config.scenario = scenario
         sim_config.load_opt_parameters()
+        avg_degree[i] = get_avg_degree()
 
         for k in range(1, N+1):
             sim_config.config.CBF_msg_thresh = k
@@ -97,9 +100,11 @@ for city, scenarios in city_scenario.items():
     #plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Relayers', 'Reached', r'Probabilistic $P=\widehat{P}$', r'Probabilistic $P=0.96$'), 
     #	loc='upper center', bbox_to_anchor=(0.5, -0.08),
     #    fancybox=True, shadow=True, ncol=5)
-    plt.legend((p1[0], p2[0], p4[0]), ('Relay', r'EPIC avg $\delta =43.8$', r'EPIC avg $\delta =11.6$'), 
+    plt.legend((p1[0], p2[0], p4[0]), ('Relay', r'EPIC avg $\delta ='+f'{avg_degree[0]:.1f}$', r'EPIC avg $\delta ='+f'{avg_degree[1]:.1f}$'), 
         loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
     plt.gcf().subplots_adjust(bottom=0.11, left=0.11)
-    plt.show()
-    #plt.savefig('grafici/top_car/rmin_comparison.png', dpi=300); plt.clf()
+    #plt.show()
+
+    city, scenario = sim_config.config.city_name, sim_config.config.scenario
+    plt.savefig(f'grafici/invited/imgs/CBF_k/{city}-{scenario}.png', dpi=300); plt.clf()
