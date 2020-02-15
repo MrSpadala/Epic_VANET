@@ -88,7 +88,7 @@ for city, scenarios in city_scenario.items():
                     box.width, box.height * 0.9])
 
     plt.ylabel('Nodes (%)')
-    plt.xlabel(r'k')
+    plt.xlabel(r'$K$', fontsize=14.5)
     plt.title('')
     plt.xticks(ind+width/2+gap/2, ind+1) 
     plt.yticks(np.arange(0, 1.1, 0.1))
@@ -100,6 +100,6 @@ for city, scenarios in city_scenario.items():
     plt.legend((p1[0], p2[0], p4[0]), ('Relay', r'EPIC avg $\delta =43.8$', r'EPIC avg $\delta =11.6$'), 
         loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
-    plt.gcf().subplots_adjust(bottom=0.15, left=0.15)
+    plt.gcf().subplots_adjust(bottom=0.11, left=0.11)
     plt.show()
     #plt.savefig('grafici/top_car/rmin_comparison.png', dpi=300); plt.clf()
