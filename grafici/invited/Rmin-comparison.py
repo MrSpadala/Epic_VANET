@@ -119,14 +119,28 @@ def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
     ax.set_position([box.x0, box.y0 + box.height * 0.1,
                     box.width, box.height * 0.9])
 
-    if config.city_name == "Luxembourg":
-        plt.hlines(279/790,-0.3,8.3, colors="g", linestyles="--")  #LUXEMBOURG CSC
-    elif config.city_name == "Cologne":
-        plt.hlines(214/436,-0.3,8.3, colors="g", linestyles="--")  #COLOGNE CSC
-    elif config.city_name == "NewYork":
-        pass   # NO COMPARISON WITH NY AVAILABLE YET
-    else:
-        raise Exception("not implemented")
+    # Here are reported the number of relay vehicles using the CSC algorithm
+    scenario_CSC = {
+        "Luxembourg": {
+            "time27100Tper1000.txt": 279/790,
+            "time27100Tper50.txt": 301/787
+        },
+        "Cologne": {
+            "time23000Tper1000.txt": 214/436,
+            "time23000Tper50.txt": 121/220
+        },
+        "NewYork": {
+            "Newyork7005.mat": 260/672,
+            "Newyork3005.mat": 172/432
+        }
+    }
+
+    city, scenario = config.city_name, config.scenario
+    try:
+        CSC_frw = scenario_CSC[city][scenario]
+    except KeyError:
+        raise Exception(f"CSC values not found for {city} {scenario}")
+    plt.hlines(CSC_frw, -0.3, 8.3, colors="g", linestyles="--")
 
     plt.ylabel('Nodes (%)')
     plt.xlabel(r'$R_{min}$ (m)')
