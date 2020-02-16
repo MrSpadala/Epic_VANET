@@ -7,3 +7,4 @@ launch.json
 sim_parameters.json
 tmp/
 .DS_Store
+.idea/
