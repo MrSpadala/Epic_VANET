@@ -5,44 +5,69 @@ sys.path.append("src")
 from simulator import init_cars
 from sim_config import config
 
-cars = init_cars()
-car_dict = {c.plate: c for c in cars}
-n_cars = len(cars)
 
+_loaded_scenario = None
+_loaded_cars = None
+def load_cars(func):
+    """
+    Decorator loading vehicle data specified in config file.
+    """
+    def wrapper(*args, **kwargs):
+        # Check if we have already loaded the scenario, if yes execute func, otherwise load it
+        global _loaded_scenario, _loaded_cars
+        if _loaded_scenario != config.scenario:
+            _loaded_scenario = config.scenario
+            _loaded_cars = init_cars()
+        return func(*args, **kwargs)
+    return wrapper
+
+
+# NUMBER OF NODES
+@load_cars
 def get_n_nodes():
-    # NUMBER OF NODES
-    return n_cars
+    global _loaded_cars
+    return len(_loaded_cars)
     
 
 # NUMBER OF EDGES
+@load_cars
 def get_n_edges():
+    global _loaded_cars
     edges = 0
-    for c in cars:
+    for c in _loaded_cars:
         edges += len(c.neighbors)
     edges /= 2
     return edges
 
+
 # AVERAGE DEGREE
+@load_cars
 def get_avg_degree():
+    global _loaded_cars
     deg = 0
-    for c in cars:
+    for c in _loaded_cars:
         deg += len(c.neighbors)
-    deg /= n_cars
+    deg /= len(_loaded_cars)
     return deg
 
+
 # STD DEV OF DEGREE
+@load_cars
 def get_std_dev_degree():
+    global _loaded_cars
     from matplotlib import pyplot as plt
     import pandas as pd
-    degrees = np.array(list(map(lambda c: len(c.neighbors), cars)))
+    degrees = np.array(list(map(lambda c: len(c.neighbors), _loaded_cars)))
     return np.std(degrees)
     
 
 # DIAMETER, using exact ANF algorithm
+@load_cars
 def get_diameter():
+    global _loaded_cars
     h = 0
     M_prev = {}
-    for c in cars:
+    for c in _loaded_cars:
         M_prev[c.plate] = set([c.plate])  # M[x] --> set of nodes reachable from x within h steps
 
     def all_equals(M):
@@ -56,9 +81,9 @@ def get_diameter():
 
     while True:
         M_curr = {}
-        for car in cars:
+        for car in _loaded_cars:
             M_curr[car.plate] = M_prev[car.plate].copy()
-        for c1 in cars:
+        for c1 in _loaded_cars:
             for c2_plate in c1.neighbors:
                 M_curr[c1.plate].update(M_prev[c2_plate])
                 M_curr[c2_plate].update(M_prev[c1.plate])
