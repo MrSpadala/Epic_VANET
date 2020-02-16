@@ -23,6 +23,7 @@ def plot_config():
 
     plt.ylabel('Transmission time (s)')
     plt.xlabel(r'$\frac{T_{max}}{\theta}$')
+    plt.ylim((-0.05, 1.15))
 
     plt.grid(True)
 
