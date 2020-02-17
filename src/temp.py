@@ -1,7 +1,6 @@
 
 from sim_config import config, load_opt_parameters
 from simulator import performSimulations, computeMetrics
-from graph_utils.other_stats import print_all
 
 city_scenario = {
     "Luxembourg": [
@@ -24,10 +23,8 @@ for city, scenarios in city_scenario.items():
         config.scenario = scenario
         config.city_name = city
         load_opt_parameters()
+        config.use_CBF = True
         print(f"EXECUTING for {config.scenario}")
-        print_all()
-        print()
-        continue
 
         sims = performSimulations(config.nsimulations, verbose=False)
         res = computeMetrics(sims)
