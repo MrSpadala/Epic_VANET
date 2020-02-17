@@ -4,6 +4,7 @@ import sys
 import heapq
 import pickle
 import random
+import itertools
 import numpy as np
 from multiprocessing import Pool
 from collections import defaultdict
@@ -206,7 +207,7 @@ def performSimulation(i, first_vehicle, verbose=True):
 
 
 
-def performSimulations(n):
+def performSimulations(n, verbose=True):
 	"""
 	Performs 'n' different simulations in parallel using multiprocessing.Pool.
 	If n==1 the simulation is run without process Pool
@@ -229,7 +230,8 @@ def performSimulations(n):
 		# Launch parallel simulations
 		with Pool(config.ncpus) as pool:
 			print('[+] Starting', n, 'simulations with', config.ncpus, 'parallel jobs')
-			sims = pool.starmap(performSimulation, zip(range(n), first_vehicles_indices))
+			verbose_iter = itertools.repeat(verbose)
+			sims = pool.starmap(performSimulation, zip(range(n), first_vehicles_indices, verbose_iter))
 	
 	else:
 		# mainly for debugging purposes (without multiprocessing)
