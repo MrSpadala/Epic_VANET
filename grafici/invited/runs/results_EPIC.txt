@@ -1,0 +1,72 @@
+EXECUTING for time27100Tper1000.txt
+Average metrics with rmin = 194
+#sent messages:  228.5
+#received messages:  10829.5
+time of last car infection:  0.3129
+Cars infected ratio: 98.23%
+Network traffic (bytes):  70753.5
+790
+sent 228.5
+recv ratio 0.9822784810126582
+last infect t 0.3129
+
+EXECUTING for time27100Tper50.txt
+Average metrics with rmin = 90
+#sent messages:  320.0
+#received messages:  4044.5
+time of last car infection:  0.7359
+Cars infected ratio: 98.28%
+Network traffic (bytes):  99638.0
+787
+sent 320.0
+recv ratio 0.9828462515883101
+last infect t 0.7359
+
+EXECUTING for time23000Tper1000.txt
+Average metrics with rmin = 132
+#sent messages:  215.5
+#received messages:  4019.5
+time of last car infection:  0.76475
+Cars infected ratio: 98.17%
+Network traffic (bytes):  67419.5
+436
+sent 215.5
+recv ratio 0.981651376146789
+last infect t 0.76475
+
+EXECUTING for time23000Tper50.txt
+Average metrics with rmin = 95
+#sent messages:  129.5
+#received messages:  1478.5
+time of last car infection:  0.62115
+Cars infected ratio: 98.18%
+Network traffic (bytes):  40221.0
+220
+sent 129.5
+recv ratio 0.9818181818181818
+last infect t 0.62115
+
+EXECUTING for Newyork7005.mat
+Average metrics with rmin = 430
+#sent messages:  176.0
+#received messages:  5737.5
+time of last car infection:  0.24680000000000002
+Cars infected ratio: 98.59%
+Network traffic (bytes):  51463.0
+672
+sent 176.0
+recv ratio 0.9858630952380952
+last infect t 0.24680000000000002
+
+EXECUTING for Newyork3005.mat
+Average metrics with rmin = 430
+#sent messages:  139.5
+#received messages:  2896.5
+time of last car infection:  0.25185
+Cars infected ratio: 97.69%
+Network traffic (bytes):  39966.0
+432
+sent 139.5
+recv ratio 0.9768518518518519
+last infect t 0.25185
+

@@ -1,0 +1,50 @@
+EXECUTING for time27100Tper1000.txt
+Printing graph stats for: Luxembourg time27100Tper1000.txt
+nodes:  790
+edges:  17316.0
+avg degree:  43.8379746835443
+std dev degree:  24.12743752385888
+diameter:  10
+
+EXECUTING for time27100Tper50.txt
+Printing graph stats for: Luxembourg time27100Tper50.txt
+nodes:  787
+edges:  4588.5
+avg degree:  11.660736975857688
+std dev degree:  7.339681428516797
+diameter:  16
+
+EXECUTING for time23000Tper1000.txt
+Printing graph stats for: Cologne time23000Tper1000.txt
+nodes:  436
+edges:  3765.5
+avg degree:  17.272935779816514
+std dev degree:  9.615130546066139
+diameter:  21
+
+EXECUTING for time23000Tper50.txt
+Printing graph stats for: Cologne time23000Tper50.txt
+nodes:  220
+edges:  1217.0
+avg degree:  11.063636363636364
+std dev degree:  5.9890464755209925
+diameter:  15
+
+EXECUTING for Newyork7005.mat
+Printing graph stats for: NewYork Newyork7005.mat
+nodes:  672
+edges:  12462.0
+avg degree:  37.089285714285715
+std dev degree:  22.510005806186673
+diameter:  8
+
+EXECUTING for Newyork3005.mat
+Printing graph stats for: NewYork Newyork3005.mat
+nodes:  432
+edges:  4447.0
+avg degree:  20.587962962962962
+std dev degree:  10.221466314979367
+diameter:  9
+
+
+Process finished with exit code 0
