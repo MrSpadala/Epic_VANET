@@ -240,9 +240,10 @@ def performSimulations(n, verbose=True):
 	return sims
 
 
-def computeMetrics(sims):
+def computeMetrics(sims, verbose=True):
 	"""
-	Given a list of simulator objects prints and returns various metrics
+	Given a list of simulator objects prints and returns various metrics.
+	If verbose == False it does not print anything
 	"""
 
 	#  ~  All metrics print below  ~
@@ -268,17 +269,18 @@ def computeMetrics(sims):
 	infected = np.median(infected_list)
 	cars_infected_ratio = infected / len(sims[0].cars)
 	network_traffic = np.median([s.network_traffic for s in sims])
-
-	print()
-	print("Average metrics with rmin =",config.Rmin)
-	print("#sent messages: ", sent_msgs)
-	print("#received messages: ", recv_msgs)
-	print("time of last car infection: ", t_last_infect)
 	infected = 0
 	for s in sims:
 		infected += str([c.state for c in s.cars]).count("State.RECOVERED")
-	print("Cars infected ratio: {:.2f}%".format(100*cars_infected_ratio))
-	print("Network traffic (bytes): ", network_traffic)
+
+	if verbose:
+		print()
+		print("Average metrics with rmin =",config.Rmin)
+		print("#sent messages: ", sent_msgs)
+		print("#received messages: ", recv_msgs)
+		print("time of last car infection: ", t_last_infect)
+		print("Cars infected ratio: {:.2f}%".format(100*cars_infected_ratio))
+		print("Network traffic (bytes): ", network_traffic)
 	
 	return len(sims[0].cars), sent_msgs, recv_msgs, t_last_infect, cars_infected_ratio, network_traffic
 
