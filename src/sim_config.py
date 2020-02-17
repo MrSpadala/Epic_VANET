@@ -53,23 +53,27 @@ _optimal_parameters = {
 		"Rmin": 194,
 		"Rmax": 500,
 		"alpha": 0.05,
+		"CBF_msg_thresh": 3
 	},
 	"time27100Tper50.txt": {
 		"Rmin": 90,
 		"Rmax": 500,
-		"alpha": 0.0
+		"alpha": 0.0,
+		"CBF_msg_thresh": 4
 	},
 
 	# Cologne
 	"time23000Tper1000.txt": {
 		"Rmin": 132,
 		"Rmax": 500,
-		"alpha": 0.05
+		"alpha": 0.05,
+		"CBF_msg_thresh": 4
 	},
 	"time23000Tper50.txt": {
 		"Rmin": 95,
 		"Rmax": 500,
-		"alpha": 0.0
+		"alpha": 0.0,
+		"CBF_msg_thresh": 5
 	},
 
 	# New York
@@ -77,11 +81,13 @@ _optimal_parameters = {
 		"Rmin": 430,  
 		"alpha": 0.1,
 		"Rmax": 1000,
+		"CBF_msg_thresh": 2
 	},
 	"Newyork3005.mat": {
 		"Rmin": 430,  
 		"alpha": 0.1,
 		"Rmax": 1000,
+		"CBF_msg_thresh": 3
 	}
 }
 
