@@ -95,10 +95,14 @@ def get_diameter():
         h += 1
 
 
-if __name__ == "__main__":
+def print_all():
     print("Printing graph stats for:", config.city_name, config.scenario)
     print("nodes: ", get_n_nodes())
     print("edges: ", get_n_edges())
     print("avg degree: ", get_avg_degree())
     print("std dev degree: ", get_std_dev_degree())
     print("diameter: ", get_diameter())
+
+
+if __name__ == "__main__":
+    print_all()
