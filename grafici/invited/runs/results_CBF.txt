@@ -1,0 +1,98 @@
+EXECUTING for time27100Tper1000.txt
+[+] Caching cars data
+[+] Done!
+[+] Starting 30 simulations with 4 parallel jobs
+
+Average metrics with rmin = 194
+#sent messages:  207
+#received messages:  5498.0
+time of last car infection:  0.40315
+Cars infected ratio: 99.05%
+Network traffic (bytes):  58547.0
+790
+sent 196.5
+recv ratio 0.990506329113924
+last infect t 0.40315
+
+EXECUTING for time27100Tper50.txt
+[+] Caching cars data
+[+] Done!
+[+] Starting 30 simulations with 4 parallel jobs
+
+Average metrics with rmin = 90
+#sent messages:  547.0
+#received messages:  5260.0
+time of last car infection:  0.7907500000000001
+Cars infected ratio: 98.98%
+Network traffic (bytes):  171181.0
+787
+sent 547.0
+recv ratio 0.9898348157560356
+last infect t 0.7907500000000001
+
+EXECUTING for time23000Tper1000.txt
+[+] Caching cars data
+[+] Done!
+[+] Starting 30 simulations with 4 parallel jobs
+
+Average metrics with rmin = 132
+#sent messages:  199.0
+#received messages:  2700.0
+time of last car infection:  0.6918500000000001
+Cars infected ratio: 94.27%
+Network traffic (bytes):  60022.5
+436
+sent 202.0
+recv ratio 0.9426605504587156
+last infect t 0.6918500000000001
+
+EXECUTING for time23000Tper50.txt
+[+] Caching cars data
+[+] Done!
+[+] Starting 30 simulations with 4 parallel jobs
+
+Average metrics with rmin = 95
+#sent messages:  155.0
+#received messages:  1489.5
+time of last car infection:  0.6272500000000001
+Cars infected ratio: 97.73%
+Network traffic (bytes):  47397.5
+220
+sent 155.0
+recv ratio 0.9772727272727273
+last infect t 0.6272500000000001
+
+EXECUTING for Newyork7005.mat
+[+] Caching cars data
+[+] Done!
+[+] Starting 30 simulations with 4 parallel jobs
+
+Average metrics with rmin = 430
+#sent messages:  150.0
+#received messages:  3725.5
+time of last car infection:  0.3345
+Cars infected ratio: 98.14%
+Network traffic (bytes):  38596.5
+672
+sent 150.0
+recv ratio 0.9813988095238095
+last infect t 0.3345
+
+EXECUTING for Newyork3005.mat
+[+] Caching cars data
+[+] Done!
+[+] Starting 30 simulations with 4 parallel jobs
+
+Average metrics with rmin = 430
+#sent messages:  171
+#received messages:  2661.0
+time of last car infection:  0.30085
+Cars infected ratio: 98.61%
+Network traffic (bytes):  47138.5
+432
+sent 167.5
+recv ratio 0.9861111111111112
+last infect t 0.30085
+
+
+Process finished with exit code 0
