@@ -59,6 +59,20 @@ def get_std_dev_degree():
     import pandas as pd
     degrees = np.array(list(map(lambda c: len(c.neighbors), _loaded_cars)))
     return np.std(degrees)
+
+
+@load_cars
+def global_clustering_cff():
+    car_dict = {c.plate: c for c in _loaded_cars}
+    triangles = 0
+    for c1 in _loaded_cars:
+        for c2_id in c1.neighbors:
+            c2 = car_dict[c2_id]
+            for c3_id in c2.neighbors:
+                if c3_id in c1.neighbors:
+                    triangles += 1
+    N = len(_loaded_cars)
+    return triangles / (N*(N-1)*(N-2))
     
 
 @load_cars
@@ -69,9 +83,13 @@ def avg_local_clustering_cff():
         Ci = 0
         for c1_id in car.neighbors:
             c1 = car_dict[c1_id]
-            for c2_id in c1.neighbors:
+            for c2_id in car.neighbors:
                 Ci += 1 if c2_id in c1.neighbors else 0
-        Ci_s.append(Ci)
+        ki = len(car.neighbors)
+        if ki <= 1:
+            Ci_s.append(0)
+        else:
+            Ci_s.append(Ci / (ki*(ki-1)))
     return sum(Ci_s) / len(Ci_s)
 
 
@@ -143,5 +161,5 @@ if __name__ == "__main__":
             config.city_name = city
             config.scenario = scenario
 
-            print(f"Coefficient {city} {scenario} {avg_local_clustering_cff():.1f}")
+            print(f"Coefficient {city} {scenario} {1000*global_clustering_cff()}")
     """
