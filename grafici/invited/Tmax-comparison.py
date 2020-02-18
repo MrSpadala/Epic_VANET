@@ -9,7 +9,7 @@ import sim_config
 from simulator import performSimulations, computeMetrics
 
 THETA = 0.0025  #mean of the underlying channel tx delay (s) 
-tmax_vals = np.linspace(0, 40, 11) * THETA
+tmax_vals = np.linspace(0, 20, 11) * THETA
 
 t_last_infctd_vals = np.zeros_like(tmax_vals)
 ratios_infected_vals = np.zeros_like(tmax_vals)
@@ -115,7 +115,7 @@ for city, scenarios in city_scenario.items():
 
 
             plt.ylabel('Nodes (%)')
-            plt.xlabel(r'$\frac{T_{max}}{\theta}$')
+            plt.xlabel(r'$\frac{T_{max}}{T_{tx}}$')
             plt.title('')
             if not labels is None:
                 plt.xticks(ind, labels) 
