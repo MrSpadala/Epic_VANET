@@ -61,6 +61,20 @@ def get_std_dev_degree():
     return np.std(degrees)
     
 
+@load_cars
+def avg_local_clustering_cff():
+    car_dict = {c.plate: c for c in _loaded_cars}
+    Ci_s = []
+    for car in _loaded_cars:
+        Ci = 0
+        for c1_id in car.neighbors:
+            c1 = car_dict[c1_id]
+            for c2_id in c1.neighbors:
+                Ci += 1 if c2_id in c1.neighbors else 0
+        Ci_s.append(Ci)
+    return sum(Ci_s) / len(Ci_s)
+
+
 # DIAMETER, using exact ANF algorithm
 @load_cars
 def get_diameter():
@@ -101,8 +115,33 @@ def print_all():
     print("edges: ", get_n_edges())
     print("avg degree: ", get_avg_degree())
     print("std dev degree: ", get_std_dev_degree())
+    print("avg local clustering coefficient: ", avg_local_clustering_cff())
     print("diameter: ", get_diameter())
 
 
 if __name__ == "__main__":
     print_all()
+
+    """
+    city_scenario = {
+        "Luxembourg": [
+            "time27100Tper1000.txt",
+            "time27100Tper50.txt"
+        ],
+        "Cologne": [
+            "time23000Tper1000.txt",
+            "time23000Tper50.txt"
+        ],
+        "NewYork": [
+            "Newyork7005.mat",
+            "Newyork3005.mat"
+        ]
+    }
+
+    for city, scenarios in city_scenario.items():
+        for i, scenario in enumerate(scenarios):  #two scenarios per city, they must be in order high density then low density
+            config.city_name = city
+            config.scenario = scenario
+
+            print(f"Coefficient {city} {scenario} {avg_local_clustering_cff():.1f}")
+    """
