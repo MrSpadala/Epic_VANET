@@ -154,7 +154,7 @@ def make_plot(n_cars, means_recv_ratio, means_frwd, labels=None):
     #plt.legend((p1[0], p2[0], p4[0]), ('Relay', r'EPIC avg $\delta =43.8$', r'EPIC avg $\delta =11.6$'), 
     #    loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
-    plt.legend((p1[0], p2[0]), ('Relay', 'Receivers'), 
+    plt.legend((p1[0], p2[0]), ('RR', 'PDR'), 
         loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
     plt.gcf().subplots_adjust(bottom=0.15, left=0.15)

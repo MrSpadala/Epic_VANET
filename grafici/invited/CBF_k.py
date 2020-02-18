@@ -98,7 +98,7 @@ for city, scenarios in city_scenario.items():
     #plt.legend((p3[0], p2[0], p6[0], p4[0]), ('Relayers', 'Reached', r'Probabilistic $P=\widehat{P}$', r'Probabilistic $P=0.96$'), 
     #	loc='upper center', bbox_to_anchor=(0.5, -0.08),
     #    fancybox=True, shadow=True, ncol=5)
-    plt.legend((p1[0], p2[0], p4[0]), ('Relay', r'EPIC avg $\delta ='+f'{avg_degree[0]:.1f}$', r'EPIC avg $\delta ='+f'{avg_degree[1]:.1f}$'), 
+    plt.legend((p1[0], p2[0], p4[0]), ('RR', r'PDR, avg $\delta ='+f'{avg_degree[0]:.1f}$', r'PDR, avg $\delta ='+f'{avg_degree[1]:.1f}$'), 
         loc='upper center', bbox_to_anchor=(0.465, 1.15), fancybox=True, shadow=True, ncol=5)
 
     plt.gcf().subplots_adjust(bottom=0.11, left=0.11)
