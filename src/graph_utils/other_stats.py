@@ -1,5 +1,6 @@
 
 import numpy as np
+from heapq import *
 import sys
 sys.path.append("src")
 from simulator import init_cars
@@ -56,7 +57,6 @@ def get_avg_degree():
 def get_std_dev_degree():
     global _loaded_cars
     from matplotlib import pyplot as plt
-    import pandas as pd
     degrees = np.array(list(map(lambda c: len(c.neighbors), _loaded_cars)))
     return np.std(degrees)
 
@@ -119,17 +119,58 @@ def avg_jaccard():
             jacc_accumulator += jaccard(c1,c2)
         jacc_tot += jacc_accumulator / n_neighbors
     return jacc_tot / n_cars
+ 
 
-    """
-    n_cars = len(_loaded_cars)
-    jacc_accumulator = 0
-    for c1 in _loaded_cars:
-        for c2 in _loaded_cars:
-            if c1.plate == c2.plate:
-                continue
-            jacc_accumulator += jaccard(c1, c2)
-    return jacc_accumulator / (n_cars * (n_cars-1))
-    """
+@load_cars
+def avg_node_distance():
+    def dijkstra(source):
+        class HeapItem:
+            def __init__(self, car):
+                self.car = car
+            def __lt__(self, item):
+                return True
+        
+        car_dict = {c.plate: c for c in _loaded_cars}
+        dist = {c.plate: np.inf for c in _loaded_cars}
+        dist[source.plate] = 0
+        prev = {c.plate: None for c in _loaded_cars}
+
+        for _ in range(len(_loaded_cars)):
+            u = car_dict[np.argmin(dist)]
+
+            if dist[u.plate] == np.inf:
+                #print("manzo")
+                break
+            for v_plate in u.neighbors:
+                alt_dist = dist[u.plate] + 1  # weigth of each edge is 1
+                if alt_dist < dist[v_plate]:
+                    dist[v_plate] = alt_dist
+                    prev[v_plate] = u
+
+                    # Update v
+                    for k in dist:
+                        if k == v_plate:
+                            dist[k] = alt_dist
+                            break
+                    else:
+                        pass
+                        #print("manz?")
+        
+        return dist
+
+    dist_tot = 0
+    for car in _loaded_cars:
+        dist = 0
+        i = 0
+        for d in dijkstra(car).values():
+            if d < np.inf:
+                dist += d
+                i += 1
+        if i - 1 > 0:
+            dist /= i - 1  # -1 to not consider the distance from itself which is 0
+            dist_tot += dist
+    return dist_tot / 2   # /2 since we have counted twice the distances, dist(u,v) and dist(v,u)            
+
 
 # DIAMETER, using exact ANF algorithm
 @load_cars
@@ -171,7 +212,9 @@ def print_all():
     print("edges: ", get_n_edges())
     print("avg degree: ", get_avg_degree())
     print("std dev degree: ", get_std_dev_degree())
+    print("global clustering coefficient: ", global_clustering_cff())
     print("avg local clustering coefficient: ", avg_local_clustering_cff())
+    #print("avg distance: ", avg_node_distance())
     print("diameter: ", get_diameter())
 
 
@@ -199,5 +242,7 @@ if __name__ == "__main__":
             config.city_name = city
             config.scenario = scenario
 
-            print(f"Jaccard {city} {scenario} {avg_jaccard()}")
+            #print(f"Jaccard {city} {scenario} {avg_jaccard()}")
+            print_all()
+    
     
