@@ -67,7 +67,7 @@ _optimal_parameters = {
 		"Rmin": 132,
 		"Rmax": 500,
 		"alpha": 0.05,
-		"CBF_msg_thresh": 4
+		"CBF_msg_thresh": 5
 	},
 	"time23000Tper50.txt": {
 		"Rmin": 95,
