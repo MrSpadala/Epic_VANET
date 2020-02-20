@@ -61,6 +61,7 @@ def get_std_dev_degree():
     return np.std(degrees)
 
 
+# GLOBAL CLUSTERING COEFFICIENT
 @load_cars
 def global_clustering_cff():
     car_dict = {c.plate: c for c in _loaded_cars}
@@ -75,6 +76,7 @@ def global_clustering_cff():
     return triangles / (N*(N-1)*(N-2))
     
 
+# LOCAL CLUSTERING COEFFICIENT
 @load_cars
 def avg_local_clustering_cff():
     car_dict = {c.plate: c for c in _loaded_cars}
@@ -92,6 +94,42 @@ def avg_local_clustering_cff():
             Ci_s.append(Ci / (ki*(ki-1)))
     return sum(Ci_s) / len(Ci_s)
 
+
+# Average of jaccard similarities of neighborhood of each node
+@load_cars
+def avg_jaccard():
+    def jaccard(c1,c2):
+        """
+        Calculates the jaccard similarity of neighbors of c1 and neighbors of c2
+        """
+        neigh1 = set(c1.neighbors)
+        neigh2 = set(c2.neighbors) 
+        inters = len(set.intersection(neigh1, neigh2))
+        union = len(set.union(neigh1, neigh2))
+        return inters / union
+
+    car_dict = {c.plate: c for c in _loaded_cars}
+    n_cars = len(_loaded_cars)
+    jacc_tot = 0
+    for c1 in _loaded_cars:
+        n_neighbors = len(c1.neighbors)
+        jacc_accumulator = 0
+        for c2_plate in c1.neighbors:
+            c2 = car_dict[c2_plate]
+            jacc_accumulator += jaccard(c1,c2)
+        jacc_tot += jacc_accumulator / n_neighbors
+    return jacc_tot / n_cars
+
+    """
+    n_cars = len(_loaded_cars)
+    jacc_accumulator = 0
+    for c1 in _loaded_cars:
+        for c2 in _loaded_cars:
+            if c1.plate == c2.plate:
+                continue
+            jacc_accumulator += jaccard(c1, c2)
+    return jacc_accumulator / (n_cars * (n_cars-1))
+    """
 
 # DIAMETER, using exact ANF algorithm
 @load_cars
@@ -138,9 +176,9 @@ def print_all():
 
 
 if __name__ == "__main__":
-    print_all()
+    #print_all()
 
-    """
+    
     city_scenario = {
         "Luxembourg": [
             "time27100Tper1000.txt",
@@ -161,5 +199,5 @@ if __name__ == "__main__":
             config.city_name = city
             config.scenario = scenario
 
-            print(f"Coefficient {city} {scenario} {1000*global_clustering_cff()}")
-    """
+            print(f"Jaccard {city} {scenario} {avg_jaccard()}")
+    
