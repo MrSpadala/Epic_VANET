@@ -115,7 +115,7 @@ for city, scenarios in city_scenario.items():
 
 
             plt.ylabel('Nodes (%)')
-            plt.xlabel(r'$\frac{T_{max}}{T_{tx}}$')
+            plt.xlabel(r'$\frac{T_{max}}{\theta}$')
             plt.title('')
             if not labels is None:
                 plt.xticks(ind, labels) 
