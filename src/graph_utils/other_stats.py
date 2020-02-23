@@ -1,5 +1,6 @@
 
 import numpy as np
+from collections import defaultdict
 import sys
 sys.path.append("src")
 from simulator import init_cars
@@ -56,7 +57,6 @@ def get_avg_degree():
 def get_std_dev_degree():
     global _loaded_cars
     from matplotlib import pyplot as plt
-    import pandas as pd
     degrees = np.array(list(map(lambda c: len(c.neighbors), _loaded_cars)))
     return np.std(degrees)
 
@@ -119,17 +119,40 @@ def avg_jaccard():
             jacc_accumulator += jaccard(c1,c2)
         jacc_tot += jacc_accumulator / n_neighbors
     return jacc_tot / n_cars
+ 
 
-    """
-    n_cars = len(_loaded_cars)
-    jacc_accumulator = 0
-    for c1 in _loaded_cars:
-        for c2 in _loaded_cars:
-            if c1.plate == c2.plate:
+@load_cars
+def avg_node_distance():
+    car_dict = {c.plate: c for c in _loaded_cars}
+    def BFS_counter(car_source):
+        tot_dist = 0
+        n_visited = 0
+        visited = defaultdict(lambda: False)
+        visited[car_source] = True
+        curr_distance = 1
+        Q = [car_source, None]  # Queue for BFS, None entries separate nodes by distance
+        while len(Q) > 1:
+            u, Q = Q[0], Q[1:]
+
+            # Mock entry, increase current distance
+            if u == None:
+                curr_distance += 1
+                Q.append(None)  # append new mock entry
                 continue
-            jacc_accumulator += jaccard(c1, c2)
-    return jacc_accumulator / (n_cars * (n_cars-1))
-    """
+            
+            for v_plate in u.neighbors:
+                if visited[v_plate]:
+                    continue
+                visited[v_plate] = True
+                tot_dist += curr_distance
+                n_visited += 1
+                Q.append(car_dict[v_plate])
+        
+        return tot_dist / n_visited
+
+    dists = list(map(BFS_counter, _loaded_cars))
+    return sum(dists) / len(_loaded_cars), np.std(dists)
+
 
 # DIAMETER, using exact ANF algorithm
 @load_cars
@@ -167,12 +190,14 @@ def get_diameter():
 
 def print_all():
     print("Printing graph stats for:", config.city_name, config.scenario)
-    print("nodes: ", get_n_nodes())
-    print("edges: ", get_n_edges())
-    print("avg degree: ", get_avg_degree())
-    print("std dev degree: ", get_std_dev_degree())
-    print("avg local clustering coefficient: ", avg_local_clustering_cff())
-    print("diameter: ", get_diameter())
+    #print("nodes: ", get_n_nodes())
+    #print("edges: ", get_n_edges())
+    #print("avg degree: ", get_avg_degree())
+    #print("std dev degree: ", get_std_dev_degree())
+    #print("global clustering coefficient: ", global_clustering_cff())
+    #print("avg local clustering coefficient: ", avg_local_clustering_cff())
+    print("avg distance: ", avg_node_distance())
+    #print("diameter: ", get_diameter())
 
 
 if __name__ == "__main__":
@@ -199,5 +224,7 @@ if __name__ == "__main__":
             config.city_name = city
             config.scenario = scenario
 
-            print(f"Jaccard {city} {scenario} {avg_jaccard()}")
+            #print(f"Jaccard {city} {scenario} {avg_jaccard()}")
+            print_all()
+    
     
